@@ -54,19 +54,4 @@ public class Player {
                 break;
         }
     }
-    public void drawing_player(){
-        java.util.Timer timer = new Timer();
-
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                setPosition_x(position_x + 1);
-                System.out.println(position_x);
-            }
-        };
-
-        // Schedule the task to run every 3 seconds (3000 milliseconds)
-        timer.schedule(task, 0, 100);
-
-    }
 }

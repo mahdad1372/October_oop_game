@@ -4,8 +4,10 @@ import java.awt.*;
 public class SniperEnemy extends Enemy {
     JLabel bullet_label;
     ImageIcon icon = new ImageIcon("bullet.png");
-    public SniperEnemy(Image img, int x, int y, int w, int h, String direction, int final_position) {
+    private int Sniper_number;
+    public SniperEnemy(Image img, int x, int y, int w, int h, String direction, int final_position, int Sn) {
         super(img, x, y, w, h, direction, final_position);
+        this.Sniper_number = Sn;
     }
     public void create_sniper_bullet(){
         this.bullet_label = new JLabel();
@@ -28,6 +30,9 @@ public class SniperEnemy extends Enemy {
     @Override
     public Image getImage_enemy() {
         return super.getImage_enemy();
+    }
+    public int getSniper_number() {
+        return this.Sniper_number;
     }
 
     public  JLabel sniper_bullet(){

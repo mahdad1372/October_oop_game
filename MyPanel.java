@@ -21,6 +21,7 @@ public class MyPanel extends JPanel implements KeyListener{
     private Image Player_U = new ImageIcon("soldier_u.png").getImage();
     private Image Player_icon = Player;
     private Image Sniper_down = new ImageIcon("Sniper_down.png").getImage();
+    private Image Sniper_up = new ImageIcon("Sniper_up.png").getImage();
     private Image Launcher = new ImageIcon("launcher.png").getImage();
     private Image Missile_img = new ImageIcon("missile.png").getImage();
     private Image thief = new ImageIcon("thief.png").getImage();
@@ -32,6 +33,8 @@ public class MyPanel extends JPanel implements KeyListener{
     private int player_y ;
     private int scores = 0;
     private int Health = 100;
+    private boolean display_menu_winner;
+    ArrayList<Menu> Menu_list = new ArrayList<Menu>();
     ArrayList<Enemy> enemy_list = new ArrayList<Enemy>();
     ArrayList<SniperBullet> SniperBullets = new ArrayList<SniperBullet>();
     ArrayList<SniperEnemy> SniperEnemy = new ArrayList<SniperEnemy>();
@@ -39,15 +42,16 @@ public class MyPanel extends JPanel implements KeyListener{
     ArrayList<Bullet> bullet_position = new ArrayList<Bullet>();
     ArrayList<Wall> Walls = new ArrayList<Wall>();
     public MyPanel() {
+        Menu_list.add(new Menu(230,40,380,250,"winner"));
+        Menu_list.add(new Menu(230,40,380,250,"looser"));
         addKeyListener(this);
         setFocusable(true);
         setVisible(true);
         setBackground(Color.white);
-        SniperBullets.add(new SniperBullet(200,10));
-        SniperBullets.add(new SniperBullet(200,10));
+
         image = new ImageIcon("thief.png").getImage();
         imageY = 10;
-        Shooting_Bullet_Sniper();
+
         timer = new Timer(16, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -60,6 +64,7 @@ public class MyPanel extends JPanel implements KeyListener{
         SniperCoordinates();
         Shooting_Missile_Sniper();
         Enemy_coordinates();
+        Shooting_Bullet_Sniper();
     }
     private void Shooting_Bullet_Sniper(){
         java.util.Timer timer = new java.util.Timer();
@@ -67,7 +72,11 @@ public class MyPanel extends JPanel implements KeyListener{
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                SniperBullets.add(new SniperBullet(470,15));
+                for (int i =0; i < SniperEnemy.size();i++){
+                SniperBullets.add(new SniperBullet(SniperEnemy.get(i).getPosition_enemy_x()
+                        ,SniperEnemy.get(i).getPosition_enemy_y(),SniperEnemy.get(i).getSniper_number(),
+                        SniperEnemy.get(i).getFinal_position(), SniperEnemy.get(i).getDirection()));
+                }
             }
         };
 
@@ -129,6 +138,7 @@ public class MyPanel extends JPanel implements KeyListener{
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
+
         g.drawImage(Player_icon, player_x, player_y, null);
         g.drawImage(Launcher, 160, 300, null);
         for (int i=0;i< SniperBullets.size();i++){
@@ -154,6 +164,7 @@ public class MyPanel extends JPanel implements KeyListener{
         for (int i=0;i< SniperEnemy.size();i++){
             g.drawImage(SniperEnemy.get(i).getImage_enemy(),
                     SniperEnemy.get(i).getPosition_enemy_x() , SniperEnemy.get(i).getPosition_enemy_y(),null);
+
             SniperBullets.get(i).shootingBullet();
 
         }
@@ -190,6 +201,25 @@ public class MyPanel extends JPanel implements KeyListener{
                 }
             }
         }
+        if (SniperEnemy.size()>0) {
+            for (int j = 0; j < SniperEnemy.size(); j++) {
+                for (int i = 0; i < bullet_position.size(); i++) {
+
+                        if (bulletIntersectsSniperEnemy(bullet_position.get(i), SniperEnemy.get(j))) {
+                            if (SniperEnemy.contains(SniperEnemy.get(j))) {
+                                SniperEnemy.remove(SniperEnemy.get(j));
+                            }
+                            if (bullet_position.contains(bullet_position.get(i))) {
+                                bullet_position.remove(bullet_position.get(i));
+                            }
+//                            if (SniperEnemy.get(j).getSniper_number() == SniperBullets.get(t).getSniper_number()){
+//                                SniperBullets.remove(SniperBullets.get(t));
+//                            }
+                            scores += 10;
+                    }
+                }
+            }
+        }
         if (Walls.size()>0){
             for (int i=0; i<Walls.size();i++){
                 for (int j=0; j<bullet_position.size();j++){
@@ -216,7 +246,45 @@ public class MyPanel extends JPanel implements KeyListener{
                 Health-=10;
             }
         }
+
+        if (player_x >= 890){
+            display_menu_winner = true;
+        }
+        if (Health <= 0){
+            display_menu_winner = false;
+        }
+        g.setFont(new Font("Arial", Font.PLAIN, 24));
+        g.setColor(Color.BLUE);
+        String text = "Score : "+ scores;
+        int x = 750;
+        int y = 100;
+        g.drawString(text, x, y);
+        g.setColor(Color.RED);
+        String text2 = "Health : " + Health +" %";
+        g.drawString(text2, 750, 150);
+        g.setFont(new Font("Arial", Font.BOLD, 20));
+        g.setColor(Color.GREEN);
+        String text3 = "Exit";
+        g.drawString(text3, 890, 230);
         WallDrawing(g);
+        for (Menu menu:Menu_list){
+            if (display_menu_winner == true && menu.get_menu_type() == "winner"){
+
+                g2d.setColor(Color.GREEN);
+                g2d.fillRect(menu.getPosition_menu_x(),menu.getPosition_menu_y(),menu.getWidth(),menu.getHeight());
+                g2d.setFont(new Font("Arial", Font.BOLD, 25));
+                g2d.setColor(Color.WHITE);
+                g2d.drawString("WINNER", 380, 110);
+            }
+            if (Health <= 0 && menu.get_menu_type() == "looser"){
+                g2d.setColor(Color.RED);
+                g2d.fillRect(menu.getPosition_menu_x(),menu.getPosition_menu_y(),menu.getWidth(),menu.getHeight());
+                g2d.setFont(new Font("Arial", Font.BOLD, 25));
+                g2d.setColor(Color.WHITE);
+                g2d.drawString("LOOSER", 380, 110);
+            }
+
+        }
     }
     public void WallDrawing(Graphics g){
         Graphics2D g2d = (Graphics2D) g;
@@ -247,7 +315,8 @@ public class MyPanel extends JPanel implements KeyListener{
     }
     public void SniperCoordinates(){
 
-        SniperEnemy.add(new SniperEnemy(Sniper_down,470,10,20,20,"Y",10));
+        SniperEnemy.add(new SniperEnemy(Sniper_down,470,10,20,20,"Y",400,1));
+//        SniperEnemy.add(new SniperEnemy(Sniper_up,650,320,20,20,"Y",10,2));
     }
     public void Enemy_coordinates(){
         enemy_list.add(new Enemy(thief,200,70,30,30,"Y",320));
@@ -262,6 +331,22 @@ public class MyPanel extends JPanel implements KeyListener{
         Rectangle bulletRect = new Rectangle(bullet.getPosition_x(), bullet.getPosition_y(),
                 10, 10);
         Rectangle enemyRect = new Rectangle(enemy.getPosition_enemy_x(), enemy.getPosition_enemy_y(),
+                30,30);
+
+        return bulletRect.intersects(enemyRect);
+    }
+    public boolean SniperBulletIntersectsPlayer(SniperBullet bullet) {
+        Rectangle playerRect = new Rectangle(player_x, player_y,
+                30, 30);
+        Rectangle SniperBullet = new Rectangle(bullet.getPosition_x(), bullet.getPosition_y(),
+                10,10);
+
+        return playerRect.intersects(SniperBullet);
+    }
+    public boolean bulletIntersectsSniperEnemy(Bullet bullet, SniperEnemy sniper) {
+        Rectangle bulletRect = new Rectangle(bullet.getPosition_x(), bullet.getPosition_y(),
+                10, 10);
+        Rectangle enemyRect = new Rectangle(sniper.getPosition_enemy_x(), sniper.getPosition_enemy_y(),
                 30,30);
 
         return bulletRect.intersects(enemyRect);

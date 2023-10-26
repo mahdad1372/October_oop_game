@@ -69,17 +69,7 @@ public class Enemy  {
     public Image getImage_enemy() {
         return enemy;
     }
-//    public void enemy_movement(int curr_position,int final_position ,String direction){
-//        if (direction == "Y"){
-//          if (this.enemy_y< final_position){
-//              this.enemy_y +=1;
-//          }
-//        } else if (direction == "X") {
-//            if (this.enemy_x < final_position){
-//                this.enemy_x +=1;
-//            }
-//        }
-//    }
+
     public void set_Position_enemy_x(int x) {
         this.width = x;
         this.height=x;
