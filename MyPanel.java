@@ -35,7 +35,8 @@ public class MyPanel extends JPanel implements KeyListener{
     private int Health = 100;
     private boolean display_menu_winner;
     ArrayList<Menu> Menu_list = new ArrayList<Menu>();
-    ArrayList<Enemy> enemy_list = new ArrayList<Enemy>();
+    ArrayList<Enemy> enemy_lists = new ArrayList<Enemy>();
+    ArrayList<thief> thief_list = new ArrayList<thief>();
     ArrayList<SniperBullet> SniperBullets = new ArrayList<SniperBullet>();
     ArrayList<SniperEnemy> SniperEnemy = new ArrayList<SniperEnemy>();
     ArrayList<Missile> Missile = new ArrayList<Missile>();
@@ -168,11 +169,11 @@ public class MyPanel extends JPanel implements KeyListener{
             SniperBullets.get(i).shootingBullet();
 
         }
-        for (int i=0;i< enemy_list.size();i++){
-            g.drawImage(enemy_list.get(i).getImage_enemy(),
-                    enemy_list.get(i).getPosition_enemy_x() , enemy_list.get(i).getPosition_enemy_y(),null);
-            enemy_list.get(i).enemy_movement( enemy_list.get(i).getCurr_position(),
-                    enemy_list.get(i).getFinal_position(),enemy_list.get(i).getDirection());
+        for (int i=0;i< thief_list.size();i++){
+            g.drawImage(thief_list.get(i).getImage_enemy(),
+                    thief_list.get(i).getPosition_enemy_x() , thief_list.get(i).getPosition_enemy_y(),null);
+            thief_list.get(i).enemy_movement( thief_list.get(i).getCurr_position(),
+                    thief_list.get(i).getFinal_position(),thief_list.get(i).getDirection());
 
         }
         if (bullet_position.size() > 0){
@@ -186,12 +187,12 @@ public class MyPanel extends JPanel implements KeyListener{
                 }
             }
         }
-        if (enemy_list.size()>0) {
-            for (int j = 0; j < enemy_list.size(); j++) {
+        if (thief_list.size()>0) {
+            for (int j = 0; j < thief_list.size(); j++) {
                 for (int i = 0; i < bullet_position.size(); i++) {
-                    if (bulletIntersectsEnemy(bullet_position.get(i), enemy_list.get(j))) {
-                        if (enemy_list.contains(enemy_list.get(j))) {
-                            enemy_list.remove(enemy_list.get(j));
+                    if (bulletIntersectsEnemy(bullet_position.get(i), thief_list.get(j))) {
+                        if (thief_list.contains(thief_list.get(j))) {
+                            thief_list.remove(thief_list.get(j));
                         }
                         if (bullet_position.contains(bullet_position.get(i))) {
                             bullet_position.remove(bullet_position.get(i));
@@ -240,7 +241,7 @@ public class MyPanel extends JPanel implements KeyListener{
                 }
             }
         }
-        for (Enemy enemies:enemy_list){
+        for (thief enemies:thief_list){
             if (playerIntersectEnemy(enemies)){
                 player_x -=40;
                 Health-=10;
@@ -319,13 +320,13 @@ public class MyPanel extends JPanel implements KeyListener{
 //        SniperEnemy.add(new SniperEnemy(Sniper_up,650,320,20,20,"Y",10,2));
     }
     public void Enemy_coordinates(){
-        enemy_list.add(new Enemy(thief,200,70,30,30,"Y",320));
-        enemy_list.add(new Enemy(thief,390,165,30,30,"X",120));
-        enemy_list.add(new Enemy(thief,350,310,30,30,"Y",120));
+        thief_list.add(new thief(thief,200,70,30,30,"Y",320));
+        thief_list.add(new thief(thief,390,165,30,30,"X",120));
+        thief_list.add(new thief(thief,350,310,30,30,"Y",120));
 //        enemy_list.add(new Enemy(thief,480,310,30,30,"Y",70));
-        enemy_list.add(new Enemy(thief,595,140,30,30,"X",450));
-        enemy_list.add(new Enemy(thief,580,10,30,30,"Y",180));
-        enemy_list.add(new Enemy(thief,665,50,30,30,"Y",210));
+        thief_list.add(new thief(thief,595,140,30,30,"X",450));
+        thief_list.add(new thief(thief,580,10,30,30,"Y",180));
+        thief_list.add(new thief(thief,665,50,30,30,"Y",210));
     }
     public boolean bulletIntersectsEnemy(Bullet bullet, Enemy enemy) {
         Rectangle bulletRect = new Rectangle(bullet.getPosition_x(), bullet.getPosition_y(),

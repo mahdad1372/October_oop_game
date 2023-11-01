@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 import java.util.TimerTask;
 
 
-public class Enemy  {
+public abstract class Enemy  {
     private int enemy_x;
     private int  enemy_y;
     private Image enemy;
