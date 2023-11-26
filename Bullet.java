@@ -6,6 +6,7 @@ public class Bullet {
     private int Bullet_y;
 
 
+
     public  Bullet(int bullet_x, int bullet_y){
         this.Bullet_x = bullet_x;
         this.Bullet_y = bullet_y;

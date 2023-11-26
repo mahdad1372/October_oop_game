@@ -2,6 +2,15 @@ public class SniperBullet extends Bullet{
     private int Sniper_number;
     private int FinalPosition;
     private  String Direction;
+
+    @Override
+    public int getPosition_x() {
+        return super.getPosition_x();
+    }
+    @Override
+    public int getPosition_y() {
+        return super.getPosition_y();
+    }
     public SniperBullet(int bullet_x, int bullet_y, int Sn ,int FinalPosition , String direction) {
 
         super(bullet_x, bullet_y);
@@ -10,15 +19,6 @@ public class SniperBullet extends Bullet{
         this.Direction = direction;
     }
 
-    @Override
-    public int getPosition_x() {
-        return super.getPosition_x();
-    }
-
-    @Override
-    public int getPosition_y() {
-        return super.getPosition_y();
-    }
     public int getSniper_number() {
         return this.Sniper_number;
     }

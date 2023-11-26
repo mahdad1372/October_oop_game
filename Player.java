@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -12,6 +13,9 @@ public class Player {
         this.position_y = y;
         this.Icon_player = new ImageIcon(icon);
     }
+
+
+
 
     public int getPosition_x(){
         return this.position_x;
@@ -33,12 +37,6 @@ public class Player {
     }
     public void setPlayerIcon(String icon){
         this.Icon_player = new ImageIcon(icon);;
-    }
-    public void create_label(){
-        this.label = new JLabel();
-
-        this.label.setIcon(getPlayerIcon());
-        this.label.setBounds(getPosition_x(),getPosition_y(),50,50);
     }
     public void player_movement(String direction){
         switch (direction){

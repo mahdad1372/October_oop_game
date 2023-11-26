@@ -43,6 +43,8 @@ public class MyPanel extends JPanel implements KeyListener{
     ArrayList<Bullet> bullet_position = new ArrayList<Bullet>();
     ArrayList<Wall> Walls = new ArrayList<Wall>();
     public MyPanel() {
+
+
         Menu_list.add(new Menu(230,40,380,250,"winner"));
         Menu_list.add(new Menu(230,40,380,250,"looser"));
         addKeyListener(this);
@@ -69,15 +71,23 @@ public class MyPanel extends JPanel implements KeyListener{
     }
     private void Shooting_Bullet_Sniper(){
         java.util.Timer timer = new java.util.Timer();
+//        SniperEnemy sniper = new SniperEnemy();
 
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
                 for (int i =0; i < SniperEnemy.size();i++){
-                SniperBullets.add(new SniperBullet(SniperEnemy.get(i).getPosition_enemy_x()
-                        ,SniperEnemy.get(i).getPosition_enemy_y(),SniperEnemy.get(i).getSniper_number(),
-                        SniperEnemy.get(i).getFinal_position(), SniperEnemy.get(i).getDirection()));
+                    SniperEnemy.get(i).add_bullet(SniperEnemy.get(i).getPosition_enemy_x(),
+                            SniperEnemy.get(i).getPosition_enemy_y(),SniperEnemy.get(i).getSniper_number(),
+                            SniperEnemy.get(i).getFinal_position(), SniperEnemy.get(i).getDirection());
                 }
+                SniperEnemy.get(0).add_bullet(SniperEnemy.get(0).getPosition_enemy_x()
+                     ,SniperEnemy.get(0).getPosition_enemy_y(),SniperEnemy.get(0).getSniper_number(),
+                       SniperEnemy.get(0).getFinal_position(), SniperEnemy.get(0).getDirection());
+//                SniperBullets.add(new SniperBullet(SniperEnemy.get(i).getPosition_enemy_x()
+//                        ,SniperEnemy.get(i).getPosition_enemy_y(),SniperEnemy.get(i).getSniper_number(),
+//                        SniperEnemy.get(i).getFinal_position(), SniperEnemy.get(i).getDirection()));
+//                }
             }
         };
 
@@ -135,18 +145,36 @@ public class MyPanel extends JPanel implements KeyListener{
         g2d.drawOval(x, y, radius, radius);
     }
 
+    private void create_obstacles(Graphics2D g2d){
+        obstacles Mines = new Mines(12);
+        g2d.fillOval(30,30,Mines.calculate_area(),Mines.calculate_area());
+        obstacles Laser = new Laser(40,20);
+        g2d.fillRect(20,30,Laser.calculate_area(),Laser.calculate_area());
+
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-
+        FinalResult<String, Integer,Integer,String> result_win = new FinalResult<>("Mahdad", this.Health,this.scores,
+                "winner");
+        double double_health = this.Health;
+        double double_score = this.scores;
+        FinalResult<String, Double,Double,String> result_lose = new FinalResult<>("Mahdad", double_health,double_score,
+                "looser");
         g.drawImage(Player_icon, player_x, player_y, null);
         g.drawImage(Launcher, 160, 300, null);
-        for (int i=0;i< SniperBullets.size();i++){
-            g.drawImage(Bullet, SniperBullets.get(i).getPosition_x() , SniperBullets.get(i).getPosition_y(),null);
-            SniperBullets.get(i).shootingBullet();
+        if (SniperEnemy.size()>0){
+            ArrayList<SniperBullet> SniperBullet_List = SniperEnemy.get(0).return_bullet();
+            for (int i=0;i< SniperBullet_List.size();i++){
+                g.drawImage(Bullet, SniperBullet_List.get(i).getPosition_x() , SniperBullet_List.get(i).getPosition_y(),null);
+                SniperBullet_List.get(i).shootingBullet();
 
+            }
         }
+
+
         for (int i=0;i< Missile.size();i++){
             g.drawImage(Missile_img, Missile.get(i).getPosition_x() , Missile.get(i).getPosition_y(),null);
             Missile.get(i).Missile_Shooting();
@@ -166,7 +194,7 @@ public class MyPanel extends JPanel implements KeyListener{
             g.drawImage(SniperEnemy.get(i).getImage_enemy(),
                     SniperEnemy.get(i).getPosition_enemy_x() , SniperEnemy.get(i).getPosition_enemy_y(),null);
 
-            SniperBullets.get(i).shootingBullet();
+//            SniperBullets.get(i).shootingBullet();
 
         }
         for (int i=0;i< thief_list.size();i++){
@@ -187,21 +215,36 @@ public class MyPanel extends JPanel implements KeyListener{
                 }
             }
         }
-        if (thief_list.size()>0) {
-            for (int j = 0; j < thief_list.size(); j++) {
-                for (int i = 0; i < bullet_position.size(); i++) {
-                    if (bulletIntersectsEnemy(bullet_position.get(i), thief_list.get(j))) {
-                        if (thief_list.contains(thief_list.get(j))) {
-                            thief_list.remove(thief_list.get(j));
-                        }
-                        if (bullet_position.contains(bullet_position.get(i))) {
-                            bullet_position.remove(bullet_position.get(i));
-                        }
+
+        try{
+            for (Bullet bullet:bullet_position){
+                for (thief thief:thief_list){
+                    if (bulletIntersectsEnemy(bullet,thief)){
+                        thief_list.remove(thief);
+                        bullet_position.remove(bullet);
                         scores += 10;
                     }
                 }
             }
+        }catch (Exception e){
+            System.out.println("An unexpected error occurred: " + e.getMessage());
         }
+
+//        if (thief_list.size()>0) {
+//            for (int j = 0; j < thief_list.size(); j++) {
+//                for (int i = 0; i < bullet_position.size(); i++) {
+//                    if (bulletIntersectsEnemy(bullet_position.get(i), thief_list.get(j))) {
+//                        if (thief_list.contains(thief_list.get(j))) {
+//                            thief_list.remove(thief_list.get(j));
+//                        }
+//                        if (bullet_position.contains(bullet_position.get(i))) {
+//                            bullet_position.remove(bullet_position.get(i));
+//                        }
+//                        scores += 10;
+//                    }
+//                }
+//            }
+//        }
         if (SniperEnemy.size()>0) {
             for (int j = 0; j < SniperEnemy.size(); j++) {
                 for (int i = 0; i < bullet_position.size(); i++) {
@@ -213,9 +256,7 @@ public class MyPanel extends JPanel implements KeyListener{
                             if (bullet_position.contains(bullet_position.get(i))) {
                                 bullet_position.remove(bullet_position.get(i));
                             }
-//                            if (SniperEnemy.get(j).getSniper_number() == SniperBullets.get(t).getSniper_number()){
-//                                SniperBullets.remove(SniperBullets.get(t));
-//                            }
+
                             scores += 10;
                     }
                 }
@@ -275,14 +316,21 @@ public class MyPanel extends JPanel implements KeyListener{
                 g2d.fillRect(menu.getPosition_menu_x(),menu.getPosition_menu_y(),menu.getWidth(),menu.getHeight());
                 g2d.setFont(new Font("Arial", Font.BOLD, 25));
                 g2d.setColor(Color.WHITE);
-                g2d.drawString("WINNER", 380, 110);
+                g2d.drawString(result_win.getStatus(), 380, 110);
+                g2d.drawString("The winner is :" + result_win.getName()+
+                        "with the score of " + result_win.getScore()+
+                        "and the Health of " + result_win.getHealth(), 380, 210);
             }
             if (Health <= 0 && menu.get_menu_type() == "looser"){
                 g2d.setColor(Color.RED);
                 g2d.fillRect(menu.getPosition_menu_x(),menu.getPosition_menu_y(),menu.getWidth(),menu.getHeight());
                 g2d.setFont(new Font("Arial", Font.BOLD, 25));
                 g2d.setColor(Color.WHITE);
-                g2d.drawString("LOOSER", 380, 110);
+                g2d.drawString(result_lose.getStatus(), 380, 110);
+                g2d.setFont(new Font("Arial", Font.BOLD, 20));
+                g2d.drawString("The looser is :" + result_lose.getName()+
+                        "with the score of " + result_lose.getScore()+
+                        "and the Health of " + result_lose.getHealth(), 280, 210);
             }
 
         }
@@ -315,18 +363,22 @@ public class MyPanel extends JPanel implements KeyListener{
         Walls.add(new Wall(710,250,230,20));
     }
     public void SniperCoordinates(){
-
-        SniperEnemy.add(new SniperEnemy(Sniper_down,470,10,20,20,"Y",400,1));
-//        SniperEnemy.add(new SniperEnemy(Sniper_up,650,320,20,20,"Y",10,2));
+        SniperEnemy snipers = new SniperEnemy(Sniper_down,470,10,20,20,"Y",400,1);
+        SniperEnemy.add(snipers);
     }
     public void Enemy_coordinates(){
-        thief_list.add(new thief(thief,200,70,30,30,"Y",320));
-        thief_list.add(new thief(thief,390,165,30,30,"X",120));
-        thief_list.add(new thief(thief,350,310,30,30,"Y",120));
-//        enemy_list.add(new Enemy(thief,480,310,30,30,"Y",70));
-        thief_list.add(new thief(thief,595,140,30,30,"X",450));
-        thief_list.add(new thief(thief,580,10,30,30,"Y",180));
-        thief_list.add(new thief(thief,665,50,30,30,"Y",210));
+        thief thief1 = new thief(thief,200,70,30,30,"Y",320);
+        thief thief2 = new thief(thief,390,165,30,30,"X",120);
+        thief thief3 = new thief(thief,350,310,30,30,"Y",120);
+        thief thief4 = new thief(thief,595,140,30,30,"X",450);
+        thief thief5 = new thief(thief,580,10,30,30,"Y",180);
+        thief thief6 = new thief(thief,665,50,30,30,"Y",210);
+        thief_list.add(thief1);
+        thief_list.add(thief2);
+        thief_list.add(thief3);
+        thief_list.add(thief4);
+        thief_list.add(thief5);
+        thief_list.add(thief6);
     }
     public boolean bulletIntersectsEnemy(Bullet bullet, Enemy enemy) {
         Rectangle bulletRect = new Rectangle(bullet.getPosition_x(), bullet.getPosition_y(),

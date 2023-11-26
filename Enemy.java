@@ -34,6 +34,18 @@ public abstract class Enemy  {
         }else {
             this.curr_position = this.enemy_x;
         }
+//        if (direction == "Y" || direction == "x"){
+//            try {
+//                if (direction == "Y"){
+//                    this.curr_position = this.enemy_y;
+//                }else {
+//                    this.curr_position = this.enemy_x;
+//                }
+//            } catch (Exception e){
+//                System.out.println("Sorry the direction is not right");
+//            }
+//        }
+
     }
     public void set_display_enemy(Boolean display){
         if (display == false){
@@ -77,7 +89,12 @@ public abstract class Enemy  {
     public void set_Position_enemy_y(int y) {
       this.enemy_y = y;
     }
-
+    public void setWidth(int x) {
+        this.width = x;
+    }
+    public void setHeight(int h) {
+        this.height = h;
+    }
 
     public void enemy_movement(int curr_position,int final_position ,String direction){
         if (direction == "Y"){

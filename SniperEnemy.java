@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class SniperEnemy extends Enemy {
     JLabel bullet_label;
@@ -9,6 +10,15 @@ public class SniperEnemy extends Enemy {
         super(img, x, y, w, h, direction, final_position);
         this.Sniper_number = Sn;
     }
+    private ArrayList<SniperBullet> SniperBullet_List = new ArrayList<SniperBullet>();
+
+    public void add_bullet(int x , int y , int Sn ,int FinalPosition , String direction){
+        SniperBullet_List.add(new SniperBullet(x,y,Sn,FinalPosition,direction));
+    }
+    public ArrayList<SniperBullet> return_bullet(){
+        return this.SniperBullet_List;
+    }
+
     public void create_sniper_bullet(){
         this.bullet_label = new JLabel();
         this.bullet_label.setBounds(super.getPosition_enemy_x(),
@@ -21,6 +31,11 @@ public class SniperEnemy extends Enemy {
     @Override
     public void set_Position_enemy_y(int y) {
         super.set_Position_enemy_y(y);
+    }
+
+    @Override
+    public void set_Position_enemy_x(int x) {
+        super.set_Position_enemy_x(x);
     }
 
     @Override

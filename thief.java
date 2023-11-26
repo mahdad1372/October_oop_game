@@ -29,12 +29,6 @@ public class thief extends Enemy{
     public int getPosition_enemy_y() {
         return super.getPosition_enemy_y();
     }
-
-    @Override
-    public int getCurr_position() {
-        return super.getCurr_position();
-    }
-
     @Override
     public int getWidth() {
         return super.getWidth();
@@ -44,6 +38,13 @@ public class thief extends Enemy{
     public int getHeight() {
         return super.getHeight();
     }
+
+    @Override
+    public int getCurr_position() {
+        return super.getCurr_position();
+    }
+
+
 
     @Override
     public Image getImage_enemy() {

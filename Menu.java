@@ -1,4 +1,5 @@
-
+import java.io.*;
+import java.util.*;
 public class Menu {
     private int Menu_x;
     private int  Menu_y;
@@ -28,5 +29,12 @@ public class Menu {
     }
     public String get_menu_type() {
         return menu_type;
+    }
+
+    public String getScore_time(int Score , int time){
+        return  "Your score is : " + Score + " In the time of the " + time + " seconds";
+    }
+    public String getScore_time(double Score , double time){
+        return  "Your score is : " + Score + " In the time of the " + time + " seconds";
     }
 }
