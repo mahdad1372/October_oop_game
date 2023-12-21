@@ -24,17 +24,21 @@ public class Bullet {
     public void setPosition_y(int y){
         this.Bullet_y = y;
     }
-    public int getPosition_x_on_time(String direction) {
-        if (direction == "right"){
-            return  Bullet_x++;
-        } else if (direction == "left") {
-            return  Bullet_x--;
-        }else if (direction == "up") {
-            return  Bullet_y--;
-        }else if (direction == "down") {
-            return  Bullet_y++;
-        }else {
-            return Bullet_x++;
+    public int getPosition_x_on_time(String d) {
+        String direction = d;
+        switch (direction) {
+            case "right":
+                return  Bullet_x++;
+            case "left":
+                return  Bullet_x--;
+            case "up":
+                return  Bullet_y--;
+            case "down":
+                return  Bullet_y++;
+            default:
+                throw new IllegalArgumentException("Invalid operation choice.");
         }
+
     }
+
 }

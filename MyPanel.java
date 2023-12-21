@@ -25,6 +25,7 @@ public class MyPanel extends JPanel implements KeyListener{
     private Image Launcher = new ImageIcon("launcher.png").getImage();
     private Image Missile_img = new ImageIcon("missile.png").getImage();
     private Image thief = new ImageIcon("thief.png").getImage();
+    private Image Soldier = new ImageIcon("soldier.png").getImage();
     private String direction_player = "left";
     private int Bullet_y = 10;
     private int imageY;
@@ -34,6 +35,8 @@ public class MyPanel extends JPanel implements KeyListener{
     private int scores = 0;
     private int Health = 100;
     private boolean display_menu_winner;
+    ArrayList<Mines> Mines_list = new ArrayList<Mines>();
+    ArrayList<Laser> Laser_list = new ArrayList<Laser>();
     ArrayList<Menu> Menu_list = new ArrayList<Menu>();
     ArrayList<Enemy> enemy_lists = new ArrayList<Enemy>();
     ArrayList<thief> thief_list = new ArrayList<thief>();
@@ -68,11 +71,13 @@ public class MyPanel extends JPanel implements KeyListener{
         Shooting_Missile_Sniper();
         Enemy_coordinates();
         Shooting_Bullet_Sniper();
+
+
+
+
     }
     private void Shooting_Bullet_Sniper(){
         java.util.Timer timer = new java.util.Timer();
-//        SniperEnemy sniper = new SniperEnemy();
-
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
@@ -84,10 +89,6 @@ public class MyPanel extends JPanel implements KeyListener{
                 SniperEnemy.get(0).add_bullet(SniperEnemy.get(0).getPosition_enemy_x()
                      ,SniperEnemy.get(0).getPosition_enemy_y(),SniperEnemy.get(0).getSniper_number(),
                        SniperEnemy.get(0).getFinal_position(), SniperEnemy.get(0).getDirection());
-//                SniperBullets.add(new SniperBullet(SniperEnemy.get(i).getPosition_enemy_x()
-//                        ,SniperEnemy.get(i).getPosition_enemy_y(),SniperEnemy.get(i).getSniper_number(),
-//                        SniperEnemy.get(i).getFinal_position(), SniperEnemy.get(i).getDirection()));
-//                }
             }
         };
 
@@ -113,13 +114,14 @@ public class MyPanel extends JPanel implements KeyListener{
         Runnable function1 = new Runnable() {
             @Override
             public void run() {
-
-                bullet_position.get(index).getPosition_x_on_time(direction_player);
-
+                try {
+                    bullet_position.get(index).getPosition_x_on_time(direction_player);
+                } catch (Exception e){
+                    System.out.println("Sorry the direction of the bullet is in correct"+ e.getMessage());
+                }
             }
         };
         executor2.scheduleAtFixedRate(function1, 0, 12, TimeUnit.MILLISECONDS);
-
     }
     public boolean Missile_Intersect(Missile missile) {
         Rectangle FinalRect = new Rectangle(missile.getPositionFinal_x(), missile.getPositionFinal_y(),
@@ -146,9 +148,14 @@ public class MyPanel extends JPanel implements KeyListener{
     }
 
     private void create_obstacles(Graphics2D g2d){
-        obstacles Mines = new Mines(12);
-        g2d.fillOval(30,30,Mines.calculate_area(),Mines.calculate_area());
-        obstacles Laser = new Laser(40,20);
+        Mines_list.add(new Mines(12,4,10));
+        Mines_list.add(new Mines(12,7,18));
+        Mines_list.add(new Mines(12,15,10));
+//        g2d.fillOval(30,30,Mines.calculate_area(),Mines.calculate_area());
+        Laser_list.add(new Laser(40,20,10,15));
+        Laser_list.add(new Laser(20,10,2,20));
+        Laser_list.add(new Laser(20,10,2,20));
+        obstacles Laser = new Laser(40,20,10,15);
         g2d.fillRect(20,30,Laser.calculate_area(),Laser.calculate_area());
 
     }
@@ -173,6 +180,17 @@ public class MyPanel extends JPanel implements KeyListener{
 
             }
         }
+        for (int i=0;i< Mines_list.size();i++){
+            g2d.fillOval(Mines_list.get(i).get_coordinate_x(),Mines_list.get(i).get_coordinate_y()
+                    ,Mines_list.get(i).calculate_area(),Mines_list.get(i).calculate_area());
+        }
+        for (int i=0;i< Laser_list.size();i++){
+            g2d.fillOval(Laser_list.get(i).get_coordinate_x(),Laser_list.get(i).get_coordinate_y()
+                    ,Laser_list.get(i).calculate_area(),Laser_list.get(i).calculate_area());
+        }
+        Weapon soldierWeapon = new Weapon(Soldier);
+        Soldier playerSoldier = new Soldier(soldierWeapon,10,5);
+        g.drawImage(Soldier, playerSoldier.get_coordinate_x() , playerSoldier.get_coordinate_y(),null);
 
 
         for (int i=0;i< Missile.size();i++){
@@ -181,15 +199,10 @@ public class MyPanel extends JPanel implements KeyListener{
             if (Missile.get(i).getPosition_x() ==Missile.get(i).getPositionFinal_x() &&
                     Missile.get(i).getPosition_y() ==Missile.get(i).getPositionFinal_y()){
                 Missile.remove(i);
-
-            }
-
-        }
-        for (int j=0;j< Missile.size();j++){
-            if (playerIntersectMissile(Missile.get(j))){
-                System.out.println(playerIntersectMissile(Missile.get(j)));
             }
         }
+
+
         for (int i=0;i< SniperEnemy.size();i++){
             g.drawImage(SniperEnemy.get(i).getImage_enemy(),
                     SniperEnemy.get(i).getPosition_enemy_x() , SniperEnemy.get(i).getPosition_enemy_y(),null);
