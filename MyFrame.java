@@ -38,9 +38,7 @@ public class MyFrame extends JFrame implements KeyListener {
 //        }
 //    }
     private void draw_enemy(){
-//        Enemy_List.add(new Enemy(icon,150,50,50,50,"X",280));
-//        Enemy_List.add(new Enemy(icon,300,80,50,50,"Y",280));
-//        SniperEnemy sniper = new SniperEnemy(icon,400,50,50,50,"X",280);
+
         for (Enemy enemy:Enemy_List){
             JLabel label = new JLabel();
             label.setBounds(enemy.getPosition_enemy_x(),
@@ -57,16 +55,11 @@ public class MyFrame extends JFrame implements KeyListener {
                     label.setBounds(enemy.getPosition_enemy_x(),
                             enemy.getPosition_enemy_y(),enemy.getWidth()
                             ,enemy.getHeight());
-//                    sniper.create_sniper_bullet();
+
                 }
             };
-
-            // Schedule the task to run every 3 seconds (3000 milliseconds)
             timer.schedule(task, 0, 16);
 
-//            this.add(sniper.sniper_bullet());
-//            this.setVisible(true);
-//            enemy.enemy_movement();
         }
     }
     private void Lable_Demo(){

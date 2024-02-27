@@ -38,7 +38,7 @@ public class MyPanel extends JPanel implements KeyListener{
     ArrayList<Mines> Mines_list = new ArrayList<Mines>();
     ArrayList<Laser> Laser_list = new ArrayList<Laser>();
     ArrayList<Menu> Menu_list = new ArrayList<Menu>();
-    ArrayList<Enemy> enemy_lists = new ArrayList<Enemy>();
+//    ArrayList<Enemy> enemy_lists = new ArrayList<Enemy>();
     ArrayList<thief> thief_list = new ArrayList<thief>();
     ArrayList<SniperBullet> SniperBullets = new ArrayList<SniperBullet>();
     ArrayList<SniperEnemy> SniperEnemy = new ArrayList<SniperEnemy>();
@@ -86,9 +86,7 @@ public class MyPanel extends JPanel implements KeyListener{
                             SniperEnemy.get(i).getPosition_enemy_y(),SniperEnemy.get(i).getSniper_number(),
                             SniperEnemy.get(i).getFinal_position(), SniperEnemy.get(i).getDirection());
                 }
-//                SniperEnemy.get(0).add_bullet(SniperEnemy.get(0).getPosition_enemy_x()
-//                     ,SniperEnemy.get(0).getPosition_enemy_y(),SniperEnemy.get(0).getSniper_number(),
-//                       SniperEnemy.get(0).getFinal_position(), SniperEnemy.get(0).getDirection());
+
             }
         };
 
@@ -188,7 +186,7 @@ public class MyPanel extends JPanel implements KeyListener{
         }
         Weapon soldierWeapon = new Weapon(Soldier);
         Soldier playerSoldier = new Soldier(soldierWeapon,10,5);
-//        g.drawImage(Soldier, playerSoldier.get_coordinate_x() , playerSoldier.get_coordinate_y(),null);
+
 
 
         for (int i=0;i< Missile.size();i++){
@@ -205,7 +203,6 @@ public class MyPanel extends JPanel implements KeyListener{
             g.drawImage(SniperEnemy.get(i).getImage_enemy(),
                     SniperEnemy.get(i).getPosition_enemy_x() , SniperEnemy.get(i).getPosition_enemy_y(),null);
 
-//            SniperBullets.get(i).shootingBullet();
 
         }
         for (int i=0;i< thief_list.size();i++){
@@ -241,21 +238,7 @@ public class MyPanel extends JPanel implements KeyListener{
 //            System.out.println("An unexpected error occurred: " + e.getMessage());
         }
 
-//        if (thief_list.size()>0) {
-//            for (int j = 0; j < thief_list.size(); j++) {
-//                for (int i = 0; i < bullet_position.size(); i++) {
-//                    if (bulletIntersectsEnemy(bullet_position.get(i), thief_list.get(j))) {
-//                        if (thief_list.contains(thief_list.get(j))) {
-//                            thief_list.remove(thief_list.get(j));
-//                        }
-//                        if (bullet_position.contains(bullet_position.get(i))) {
-//                            bullet_position.remove(bullet_position.get(i));
-//                        }
-//                        scores += 10;
-//                    }
-//                }
-//            }
-//        }
+
         if (SniperEnemy.size()>0) {
             for (int j = 0; j < SniperEnemy.size(); j++) {
                 for (int i = 0; i < bullet_position.size(); i++) {

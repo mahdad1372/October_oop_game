@@ -10,17 +10,13 @@ public abstract class Enemy  {
     private int enemy_x;
     private int  enemy_y;
     private Image enemy;
-    private int enemy_2x=300;
-    private int  enemy_2y = 300;
     private int  width ;
     private int  height ;
-    private boolean display = true;
     private boolean increase_x = true;
     private boolean increase_y = true;
     private int final_position;
     private int curr_position;
     private String Direction;
-    private int enemy_number;
     public Enemy (Image img, int x, int y,int w , int h,String direction, int final_position){
         this.enemy_x = x;
         this.enemy_y = y;
@@ -34,25 +30,9 @@ public abstract class Enemy  {
         }else {
             this.curr_position = this.enemy_x;
         }
-//        if (direction == "Y" || direction == "x"){
-//            try {
-//                if (direction == "Y"){
-//                    this.curr_position = this.enemy_y;
-//                }else {
-//                    this.curr_position = this.enemy_x;
-//                }
-//            } catch (Exception e){
-//                System.out.println("Sorry the direction is not right");
-//            }
-//        }
 
     }
-    public void set_display_enemy(Boolean display){
-        if (display == false){
-            this.width = 0;
-            this.height = 0;
-        }
-    }
+
     public int getFinal_position() {
         return this.final_position;
     }
@@ -61,9 +41,6 @@ public abstract class Enemy  {
     }
     public int getPosition_enemy_x() {
         return enemy_x;
-    }
-    public int get_enemy_number() {
-        return enemy_number;
     }
 
     public int getPosition_enemy_y() {
@@ -89,13 +66,6 @@ public abstract class Enemy  {
     public void set_Position_enemy_y(int y) {
       this.enemy_y = y;
     }
-    public void setWidth(int x) {
-        this.width = x;
-    }
-    public void setHeight(int h) {
-        this.height = h;
-    }
-
     public void enemy_movement(int curr_position,int final_position ,String direction){
         if (direction == "Y"){
             if (this.enemy_y > final_position && increase_y == true){
