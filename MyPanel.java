@@ -86,9 +86,9 @@ public class MyPanel extends JPanel implements KeyListener{
                             SniperEnemy.get(i).getPosition_enemy_y(),SniperEnemy.get(i).getSniper_number(),
                             SniperEnemy.get(i).getFinal_position(), SniperEnemy.get(i).getDirection());
                 }
-                SniperEnemy.get(0).add_bullet(SniperEnemy.get(0).getPosition_enemy_x()
-                     ,SniperEnemy.get(0).getPosition_enemy_y(),SniperEnemy.get(0).getSniper_number(),
-                       SniperEnemy.get(0).getFinal_position(), SniperEnemy.get(0).getDirection());
+//                SniperEnemy.get(0).add_bullet(SniperEnemy.get(0).getPosition_enemy_x()
+//                     ,SniperEnemy.get(0).getPosition_enemy_y(),SniperEnemy.get(0).getSniper_number(),
+//                       SniperEnemy.get(0).getFinal_position(), SniperEnemy.get(0).getDirection());
             }
         };
 
@@ -117,7 +117,6 @@ public class MyPanel extends JPanel implements KeyListener{
                 try {
                     bullet_position.get(index).getPosition_x_on_time(direction_player);
                 } catch (Exception e){
-                    System.out.println("Sorry the direction of the bullet is in correct"+ e.getMessage());
                 }
             }
         };
@@ -151,7 +150,6 @@ public class MyPanel extends JPanel implements KeyListener{
         Mines_list.add(new Mines(12,4,10));
         Mines_list.add(new Mines(12,7,18));
         Mines_list.add(new Mines(12,15,10));
-//        g2d.fillOval(30,30,Mines.calculate_area(),Mines.calculate_area());
         Laser_list.add(new Laser(40,20,10,15));
         Laser_list.add(new Laser(20,10,2,20));
         Laser_list.add(new Laser(20,10,2,20));
@@ -190,7 +188,7 @@ public class MyPanel extends JPanel implements KeyListener{
         }
         Weapon soldierWeapon = new Weapon(Soldier);
         Soldier playerSoldier = new Soldier(soldierWeapon,10,5);
-        g.drawImage(Soldier, playerSoldier.get_coordinate_x() , playerSoldier.get_coordinate_y(),null);
+//        g.drawImage(Soldier, playerSoldier.get_coordinate_x() , playerSoldier.get_coordinate_y(),null);
 
 
         for (int i=0;i< Missile.size();i++){
@@ -240,7 +238,7 @@ public class MyPanel extends JPanel implements KeyListener{
                 }
             }
         }catch (Exception e){
-            System.out.println("An unexpected error occurred: " + e.getMessage());
+//            System.out.println("An unexpected error occurred: " + e.getMessage());
         }
 
 //        if (thief_list.size()>0) {

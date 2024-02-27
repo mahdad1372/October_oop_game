@@ -10,6 +10,7 @@ public class SniperEnemy extends Enemy {
         super(img, x, y, w, h, direction, final_position);
         this.Sniper_number = Sn;
     }
+
     private ArrayList<SniperBullet> SniperBullet_List = new ArrayList<SniperBullet>();
 
     public void add_bullet(int x , int y , int Sn ,int FinalPosition , String direction){
