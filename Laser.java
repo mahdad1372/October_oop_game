@@ -16,10 +16,15 @@ public class Laser extends obstacles {
   public int get_coordinate_y(){
     return this.coordinate_y;
   }
-
+  public int get_length(){
+    return this.length;
+  }
+  public int get_height(){
+    return this.height;
+  }
   @Override
   public int calculate_area() {
-    return length *2;
+    return length *height;
   }
 
   @Override

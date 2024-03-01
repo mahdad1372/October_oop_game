@@ -65,16 +65,12 @@ public class MyPanel extends JPanel implements KeyListener{
             }
         });
         timer.start();
-
         WallCoordinates();
+        LaserCoordinates();
         SniperCoordinates();
         Shooting_Missile_Sniper();
         Enemy_coordinates();
         Shooting_Bullet_Sniper();
-
-
-
-
     }
     private void Shooting_Bullet_Sniper(){
         java.util.Timer timer = new java.util.Timer();
@@ -95,14 +91,12 @@ public class MyPanel extends JPanel implements KeyListener{
     }
     private void Shooting_Missile_Sniper(){
         java.util.Timer timer = new java.util.Timer();
-
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
                 Missile.add(new Missile(160, 310, 270,200));
             }
         };
-
         timer.schedule(task, 0, 3000);
 
     }
@@ -180,10 +174,6 @@ public class MyPanel extends JPanel implements KeyListener{
             g2d.fillOval(Mines_list.get(i).get_coordinate_x(),Mines_list.get(i).get_coordinate_y()
                     ,Mines_list.get(i).calculate_area(),Mines_list.get(i).calculate_area());
         }
-        for (int i=0;i< Laser_list.size();i++){
-            g2d.fillOval(Laser_list.get(i).get_coordinate_x(),Laser_list.get(i).get_coordinate_y()
-                    ,Laser_list.get(i).calculate_area(),Laser_list.get(i).calculate_area());
-        }
         Weapon soldierWeapon = new Weapon(Soldier);
         Soldier playerSoldier = new Soldier(soldierWeapon,10,5);
 
@@ -235,7 +225,7 @@ public class MyPanel extends JPanel implements KeyListener{
                 }
             }
         }catch (Exception e){
-//            System.out.println("An unexpected error occurred: " + e.getMessage());
+            //System.out.println("An unexpected error occurred: " + e.getMessage());
         }
 
 
@@ -276,6 +266,14 @@ public class MyPanel extends JPanel implements KeyListener{
                 }
             }
         }
+        if (Laser_list.size()>0){
+            for (Laser laser:Laser_list){
+                if (playerIntersectLaser(laser)){
+                    player_x = laser.get_coordinate_x();
+                    player_y = laser.get_coordinate_y();
+                }
+            }
+        }
         for (thief enemies:thief_list){
             if (playerIntersectEnemy(enemies)){
                 player_x -=40;
@@ -303,6 +301,7 @@ public class MyPanel extends JPanel implements KeyListener{
         String text3 = "Exit";
         g.drawString(text3, 890, 230);
         WallDrawing(g);
+        LaserDrawing(g);
         for (Menu menu:Menu_list){
             if (display_menu_winner == true && menu.get_menu_type() == "winner"){
 
@@ -354,7 +353,18 @@ public class MyPanel extends JPanel implements KeyListener{
         Walls.add(new Wall(710,20,20,160));
         Walls.add(new Wall(710,270,20,100));
         Walls.add(new Wall(710,180,230,20));
-        Walls.add(new Wall(710,250,230,20));
+    }
+    public void LaserDrawing(Graphics g){
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(Color.red);
+        for (int i = 0 ; i< Laser_list.size();i++){
+            g2d.fillRect(Laser_list.get(i).get_coordinate_x(),Laser_list.get(i).get_coordinate_y(),
+                    Laser_list.get(i).calculate_area()/Laser_list.get(i).get_height(),
+                    Laser_list.get(i).calculate_area()/Laser_list.get(i).get_length());
+        }
+    }
+    public void LaserCoordinates(){
+        Laser_list.add(new Laser(5,230,710,250));
     }
     public void SniperCoordinates(){
         SniperEnemy snipers = new SniperEnemy(Sniper_down,470,10,20,20,"Y",400,1);
@@ -409,10 +419,18 @@ public class MyPanel extends JPanel implements KeyListener{
     public boolean playerIntersectMaze(Wall wall) {
         Rectangle playerRect = new Rectangle(player_x, player_y,
                 30, 30);
-        Rectangle enemyRect = new Rectangle(wall.getPosition_Wall_x(), wall.getPosition_Wall_y(),
+        Rectangle wallRect = new Rectangle(wall.getPosition_Wall_x(), wall.getPosition_Wall_y(),
                 wall.getWidth(),wall.getHeight());
 
-        return playerRect.intersects(enemyRect);
+        return playerRect.intersects(wallRect);
+    }
+    public boolean playerIntersectLaser(Laser laser) {
+        Rectangle playerRect = new Rectangle(player_x, player_y,
+                30, 30);
+        Rectangle wallRect = new Rectangle(laser.get_coordinate_x(), laser.get_coordinate_y(),
+                laser.get_length(),laser.get_height());
+
+        return playerRect.intersects(wallRect);
     }
     public boolean playerIntersectEnemy(Enemy enemy) {
         Rectangle playerRect = new Rectangle(player_x, player_y,
@@ -463,9 +481,4 @@ public class MyPanel extends JPanel implements KeyListener{
 
     }
 
-//    @Override
-//    public void actionPerformed(ActionEvent e) {
-//
-//    }
 }
-// this.setPreferredSize(new Dimension(500,500));
