@@ -271,6 +271,7 @@ public class MyPanel extends JPanel implements KeyListener{
                 if (playerIntersectLaser(laser)){
                     player_x = laser.get_coordinate_x();
                     player_y = laser.get_coordinate_y();
+                    Health = laser.health_decrease(Health);
                 }
             }
         }
