@@ -48,8 +48,8 @@ public class MyPanel extends JPanel implements KeyListener{
     public MyPanel() {
 
 
-        Menu_list.add(new Menu(230,40,380,250,"winner"));
-        Menu_list.add(new Menu(230,40,380,250,"looser"));
+        Menu_list.add(new Menu(70,40,780,250,"winner"));
+        Menu_list.add(new Menu(70,40,780,250,"looser"));
         addKeyListener(this);
         setFocusable(true);
         setVisible(true);
@@ -311,9 +311,9 @@ public class MyPanel extends JPanel implements KeyListener{
                 g2d.setFont(new Font("Arial", Font.BOLD, 25));
                 g2d.setColor(Color.WHITE);
                 g2d.drawString(result_win.getStatus(), 380, 110);
-                g2d.drawString("The winner is :" + result_win.getName()+
-                        "with the score of " + result_win.getScore()+
-                        "and the Health of " + result_win.getHealth(), 380, 210);
+                g2d.drawString("The winner is : " + result_win.getName()+
+                        " with the score of " + result_win.getScore()+
+                        "and the Health of " + result_win.getHealth(), 80, 210);
             }
             if (Health <= 0 && menu.get_menu_type() == "looser"){
                 g2d.setColor(Color.RED);
@@ -322,9 +322,9 @@ public class MyPanel extends JPanel implements KeyListener{
                 g2d.setColor(Color.WHITE);
                 g2d.drawString(result_lose.getStatus(), 380, 110);
                 g2d.setFont(new Font("Arial", Font.BOLD, 20));
-                g2d.drawString("The looser is :" + result_lose.getName()+
-                        "with the score of " + result_lose.getScore()+
-                        "and the Health of " + result_lose.getHealth(), 280, 210);
+                g2d.drawString("The looser is : " + result_lose.getName()+
+                        " with the score of " + result_lose.getScore()+
+                        " and the Health of " + result_lose.getHealth(), 100, 210);
             }
 
         }

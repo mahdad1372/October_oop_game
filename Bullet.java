@@ -1,16 +1,14 @@
-import java.util.Timer;
-import java.util.TimerTask;
-
 public class Bullet {
+    public  Bullet(int bullet_x, int bullet_y){
+        this.Bullet_x = bullet_x;
+        this.Bullet_y = bullet_y;
+    }
     private int Bullet_x;
     private int Bullet_y;
 
 
 
-    public  Bullet(int bullet_x, int bullet_y){
-        this.Bullet_x = bullet_x;
-        this.Bullet_y = bullet_y;
-    }
+
 
     public int getPosition_x(){
         return Bullet_x;

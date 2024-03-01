@@ -1,22 +1,6 @@
-import javax.swing.*;
 import java.awt.*;
-import java.awt.image.ImageObserver;
-import java.util.Timer;
-import java.awt.Graphics2D;
-import java.util.TimerTask;
-
 
 public abstract class Enemy  {
-    private int enemy_x;
-    private int  enemy_y;
-    private Image enemy;
-    private int  width ;
-    private int  height ;
-    private boolean increase_x = true;
-    private boolean increase_y = true;
-    private int final_position;
-    private int curr_position;
-    private String Direction;
     public Enemy (Image img, int x, int y,int w , int h,String direction, int final_position){
         this.enemy_x = x;
         this.enemy_y = y;
@@ -32,6 +16,17 @@ public abstract class Enemy  {
         }
 
     }
+    private int enemy_x;
+    private int  enemy_y;
+    private Image enemy;
+    private int  width ;
+    private int  height ;
+    private boolean increase_x = true;
+    private boolean increase_y = true;
+    private int final_position;
+    private int curr_position;
+    private String Direction;
+
 
     public int getFinal_position() {
         return this.final_position;
