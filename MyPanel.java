@@ -176,10 +176,6 @@ public class MyPanel extends JPanel implements KeyListener{
                 "looser");
         g.drawImage(Player_icon, player_x, player_y, null);
         g.drawImage(Launcher, 160, 300, null);
-
-//        g.setColor(Color.YELLOW);
-//        g.fillOval(300, 300, 2 * 20, 2 * 20);
-//        g.drawImage(Mine, 310, 305, null);
         if (SniperEnemy.size()>0){
             ArrayList<SniperBullet> SniperBullet_List = SniperEnemy.get(0).return_bullet();
             for (int i=0;i< SniperBullet_List.size();i++){
@@ -291,6 +287,18 @@ public class MyPanel extends JPanel implements KeyListener{
                 }
             }
         }
+        if (Mines_list.size()>0) {
+                for (int i = 0; i < Mines_list.size(); i++) {
+                    if (playerIntersectMine(Mines_list.get(i))) {
+                        if (Mines_list.contains(Mines_list.get(i))) {
+                            Health = Mines_list.get(i).health_decrease(Health);
+                            Mines_list.remove(Mines_list.get(i));
+                        }
+                    }
+                }
+
+        }
+
         for (thief enemies:thief_list){
             if (playerIntersectEnemy(enemies)){
                 player_x -=40;
@@ -463,6 +471,14 @@ public class MyPanel extends JPanel implements KeyListener{
                 enemy.getWidth(),enemy.getHeight());
 
         return playerRect.intersects(enemyRect);
+    }
+    public boolean playerIntersectMine(Mines mine) {
+        Rectangle playerRect = new Rectangle(player_x, player_y,
+                30, 30);
+        Rectangle mineRect = new Rectangle(mine.get_coordinate_x(), mine.get_coordinate_y(),
+                mine.get_radius()*2, mine.get_radius()*2);
+
+        return playerRect.intersects(mineRect);
     }
 
 
