@@ -26,6 +26,6 @@ public class Mines extends obstacles {
 
     @Override
     public int health_decrease(int health) {
-        return health - 20;
+        return health - 15;
     }
 }

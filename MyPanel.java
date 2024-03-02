@@ -14,7 +14,7 @@ public class MyPanel extends JPanel implements KeyListener{
     private Image image;
 
     private Image Bullet = new ImageIcon("bullet_down.png").getImage();
-
+    private Image Mine = new ImageIcon("mine.png").getImage();
     private Image Player = new ImageIcon("soldier.png").getImage();
     private Image Player_L = new ImageIcon("soldier_l.png").getImage();
     private Image Player_D = new ImageIcon("soldier_d.png").getImage();
@@ -83,6 +83,7 @@ public class MyPanel extends JPanel implements KeyListener{
         Shooting_Missile_Sniper();
         Enemy_coordinates();
         Shooting_Bullet_Sniper();
+        Mines_coordinate();
     }
     private void Shooting_Bullet_Sniper(){
         java.util.Timer timer = new java.util.Timer();
@@ -150,16 +151,17 @@ public class MyPanel extends JPanel implements KeyListener{
         g2d.drawOval(x, y, radius, radius);
     }
 
-    private void create_obstacles(Graphics2D g2d){
-        Mines_list.add(new Mines(12,4,10));
-        Mines_list.add(new Mines(12,7,18));
-        Mines_list.add(new Mines(12,15,10));
-        Laser_list.add(new Laser(40,20,10,15));
-        Laser_list.add(new Laser(20,10,2,20));
-        Laser_list.add(new Laser(20,10,2,20));
-        obstacles Laser = new Laser(40,20,10,15);
-        g2d.fillRect(20,30,Laser.calculate_area(),Laser.calculate_area());
-
+    private void Mines_coordinate(){
+        Mines_list.add(new Mines(20,410,300));
+    }
+    private void create_Mines(Graphics g){
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(Color.yellow);
+        for (int i=0;i< Mines_list.size();i++){
+            g2d.fillOval(Mines_list.get(i).get_coordinate_x(),Mines_list.get(i).get_coordinate_y()
+                    ,Mines_list.get(i).calculate_area(),Mines_list.get(i).calculate_area());
+            g2d.drawImage(Mine, Mines_list.get(i).get_coordinate_x()+ (Mines_list.get(i).get_radius()/2), Mines_list.get(i).get_coordinate_y(), null);
+        }
     }
 
     @Override
@@ -174,6 +176,10 @@ public class MyPanel extends JPanel implements KeyListener{
                 "looser");
         g.drawImage(Player_icon, player_x, player_y, null);
         g.drawImage(Launcher, 160, 300, null);
+
+//        g.setColor(Color.YELLOW);
+//        g.fillOval(300, 300, 2 * 20, 2 * 20);
+//        g.drawImage(Mine, 310, 305, null);
         if (SniperEnemy.size()>0){
             ArrayList<SniperBullet> SniperBullet_List = SniperEnemy.get(0).return_bullet();
             for (int i=0;i< SniperBullet_List.size();i++){
@@ -182,10 +188,7 @@ public class MyPanel extends JPanel implements KeyListener{
 
             }
         }
-        for (int i=0;i< Mines_list.size();i++){
-            g2d.fillOval(Mines_list.get(i).get_coordinate_x(),Mines_list.get(i).get_coordinate_y()
-                    ,Mines_list.get(i).calculate_area(),Mines_list.get(i).calculate_area());
-        }
+
         Weapon soldierWeapon = new Weapon(Soldier);
         Soldier playerSoldier = new Soldier(soldierWeapon,10,5);
 
@@ -320,6 +323,7 @@ public class MyPanel extends JPanel implements KeyListener{
         g.drawString(text3, 890, 230);
         WallDrawing(g);
         LaserDrawing(g);
+        create_Mines(g);
         for (Menu menu:Menu_list){
             if (display_menu_winner == true && menu.get_menu_type() == "winner"){
                 g2d.setColor(Color.GREEN);
@@ -331,7 +335,6 @@ public class MyPanel extends JPanel implements KeyListener{
                         " with the score of " + result_win.getScore()+
                         "and the Health of " + result_win.getHealth(), 80, 210);
                 g2d.drawString(menu.get_num_enemy_time(number_enemy_killed , secondsElapsed), 80, 240);
-
             }
             if (Health <= 0 && menu.get_menu_type() == "looser"){
                 g2d.setColor(Color.RED);
