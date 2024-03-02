@@ -29,7 +29,7 @@ public class MyPanel extends JPanel implements KeyListener{
     private String direction_player = "left";
     private int Bullet_y = 10;
     private int imageY;
-    private Timer timer;
+    private Timer  executing_game_timer;
     private Timer Game_Timer;
     private int player_x;
     private int player_y ;
@@ -63,19 +63,17 @@ public class MyPanel extends JPanel implements KeyListener{
         image = new ImageIcon("thief.png").getImage();
         imageY = 10;
 
-        timer = new Timer(16, new ActionListener() {
+        executing_game_timer = new Timer(16, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 repaint();
             }
         });
-        timer.start();
+        executing_game_timer.start();
         Game_Timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 secondsElapsed++;
-                System.out.println("Seconds elapsed: " + secondsElapsed);
-
             }
         });
         Game_Timer.start();
@@ -298,10 +296,13 @@ public class MyPanel extends JPanel implements KeyListener{
         }
 
         if (player_x >= 890){
+            executing_game_timer.stop();
             Game_Timer.stop();
             display_menu_winner = true;
         }
         if (Health <= 0){
+            executing_game_timer.stop();
+            Game_Timer.stop();
             display_menu_winner = false;
         }
         g.setFont(new Font("Arial", Font.PLAIN, 24));
@@ -321,17 +322,16 @@ public class MyPanel extends JPanel implements KeyListener{
         LaserDrawing(g);
         for (Menu menu:Menu_list){
             if (display_menu_winner == true && menu.get_menu_type() == "winner"){
-
                 g2d.setColor(Color.GREEN);
                 g2d.fillRect(menu.getPosition_menu_x(),menu.getPosition_menu_y(),menu.getWidth(),menu.getHeight());
                 g2d.setFont(new Font("Arial", Font.BOLD, 25));
                 g2d.setColor(Color.WHITE);
                 g2d.drawString(result_win.getStatus(), 380, 110);
-//                g2d.drawString("The winner is : " + result_win.getName()+
-//                        " with the score of " + result_win.getScore()+
-//                        "and the Health of " + result_win.getHealth(), 80, 210);
-                g2d.drawString(menu.get_num_enemy_time(number_enemy_killed , secondsElapsed), 80, 210);
-                g2d.drawString(menu.get_num_enemy_time((double) number_enemy_killed , (double) secondsElapsed), 80, 230);
+                g2d.drawString("The winner is : " + result_win.getName()+
+                        " with the score of " + result_win.getScore()+
+                        "and the Health of " + result_win.getHealth(), 80, 210);
+                g2d.drawString(menu.get_num_enemy_time(number_enemy_killed , secondsElapsed), 80, 240);
+
             }
             if (Health <= 0 && menu.get_menu_type() == "looser"){
                 g2d.setColor(Color.RED);
@@ -343,6 +343,7 @@ public class MyPanel extends JPanel implements KeyListener{
                 g2d.drawString("The looser is : " + result_lose.getName()+
                         " with the score of " + result_lose.getScore()+
                         " and the Health of " + result_lose.getHealth(), 100, 210);
+                g2d.drawString(menu.get_num_enemy_time((double) number_enemy_killed , (double) secondsElapsed), 100, 240);
             }
 
         }
