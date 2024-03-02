@@ -31,10 +31,10 @@ public class Menu {
         return menu_type;
     }
 
-    public String getScore_time(int Score , int time){
-        return  "Your score is : " + Score + " In the time of the " + time + " seconds";
+    public String get_num_enemy_time(int enemy_num , int time){
+        return  "In the " + time + " seconds you have killed " + enemy_num + " enemies" ;
     }
-    public String getScore_time(double Score , double time){
-        return  "Your score is : " + Score + " In the time of the " + time + " seconds";
+    public String get_num_enemy_time(double enemy_num , double time){
+        return  "In the " + time + " seconds you have killed " + enemy_num + " enemies" ;
     }
 }

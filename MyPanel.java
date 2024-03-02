@@ -30,11 +30,16 @@ public class MyPanel extends JPanel implements KeyListener{
     private int Bullet_y = 10;
     private int imageY;
     private Timer timer;
+    private Timer Game_Timer;
     private int player_x;
     private int player_y ;
     private int scores = 0;
     private int Health = 100;
+
+    private int number_enemy_killed = 0;
     private boolean display_menu_winner;
+    private int secondsElapsed;
+
     ArrayList<Mines> Mines_list = new ArrayList<Mines>();
     ArrayList<Laser> Laser_list = new ArrayList<Laser>();
     ArrayList<Menu> Menu_list = new ArrayList<Menu>();
@@ -65,6 +70,15 @@ public class MyPanel extends JPanel implements KeyListener{
             }
         });
         timer.start();
+        Game_Timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                secondsElapsed++;
+                System.out.println("Seconds elapsed: " + secondsElapsed);
+
+            }
+        });
+        Game_Timer.start();
         WallCoordinates();
         LaserCoordinates();
         SniperCoordinates();
@@ -221,6 +235,7 @@ public class MyPanel extends JPanel implements KeyListener{
                         thief_list.remove(thief);
                         bullet_position.remove(bullet);
                         scores += 10;
+                        number_enemy_killed += 1;
                     }
                 }
             }
@@ -240,7 +255,7 @@ public class MyPanel extends JPanel implements KeyListener{
                             if (bullet_position.contains(bullet_position.get(i))) {
                                 bullet_position.remove(bullet_position.get(i));
                             }
-
+                            number_enemy_killed += 1;
                             scores += 10;
                     }
                 }
@@ -283,6 +298,7 @@ public class MyPanel extends JPanel implements KeyListener{
         }
 
         if (player_x >= 890){
+            Game_Timer.stop();
             display_menu_winner = true;
         }
         if (Health <= 0){
@@ -311,9 +327,11 @@ public class MyPanel extends JPanel implements KeyListener{
                 g2d.setFont(new Font("Arial", Font.BOLD, 25));
                 g2d.setColor(Color.WHITE);
                 g2d.drawString(result_win.getStatus(), 380, 110);
-                g2d.drawString("The winner is : " + result_win.getName()+
-                        " with the score of " + result_win.getScore()+
-                        "and the Health of " + result_win.getHealth(), 80, 210);
+//                g2d.drawString("The winner is : " + result_win.getName()+
+//                        " with the score of " + result_win.getScore()+
+//                        "and the Health of " + result_win.getHealth(), 80, 210);
+                g2d.drawString(menu.get_num_enemy_time(number_enemy_killed , secondsElapsed), 80, 210);
+                g2d.drawString(menu.get_num_enemy_time((double) number_enemy_killed , (double) secondsElapsed), 80, 230);
             }
             if (Health <= 0 && menu.get_menu_type() == "looser"){
                 g2d.setColor(Color.RED);
@@ -328,6 +346,7 @@ public class MyPanel extends JPanel implements KeyListener{
             }
 
         }
+
     }
     public void WallDrawing(Graphics g){
         Graphics2D g2d = (Graphics2D) g;
