@@ -4,7 +4,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Player {
-    JLabel label;
+    private JLabel label;
     private int position_x;
     private int position_y;
     private ImageIcon Icon_player;
