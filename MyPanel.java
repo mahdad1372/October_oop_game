@@ -26,6 +26,7 @@ public class MyPanel extends JPanel implements KeyListener{
     private Image Missile_img = new ImageIcon("missile.png").getImage();
     private Image thief = new ImageIcon("thief.png").getImage();
     private Image Soldier = new ImageIcon("soldier.png").getImage();
+    private Image Tank_rocket = new ImageIcon("tank_rocket.png").getImage();
     private String direction_player = "left";
     private int Bullet_y = 10;
     private int imageY;
@@ -37,7 +38,7 @@ public class MyPanel extends JPanel implements KeyListener{
     private int number_enemy_killed = 0;
     private boolean display_menu_winner;
     private int secondsElapsed;
-
+    private Player player;
     ArrayList<Mines> Mines_list = new ArrayList<Mines>();
     ArrayList<Laser> Laser_list = new ArrayList<Laser>();
     ArrayList<Menu> Menu_list = new ArrayList<Menu>();
@@ -49,12 +50,14 @@ public class MyPanel extends JPanel implements KeyListener{
     ArrayList<Bullet> bullet_position = new ArrayList<Bullet>();
     ArrayList<Wall> Walls = new ArrayList<Wall>();
     ArrayList<Player> player_list = new ArrayList<>();
-    private Player player;
+    ArrayList<Tank_rocket> tank_rockets = new ArrayList<>();
+
     public MyPanel() {
 
 
         Menu_list.add(new Menu(70,40,780,250,"winner"));
         Menu_list.add(new Menu(70,40,780,250,"looser"));
+        tank_rockets.add(new Tank_rocket(10,50,Tank_rocket));
         player_list.add(new Player(0,0,Player_icon));
         this.player = this.player_list.get(0);
         addKeyListener(this);
@@ -190,7 +193,14 @@ public class MyPanel extends JPanel implements KeyListener{
         Weapon soldierWeapon = new Weapon(Soldier);
         Soldier playerSoldier = new Soldier(soldierWeapon,10,5);
 
-
+        for (int i=0;i< tank_rockets.size();i++){
+            g.drawImage(tank_rockets.get(i).getRocket_image(), tank_rockets.get(i).getPosition_x() , tank_rockets.get(i).getPosition_y(),null);
+//            Missile.get(i).Missile_Shooting();
+//            if (Missile.get(i).getPosition_x() ==Missile.get(i).getPositionFinal_x() &&
+//                    Missile.get(i).getPosition_y() ==Missile.get(i).getPositionFinal_y()){
+//                Missile.remove(i);
+//            }
+        }
 
         for (int i=0;i< Missile.size();i++){
             g.drawImage(Missile_img, Missile.get(i).getPosition_x() , Missile.get(i).getPosition_y(),null);

@@ -1,20 +1,11 @@
 public class Missile extends Bullet{
-    private int Final_position_x;
-    private int Final_position_y;
-    @Override
-    public int getPosition_x() {
-        return super.getPosition_x();
-    }
-
-    @Override
-    public int getPosition_y() {
-        return super.getPosition_y();
-    }
     public Missile(int bullet_x, int bullet_y , int Fx , int Fy) {
         super(bullet_x, bullet_y);
         this.Final_position_x =Fx;
         this.Final_position_y =Fy;
-    }
+    }    private int Final_position_x;
+    private int Final_position_y;
+
     public int getPositionFinal_y() {
         return this.Final_position_y;
     }
@@ -30,7 +21,6 @@ public class Missile extends Bullet{
             int bullet_position_y = super.getPosition_y();
             super.setPosition_y(bullet_position_y-=5);
         }
-
 
     }
 }
