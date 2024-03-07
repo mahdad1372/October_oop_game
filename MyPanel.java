@@ -31,8 +31,6 @@ public class MyPanel extends JPanel implements KeyListener{
     private int imageY;
     private Timer  executing_game_timer;
     private Timer Game_Timer;
-    private int player_x;
-    private int player_y ;
     private int scores = 0;
     private int Health = 100;
 
@@ -50,11 +48,15 @@ public class MyPanel extends JPanel implements KeyListener{
     ArrayList<Missile> Missile = new ArrayList<Missile>();
     ArrayList<Bullet> bullet_position = new ArrayList<Bullet>();
     ArrayList<Wall> Walls = new ArrayList<Wall>();
+    ArrayList<Player> player_list = new ArrayList<>();
+    private Player player;
     public MyPanel() {
 
 
         Menu_list.add(new Menu(70,40,780,250,"winner"));
         Menu_list.add(new Menu(70,40,780,250,"looser"));
+        player_list.add(new Player(0,0,Player_icon));
+        this.player = this.player_list.get(0);
         addKeyListener(this);
         setFocusable(true);
         setVisible(true);
@@ -136,7 +138,7 @@ public class MyPanel extends JPanel implements KeyListener{
         return FinalRect.intersects(MissileRect);
     }
     public boolean playerIntersectMissile(Missile missile) {
-        Rectangle playerRect = new Rectangle(player_x, player_y,
+        Rectangle playerRect = new Rectangle(this.player.getPosition_x(), this.player.getPosition_y(),
                 30, 30);
         Rectangle missile_rect = new Rectangle(missile.getPositionFinal_x(), missile.getPositionFinal_y(),
                 20,20);
@@ -174,7 +176,7 @@ public class MyPanel extends JPanel implements KeyListener{
         double double_score = this.scores;
         FinalResult<String, Double,Double,String> result_lose = new FinalResult<>("Mahdad", double_health,double_score,
                 "looser");
-        g.drawImage(Player_icon, player_x, player_y, null);
+        g.drawImage(player.getPlayerIcon(), this.player.getPosition_x(), this.player.getPosition_y(), null);
         g.drawImage(Launcher, 160, 300, null);
         if (SniperEnemy.size()>0){
             ArrayList<SniperBullet> SniperBullet_List = SniperEnemy.get(0).return_bullet();
@@ -273,16 +275,16 @@ public class MyPanel extends JPanel implements KeyListener{
         if (Walls.size()>0){
             for (Wall wall:Walls){
                 if (playerIntersectMaze(wall)){
-                    player_x = wall.getPosition_Wall_x() - (wall.getWidth()+30);
-                    player_y = wall.getPosition_Wall_y();
+                    this.player.setPosition_x(wall.getPosition_Wall_x() - (wall.getWidth()+30));
+                    this.player.setPosition_y(wall.getPosition_Wall_y());
                 }
             }
         }
         if (Laser_list.size()>0){
             for (Laser laser:Laser_list){
                 if (playerIntersectLaser(laser)){
-                    player_x = laser.get_coordinate_x();
-                    player_y = laser.get_coordinate_y();
+                    this.player.setPosition_x(laser.get_coordinate_x());
+                    this.player.setPosition_y(laser.get_coordinate_y());
                     Health = laser.health_decrease(Health);
                 }
             }
@@ -301,12 +303,13 @@ public class MyPanel extends JPanel implements KeyListener{
 
         for (thief enemies:thief_list){
             if (playerIntersectEnemy(enemies)){
-                player_x -=40;
+                int current_positionplayer_x =this.player.getPosition_x();
+                this.player.setPosition_x(current_positionplayer_x-=40);
                 Health-=10;
             }
         }
 
-        if (player_x >= 890){
+        if (this.player.getPosition_x() >= 890){
             executing_game_timer.stop();
             Game_Timer.stop();
             display_menu_winner = true;
@@ -425,7 +428,7 @@ public class MyPanel extends JPanel implements KeyListener{
         return bulletRect.intersects(enemyRect);
     }
     public boolean SniperBulletIntersectsPlayer(SniperBullet bullet) {
-        Rectangle playerRect = new Rectangle(player_x, player_y,
+        Rectangle playerRect = new Rectangle(this.player.getPosition_x(), this.player.getPosition_y(),
                 30, 30);
         Rectangle SniperBullet = new Rectangle(bullet.getPosition_x(), bullet.getPosition_y(),
                 10,10);
@@ -449,7 +452,7 @@ public class MyPanel extends JPanel implements KeyListener{
         return bulletRect.intersects(enemyRect);
     }
     public boolean playerIntersectMaze(Wall wall) {
-        Rectangle playerRect = new Rectangle(player_x, player_y,
+        Rectangle playerRect = new Rectangle(this.player.getPosition_x(), this.player.getPosition_y(),
                 30, 30);
         Rectangle wallRect = new Rectangle(wall.getPosition_Wall_x(), wall.getPosition_Wall_y(),
                 wall.getWidth(),wall.getHeight());
@@ -457,7 +460,7 @@ public class MyPanel extends JPanel implements KeyListener{
         return playerRect.intersects(wallRect);
     }
     public boolean playerIntersectLaser(Laser laser) {
-        Rectangle playerRect = new Rectangle(player_x, player_y,
+        Rectangle playerRect = new Rectangle(this.player.getPosition_x(), this.player.getPosition_y(),
                 30, 30);
         Rectangle wallRect = new Rectangle(laser.get_coordinate_x(), laser.get_coordinate_y(),
                 laser.get_length(),laser.get_height());
@@ -465,7 +468,7 @@ public class MyPanel extends JPanel implements KeyListener{
         return playerRect.intersects(wallRect);
     }
     public boolean playerIntersectEnemy(Enemy enemy) {
-        Rectangle playerRect = new Rectangle(player_x, player_y,
+        Rectangle playerRect = new Rectangle(this.player.getPosition_x(), this.player.getPosition_y(),
                 30, 30);
         Rectangle enemyRect = new Rectangle(enemy.getPosition_enemy_x(), enemy.getPosition_enemy_y(),
                 enemy.getWidth(),enemy.getHeight());
@@ -473,7 +476,7 @@ public class MyPanel extends JPanel implements KeyListener{
         return playerRect.intersects(enemyRect);
     }
     public boolean playerIntersectMine(Mines mine) {
-        Rectangle playerRect = new Rectangle(player_x, player_y,
+        Rectangle playerRect = new Rectangle(this.player.getPosition_x(), this.player.getPosition_y(),
                 30, 30);
         Rectangle mineRect = new Rectangle(mine.get_coordinate_x(), mine.get_coordinate_y(),
                 mine.get_radius()*2, mine.get_radius()*2);
@@ -493,26 +496,28 @@ public class MyPanel extends JPanel implements KeyListener{
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
         if (keyCode == KeyEvent.VK_SPACE){
-            Bullet bullet = new Bullet(player_x, player_y);
+            int bullet_position_x = this.player.getPosition_x();
+            int bullet_position_y = this.player.getPosition_y();
+            Bullet bullet = new Bullet(bullet_position_x, bullet_position_y);
             bullet_position.add(bullet);
         }
         if (keyCode == KeyEvent.VK_LEFT) {
             this.direction_player = "left";
-            this.Player_icon = this.Player_L;
-            this.player_x -=5;
+            this.player.player_movement(this.direction_player);
+            this.player.setPlayerIcon(this.Player_L);
         } else if (keyCode == KeyEvent.VK_RIGHT) {
             this.direction_player = "right";
-            this.Player_icon = this.Player;
-            this.player_x +=5;
+            this.player.player_movement(this.direction_player);
+            this.player.setPlayerIcon(this.Player);
 
         } else if (keyCode == KeyEvent.VK_UP) {
             this.direction_player = "up";
-            this.Player_icon = this.Player_U;
-            this.player_y -=5;
+            this.player.player_movement(this.direction_player);
+            this.player.setPlayerIcon(this.Player_U);
         } else if (keyCode == KeyEvent.VK_DOWN) {
             this.direction_player = "down";
-            this.Player_icon = this.Player_D;
-            this.player_y +=5;
+            this.player.player_movement(this.direction_player);
+            this.player.setPlayerIcon(this.Player_D);
         }
     }
 

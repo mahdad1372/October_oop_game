@@ -3,8 +3,8 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class SniperEnemy extends Enemy {
-    JLabel bullet_label;
-    ImageIcon icon = new ImageIcon("bullet.png");
+    private JLabel bullet_label;
+    private ImageIcon icon = new ImageIcon("bullet.png");
     private int Sniper_number;
     public SniperEnemy(Image img, int x, int y, int w, int h, String direction, int final_position, int Sn) {
         super(img, x, y, w, h, direction, final_position);

@@ -1,20 +1,14 @@
-import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.awt.*;
 
 public class Player {
-    private JLabel label;
     private int position_x;
     private int position_y;
-    private ImageIcon Icon_player;
-    public Player(int x , int y, String icon){
+    private Image Icon_player;
+    public Player(int x , int y, Image icon){
         this.position_x =x;
         this.position_y = y;
-        this.Icon_player = new ImageIcon(icon);
+        this.Icon_player = icon;
     }
-
-
 
 
     public int getPosition_x(){
@@ -23,11 +17,12 @@ public class Player {
     public int getPosition_y(){
         return this.position_y;
     }
-    public ImageIcon getPlayerIcon(){
+    public Image getPlayerIcon(){
         return  this.Icon_player;
     }
-    public JLabel getLabelPlayer(){
-        return this.label;
+
+    public void setPlayerIcon(Image img){
+        this.Icon_player = img;
     }
     public void setPosition_x(int x){
         this.position_x = x;
@@ -35,20 +30,19 @@ public class Player {
     public void setPosition_y(int y){
         this.position_y = y;
     }
-    public void setPlayerIcon(String icon){
-        this.Icon_player = new ImageIcon(icon);;
-    }
     public void player_movement(String direction){
         switch (direction){
-            case "Left":
-                this.label.setLocation(this.label.getX()-10,this.label.getY());
+            case "left":
+                this.position_x-=5;
                 break;
-            case "Down": this.label.setLocation(this.label.getX(),this.label.getY()-10);
+            case "down":
+                this.position_y+=5;
                 break;
-            case "Right":
-                this.label.setLocation(this.label.getX()+10,this.label.getY());
+            case "right":
+                this.position_x+=5;
                 break;
-            case "Up": this.label.setLocation(this.label.getX(),this.label.getY()+10);
+            case "up":
+                this.position_y-=5;
                 break;
         }
     }
