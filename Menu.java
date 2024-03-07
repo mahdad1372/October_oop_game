@@ -1,11 +1,6 @@
 import java.io.*;
 import java.util.*;
 public class Menu {
-    private int Menu_x;
-    private int  Menu_y;
-    private int  width ;
-    private int  height ;
-    private String menu_type;
     public Menu ( int x, int y,int w , int h , String menu_type){
         this.Menu_x = x;
         this.Menu_y = y;
@@ -13,6 +8,12 @@ public class Menu {
         this.height = h;
         this.menu_type = menu_type;
     }
+    private int Menu_x;
+    private int  Menu_y;
+    private int  width ;
+    private int  height ;
+    private String menu_type;
+
     public int getPosition_menu_x() {
         return Menu_x;
     }

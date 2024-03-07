@@ -5,11 +5,6 @@ public class Bullet {
     }
     private int Bullet_x;
     private int Bullet_y;
-
-
-
-
-
     public int getPosition_x(){
         return Bullet_x;
     }

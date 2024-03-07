@@ -1,13 +1,14 @@
 public class Mines extends obstacles {
-    private int radius;
-    private int coordinate_x;
-    private int coordinate_y;
-
     public Mines(int radius,int x , int y){
         this.radius = radius;
         this.coordinate_x = x;
         this.coordinate_y = y;
     }
+    private int radius;
+    private int coordinate_x;
+    private int coordinate_y;
+
+
 
     public int get_radius(){
         return this.radius;
