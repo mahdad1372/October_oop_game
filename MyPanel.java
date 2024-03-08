@@ -27,6 +27,7 @@ public class MyPanel extends JPanel implements KeyListener{
     private Image thief = new ImageIcon("thief.png").getImage();
     private Image Soldier = new ImageIcon("soldier.png").getImage();
     private Image Tank_rocket = new ImageIcon("tank_rocket.png").getImage();
+    private Image Tank = new ImageIcon("tank.png").getImage();
     private String direction_player = "left";
     private int Bullet_y = 10;
     private int imageY;
@@ -51,6 +52,7 @@ public class MyPanel extends JPanel implements KeyListener{
     ArrayList<Wall> Walls = new ArrayList<Wall>();
     ArrayList<Player> player_list = new ArrayList<>();
     ArrayList<Tank_rocket> tank_rockets = new ArrayList<>();
+    ArrayList<Tank_enemy> tank_enemies = new ArrayList<>();
 
     public MyPanel() {
 
@@ -58,6 +60,7 @@ public class MyPanel extends JPanel implements KeyListener{
         Menu_list.add(new Menu(70,40,780,250,"winner"));
         Menu_list.add(new Menu(70,40,780,250,"looser"));
         tank_rockets.add(new Tank_rocket(10,50,Tank_rocket));
+        tank_enemies.add(new Tank_enemy(Tank,580,230,40,40,"down",80));
         player_list.add(new Player(0,0,Player_icon));
         this.player = this.player_list.get(0);
         addKeyListener(this);
@@ -195,11 +198,9 @@ public class MyPanel extends JPanel implements KeyListener{
 
         for (int i=0;i< tank_rockets.size();i++){
             g.drawImage(tank_rockets.get(i).getRocket_image(), tank_rockets.get(i).getPosition_x() , tank_rockets.get(i).getPosition_y(),null);
-//            Missile.get(i).Missile_Shooting();
-//            if (Missile.get(i).getPosition_x() ==Missile.get(i).getPositionFinal_x() &&
-//                    Missile.get(i).getPosition_y() ==Missile.get(i).getPositionFinal_y()){
-//                Missile.remove(i);
-//            }
+        }
+        for (int i=0;i< tank_enemies.size();i++){
+            g.drawImage(tank_enemies.get(i).getImage_enemy(), tank_enemies.get(i).getPosition_enemy_x() , tank_enemies.get(i).getPosition_enemy_y(),null);
         }
 
         for (int i=0;i< Missile.size();i++){
