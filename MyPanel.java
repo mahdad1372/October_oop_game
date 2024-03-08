@@ -44,7 +44,6 @@ public class MyPanel extends JPanel implements KeyListener{
     ArrayList<Mines> Mines_list = new ArrayList<Mines>();
     ArrayList<Laser> Laser_list = new ArrayList<Laser>();
     ArrayList<Menu> Menu_list = new ArrayList<Menu>();
-//    ArrayList<Enemy> enemy_lists = new ArrayList<Enemy>();
     ArrayList<thief> thief_list = new ArrayList<thief>();
     ArrayList<SniperBullet> SniperBullets = new ArrayList<SniperBullet>();
     ArrayList<SniperEnemy> SniperEnemy = new ArrayList<SniperEnemy>();
@@ -60,7 +59,8 @@ public class MyPanel extends JPanel implements KeyListener{
         Menu_list.add(new Menu(70,40,780,250,"winner"));
         Menu_list.add(new Menu(70,40,780,250,"looser"));
         tank_enemies.add(new Tank_enemy(Tank,580,230,40,40,"down",80));
-        Soldier_enemy_list.add(new Soldier_enemy(Soldier_enemy,660,320,40,40,"down",80));
+        Soldier_rocket rocket = new Soldier_rocket(660, 320, Tank_rocket,660,50);
+        Soldier_enemy_list.add(new Soldier_enemy(Soldier_enemy,660,320,40,40,"down",80,rocket));
         player_list.add(new Player(0,0,Player_icon));
         this.player = this.player_list.get(0);
         addKeyListener(this);
@@ -93,6 +93,7 @@ public class MyPanel extends JPanel implements KeyListener{
         Enemy_coordinates();
         Shooting_Bullet_Sniper();
         Mines_coordinate();
+        Soldier_enemy_list.get(0).Shooting_Rocket_Soldier();
         Shooting_Rocket_Soldier();
     }
     private void Shooting_Bullet_Sniper(){
@@ -135,15 +136,7 @@ public class MyPanel extends JPanel implements KeyListener{
 
     }
     private void Shooting_Rocket_Soldier(){
-        java.util.Timer timer = new java.util.Timer();
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                Soldier_rocket_list.add(new Soldier_rocket(660, 320, Tank_rocket,660,50));
-            }
-        };
-        timer.schedule(task, 0, 2000);
-
+        Soldier_enemy_list.get(0).Shooting_Rocket_Soldier();
     }
     public void bullet_position(Integer index){
         ScheduledExecutorService executor2 = Executors.newScheduledThreadPool(1);
@@ -228,19 +221,23 @@ public class MyPanel extends JPanel implements KeyListener{
                 tank_rockets.remove(i);
             }
         }
-        for (int i=0;i< Soldier_rocket_list.size();i++){
-            g.drawImage(Soldier_rocket_list.get(i).getRocket_image(), Soldier_rocket_list.get(i).getPosition_x() , Soldier_rocket_list.get(i).getPosition_y(),null);
-            Soldier_rocket_list.get(i).Rocket_Shooting();
-            if (Soldier_rocket_list.get(i).getPosition_x() ==Soldier_rocket_list.get(i).getPositionFinal_x() &&
-                    Soldier_rocket_list.get(i).getPosition_y() == Soldier_rocket_list.get(i).getPositionFinal_y()){
-                Soldier_rocket_list.remove(i);
-            }
-        }
         for (int i=0;i< tank_enemies.size();i++){
             g.drawImage(tank_enemies.get(i).getImage_enemy(), tank_enemies.get(i).getPosition_enemy_x() , tank_enemies.get(i).getPosition_enemy_y(),null);
         }
         for (int i=0;i< Soldier_enemy_list.size();i++){
-            g.drawImage(Soldier_enemy_list.get(i).getImage_enemy(), Soldier_enemy_list.get(i).getPosition_enemy_x() , Soldier_enemy_list.get(i).getPosition_enemy_y(),null);
+            g.drawImage(Soldier_enemy_list.get(i).getImage_enemy(), Soldier_enemy_list.get(i).getPosition_enemy_x()
+                    , Soldier_enemy_list.get(i).getPosition_enemy_y(),null);
+
+            Soldier_enemy_list.get(i).Editing_Rocket_List();
+            if (Soldier_enemy_list.get(i).getSoldier_Rocket().size() > 0){
+                for (int j=0;j <Soldier_enemy_list.get(i).getSoldier_Rocket().size();j++){
+                    Soldier_enemy_list.get(i).getSoldier_Rocket().get(j).Rocket_Shooting();
+                    g.drawImage(Soldier_enemy_list.get(i).getSoldier_Rocket().get(j).getRocket_image(),
+                            Soldier_enemy_list.get(i).getSoldier_Rocket().get(j).getPosition_x(),
+                            Soldier_enemy_list.get(i).getSoldier_Rocket().get(j).getPosition_y(),null);
+                }
+
+            }
         }
 
         for (int i=0;i< Missile.size();i++){
