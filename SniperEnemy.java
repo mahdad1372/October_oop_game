@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class SniperEnemy extends Enemy {
+public class SniperEnemy extends Army_enemy {
     public SniperEnemy(Image img, int x, int y, int w, int h, String direction, int final_position, int Sn) {
         super(img, x, y, w, h, direction, final_position);
         this.Sniper_number = Sn;
