@@ -55,6 +55,7 @@ public class MyPanel extends JPanel implements KeyListener{
     ArrayList<Tank_rocket> tank_rockets = new ArrayList<>();
     ArrayList<Tank_enemy> tank_enemies = new ArrayList<>();
     ArrayList<Soldier_enemy> Soldier_enemy_list = new ArrayList<>();
+    ArrayList<Soldier_rocket> Soldier_rocket_list = new ArrayList<>();
     public MyPanel() {
         Menu_list.add(new Menu(70,40,780,250,"winner"));
         Menu_list.add(new Menu(70,40,780,250,"looser"));
@@ -92,6 +93,7 @@ public class MyPanel extends JPanel implements KeyListener{
         Enemy_coordinates();
         Shooting_Bullet_Sniper();
         Mines_coordinate();
+        Shooting_Rocket_Soldier();
     }
     private void Shooting_Bullet_Sniper(){
         java.util.Timer timer = new java.util.Timer();
@@ -130,6 +132,17 @@ public class MyPanel extends JPanel implements KeyListener{
             }
         };
         timer.schedule(task, 0, 1000);
+
+    }
+    private void Shooting_Rocket_Soldier(){
+        java.util.Timer timer = new java.util.Timer();
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                Soldier_rocket_list.add(new Soldier_rocket(660, 320, Tank_rocket,660,50));
+            }
+        };
+        timer.schedule(task, 0, 2000);
 
     }
     public void bullet_position(Integer index){
@@ -213,6 +226,14 @@ public class MyPanel extends JPanel implements KeyListener{
             if (tank_rockets.get(i).getPosition_x() ==tank_rockets.get(i).getPositionFinal_x() &&
                     tank_rockets.get(i).getPosition_y() ==tank_rockets.get(i).getPositionFinal_y()){
                 tank_rockets.remove(i);
+            }
+        }
+        for (int i=0;i< Soldier_rocket_list.size();i++){
+            g.drawImage(Soldier_rocket_list.get(i).getRocket_image(), Soldier_rocket_list.get(i).getPosition_x() , Soldier_rocket_list.get(i).getPosition_y(),null);
+            Soldier_rocket_list.get(i).Rocket_Shooting();
+            if (Soldier_rocket_list.get(i).getPosition_x() ==Soldier_rocket_list.get(i).getPositionFinal_x() &&
+                    Soldier_rocket_list.get(i).getPosition_y() == Soldier_rocket_list.get(i).getPositionFinal_y()){
+                Soldier_rocket_list.remove(i);
             }
         }
         for (int i=0;i< tank_enemies.size();i++){
