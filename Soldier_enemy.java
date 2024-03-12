@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.TimerTask;
 
 public class Soldier_enemy extends Army_enemy{
-    ArrayList<Soldier_rocket> Soldier_rocket_list = new ArrayList<>();
+
 
     public Soldier_enemy(Image img, int position_x, int position_y, int w , int h, String direction, int final_position,
                           Soldier_rocket rocket){
@@ -11,7 +11,7 @@ public class Soldier_enemy extends Army_enemy{
         this.Soldier_Rocket = rocket;
     }
     private Soldier_rocket Soldier_Rocket;
-
+    ArrayList<Soldier_rocket> Soldier_rocket_list = new ArrayList<>();
     public ArrayList<Soldier_rocket> getSoldier_Rocket(){
         return  this.Soldier_rocket_list;
     }
@@ -24,7 +24,7 @@ public class Soldier_enemy extends Army_enemy{
                        Soldier_Rocket.getRocket_image(),Soldier_Rocket.getPositionFinal_x(),Soldier_Rocket.getPositionFinal_y()));
             }
         };
-        timer.schedule(task, 0, 2000);
+        timer.schedule(task, 0, 4000);
 
     }
 

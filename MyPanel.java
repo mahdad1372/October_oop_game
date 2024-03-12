@@ -58,7 +58,7 @@ public class MyPanel extends JPanel implements KeyListener{
     public MyPanel() {
         Menu_list.add(new Menu(70,40,780,250,"winner"));
         Menu_list.add(new Menu(70,40,780,250,"looser"));
-        tank_enemies.add(new Tank_enemy(Tank,580,230,40,40,"down",80));
+        tank_enemies.add(new Tank_enemy(Tank,580,250,40,40,"down",80));
         Soldier_rocket rocket = new Soldier_rocket(660, 320, Tank_rocket,660,50);
         Soldier_enemy_list.add(new Soldier_enemy(Soldier_enemy,660,320,40,40,"down",80,rocket));
         player_list.add(new Player(0,0,Player_icon));
@@ -132,7 +132,7 @@ public class MyPanel extends JPanel implements KeyListener{
                 tank_rockets.add(new Tank_rocket(580, 230, Tank_rocket,580,50));
             }
         };
-        timer.schedule(task, 0, 1000);
+        timer.schedule(task, 0, 4000);
 
     }
     private void Shooting_Rocket_Soldier(){
@@ -221,6 +221,7 @@ public class MyPanel extends JPanel implements KeyListener{
                 tank_rockets.remove(i);
             }
         }
+
         for (int i=0;i< tank_enemies.size();i++){
             g.drawImage(tank_enemies.get(i).getImage_enemy(), tank_enemies.get(i).getPosition_enemy_x() , tank_enemies.get(i).getPosition_enemy_y(),null);
         }
@@ -253,8 +254,10 @@ public class MyPanel extends JPanel implements KeyListener{
         for (int i=0;i< SniperEnemy.size();i++){
             g.drawImage(SniperEnemy.get(i).getImage_enemy(),
                     SniperEnemy.get(i).getPosition_enemy_x() , SniperEnemy.get(i).getPosition_enemy_y(),null);
-
-
+        }
+        for (int i=0;i< tank_enemies.size();i++){
+            g.drawImage(tank_enemies.get(i).getImage_enemy(),
+                    tank_enemies.get(i).getPosition_enemy_x() , tank_enemies.get(i).getPosition_enemy_y(),null);
         }
         for (int i=0;i< thief_list.size();i++){
             g.drawImage(thief_list.get(i).getImage_enemy(),
@@ -308,6 +311,23 @@ public class MyPanel extends JPanel implements KeyListener{
                 }
             }
         }
+        if (tank_enemies.size() > 0){
+            for (int j = 0; j< tank_enemies.size();j++){
+                for (int i = 0; i < bullet_position.size(); i++){
+                    if (bulletIntersectsTank(bullet_position.get(i),tank_enemies.get(j))){
+                        tank_enemies.remove(tank_enemies.get(j));
+                    }
+                }
+            }
+        }
+        for (int j = 0; j< Soldier_enemy_list.size();j++){
+            for (int i = 0; i < bullet_position.size(); i++){
+                if (bulletIntersectsSoldierEnemy(bullet_position.get(i),Soldier_enemy_list.get(j))){
+                    Soldier_enemy_list.remove(Soldier_enemy_list.get(j));
+                }
+            }
+        }
+
         if (Walls.size()>0){
             for (int i=0; i<Walls.size();i++){
                 for (int j=0; j<bullet_position.size();j++){
@@ -474,6 +494,22 @@ public class MyPanel extends JPanel implements KeyListener{
                 30,30);
 
         return bulletRect.intersects(enemyRect);
+    }
+    public boolean bulletIntersectsSoldierEnemy(Bullet bullet, Soldier_enemy soldier_enemy) {
+        Rectangle bulletRect = new Rectangle(bullet.getPosition_x(), bullet.getPosition_y(),
+                10, 10);
+        Rectangle soldier_enemy_Rect = new Rectangle(soldier_enemy.getPosition_enemy_x(), soldier_enemy.getPosition_enemy_y(),
+                30,30);
+
+        return bulletRect.intersects(soldier_enemy_Rect);
+    }
+    public boolean bulletIntersectsTank(Bullet bullet, Tank_enemy Tank) {
+        Rectangle bulletRect = new Rectangle(bullet.getPosition_x(), bullet.getPosition_y(),
+                10, 10);
+        Rectangle tankRect = new Rectangle(Tank.getPosition_enemy_x(), Tank.getPosition_enemy_y(),
+                30,30);
+
+        return bulletRect.intersects(tankRect);
     }
     public boolean SniperBulletIntersectsPlayer(SniperBullet bullet) {
         Rectangle playerRect = new Rectangle(this.player.getPosition_x(), this.player.getPosition_y(),
