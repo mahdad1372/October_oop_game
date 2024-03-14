@@ -54,21 +54,16 @@ public class MyPanel extends JPanel implements KeyListener{
     ArrayList<Bullet> bullet_position = new ArrayList<Bullet>();
     ArrayList<Wall> Walls = new ArrayList<Wall>();
     ArrayList<Player> player_list = new ArrayList<>();
-    ArrayList<Tank_rocket> tank_rockets = new ArrayList<>();
-//    ArrayList<Soldier_enemy> Soldier_enemy_list = new ArrayList<>();
 
     public MyPanel() {
+        this.player = new Player(0,0,Player_icon);
         Menu_list.add(new Menu(70,40,780,250,"winner"));
         Menu_list.add(new Menu(70,40,780,250,"looser"));
         Tank_rocket tank_rocket = new Tank_rocket(580, 230, Tank_rocket,580,50);
         Tank_enemy tank_enemy = new Tank_enemy(Tank,580,250,40,40,"down",80,tank_rocket);
         this.tankEnemy = tank_enemy;
-//        tank_enemies.add(new Tank_enemy(Tank,580,250,40,40,"down",80,tank_rocket));
         Soldier_rocket rocket = new Soldier_rocket(660, 320, Soldier_rocket,660,50);
-//        Soldier_enemy_list.add(new Soldier_enemy(Soldier_enemy,660,320,40,40,"down",80,rocket));
         this.soldier_enemy = new Soldier_enemy(Soldier_enemy,660,320,40,40,"down",80,rocket);
-        player_list.add(new Player(0,0,Player_icon));
-        this.player = this.player_list.get(0);
         addKeyListener(this);
         setFocusable(true);
         setVisible(true);
@@ -204,14 +199,6 @@ public class MyPanel extends JPanel implements KeyListener{
             }
         }
 
-        for (int i=0;i< tank_rockets.size();i++){
-            g.drawImage(tank_rockets.get(i).getRocket_image(), tank_rockets.get(i).getPosition_x() , tank_rockets.get(i).getPosition_y(),null);
-            tank_rockets.get(i).Rocket_Shooting();
-            if (tank_rockets.get(i).getPosition_x() ==tank_rockets.get(i).getPositionFinal_x() &&
-                    tank_rockets.get(i).getPosition_y() ==tank_rockets.get(i).getPositionFinal_y()){
-                tank_rockets.remove(i);
-            }
-        }
         if (this.soldier_enemy != null){
             g.drawImage(this.soldier_enemy.getImage_enemy(), this.soldier_enemy.getPosition_enemy_x()
                     , this.soldier_enemy.getPosition_enemy_y(),null);
@@ -224,21 +211,6 @@ public class MyPanel extends JPanel implements KeyListener{
                 }
         }
 
-//        for (int i=0;i< Soldier_enemy_list.size();i++){
-//            g.drawImage(Soldier_enemy_list.get(i).getImage_enemy(), Soldier_enemy_list.get(i).getPosition_enemy_x()
-//                    , Soldier_enemy_list.get(i).getPosition_enemy_y(),null);
-//
-//            Soldier_enemy_list.get(i).Editing_Rocket_List();
-//            if (Soldier_enemy_list.get(i).getSoldier_Rocket().size() > 0){
-//                for (int j=0;j <Soldier_enemy_list.get(i).getSoldier_Rocket().size();j++){
-//                    Soldier_enemy_list.get(i).getSoldier_Rocket().get(j).Rocket_Shooting();
-//                    g.drawImage(Soldier_enemy_list.get(i).getSoldier_Rocket().get(j).getRocket_image(),
-//                            Soldier_enemy_list.get(i).getSoldier_Rocket().get(j).getPosition_x(),
-//                            Soldier_enemy_list.get(i).getSoldier_Rocket().get(j).getPosition_y(),null);
-//                }
-//
-//            }
-//        }
 
         for (int i=0;i< Missile.size();i++){
             g.drawImage(Missile_img, Missile.get(i).getPosition_x() , Missile.get(i).getPosition_y(),null);
@@ -314,12 +286,20 @@ public class MyPanel extends JPanel implements KeyListener{
         }
 
         if (this.tankEnemy != null){
+
             for (int i = 0; i < this.tankEnemy.getTank_Rocket().size(); i++){
+
                 this.tankEnemy.getTank_Rocket().get(i).Rocket_Shooting();
                 g.drawImage(this.tankEnemy.getTank_Rocket().get(i).getRocket_image(),
                         this.tankEnemy.getTank_Rocket().get(i).getPosition_x(),
                         this.tankEnemy.getTank_Rocket().get(i).getPosition_y(),null);
                 this.tankEnemy.Editing_Rocket_List();
+                if (playerIntersectTankRocket(this.tankEnemy.getTank_Rocket().get(i))
+                        &&this.tankEnemy.getTank_Rocket().contains(this.tankEnemy.getTank_Rocket().get(i)) ) {
+                    this.Health -=5;
+                    int current_positionplayer_x =this.player.getPosition_x();
+                    this.player.setPosition_x(current_positionplayer_x-=40);
+                }
             }
             for (int i = 0; i < bullet_position.size(); i++){
                 if (bulletIntersectsTank(bullet_position.get(i),this.tankEnemy)){
@@ -562,6 +542,14 @@ public class MyPanel extends JPanel implements KeyListener{
                 30, 30);
         Rectangle enemyRect = new Rectangle(enemy.getPosition_enemy_x(), enemy.getPosition_enemy_y(),
                 enemy.getWidth(),enemy.getHeight());
+
+        return playerRect.intersects(enemyRect);
+    }
+    public boolean playerIntersectTankRocket(Tank_rocket tank_rocket) {
+        Rectangle playerRect = new Rectangle(this.player.getPosition_x(), this.player.getPosition_y(),
+                30, 30);
+        Rectangle enemyRect = new Rectangle(tank_rocket.getPosition_x(), tank_rocket.getPosition_y(),
+                10,30);
 
         return playerRect.intersects(enemyRect);
     }
