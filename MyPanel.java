@@ -43,6 +43,7 @@ public class MyPanel extends JPanel implements KeyListener{
     private int secondsElapsed;
     private Player player;
     private Tank_enemy tankEnemy;
+    private Soldier_enemy soldier_enemy;
     ArrayList<Mines> Mines_list = new ArrayList<Mines>();
     ArrayList<Laser> Laser_list = new ArrayList<Laser>();
     ArrayList<Menu> Menu_list = new ArrayList<Menu>();
@@ -54,9 +55,8 @@ public class MyPanel extends JPanel implements KeyListener{
     ArrayList<Wall> Walls = new ArrayList<Wall>();
     ArrayList<Player> player_list = new ArrayList<>();
     ArrayList<Tank_rocket> tank_rockets = new ArrayList<>();
-    ArrayList<Tank_enemy> tank_enemies = new ArrayList<>();
-    ArrayList<Soldier_enemy> Soldier_enemy_list = new ArrayList<>();
-    ArrayList<Soldier_rocket> Soldier_rocket_list = new ArrayList<>();
+//    ArrayList<Soldier_enemy> Soldier_enemy_list = new ArrayList<>();
+
     public MyPanel() {
         Menu_list.add(new Menu(70,40,780,250,"winner"));
         Menu_list.add(new Menu(70,40,780,250,"looser"));
@@ -65,7 +65,8 @@ public class MyPanel extends JPanel implements KeyListener{
         this.tankEnemy = tank_enemy;
 //        tank_enemies.add(new Tank_enemy(Tank,580,250,40,40,"down",80,tank_rocket));
         Soldier_rocket rocket = new Soldier_rocket(660, 320, Soldier_rocket,660,50);
-        Soldier_enemy_list.add(new Soldier_enemy(Soldier_enemy,660,320,40,40,"down",80,rocket));
+//        Soldier_enemy_list.add(new Soldier_enemy(Soldier_enemy,660,320,40,40,"down",80,rocket));
+        this.soldier_enemy = new Soldier_enemy(Soldier_enemy,660,320,40,40,"down",80,rocket);
         player_list.add(new Player(0,0,Player_icon));
         this.player = this.player_list.get(0);
         addKeyListener(this);
@@ -93,13 +94,13 @@ public class MyPanel extends JPanel implements KeyListener{
         LaserCoordinates();
         SniperCoordinates();
         Shooting_Missile();
-        Shooting_Rocket_Tank();
+
         Enemy_coordinates();
         Shooting_Bullet_Sniper();
         Mines_coordinate();
-        Soldier_enemy_list.get(0).Shooting_Rocket_Soldier();
+        this.soldier_enemy.Shooting_Rocket_Soldier();
         this.tankEnemy.Shooting_Rocket_Tank();
-        Shooting_Rocket_Soldier();
+
     }
     private void Shooting_Bullet_Sniper(){
         java.util.Timer timer = new java.util.Timer();
@@ -129,20 +130,7 @@ public class MyPanel extends JPanel implements KeyListener{
         timer.schedule(task, 0, 3000);
 
     }
-    private void Shooting_Rocket_Tank(){
-//        java.util.Timer timer = new java.util.Timer();
-//        TimerTask task = new TimerTask() {
-//            @Override
-//            public void run() {
-//                tank_rockets.add(new Tank_rocket(580, 230, Tank_rocket,580,50));
-//            }
-//        };
-//        timer.schedule(task, 0, 4000);
 
-    }
-    private void Shooting_Rocket_Soldier(){
-        Soldier_enemy_list.get(0).Shooting_Rocket_Soldier();
-    }
 
     public void bullet_position(Integer index){
         ScheduledExecutorService executor2 = Executors.newScheduledThreadPool(1);
@@ -216,9 +204,6 @@ public class MyPanel extends JPanel implements KeyListener{
             }
         }
 
-        Weapon soldierWeapon = new Weapon(Soldier);
-        Soldier playerSoldier = new Soldier(soldierWeapon,10,5);
-
         for (int i=0;i< tank_rockets.size();i++){
             g.drawImage(tank_rockets.get(i).getRocket_image(), tank_rockets.get(i).getPosition_x() , tank_rockets.get(i).getPosition_y(),null);
             tank_rockets.get(i).Rocket_Shooting();
@@ -227,25 +212,33 @@ public class MyPanel extends JPanel implements KeyListener{
                 tank_rockets.remove(i);
             }
         }
-
-//        for (int i=0;i< tank_enemies.size();i++){
-//            g.drawImage(tank_enemies.get(i).getImage_enemy(), tank_enemies.get(i).getPosition_enemy_x() , tank_enemies.get(i).getPosition_enemy_y(),null);
-//        }
-        for (int i=0;i< Soldier_enemy_list.size();i++){
-            g.drawImage(Soldier_enemy_list.get(i).getImage_enemy(), Soldier_enemy_list.get(i).getPosition_enemy_x()
-                    , Soldier_enemy_list.get(i).getPosition_enemy_y(),null);
-
-            Soldier_enemy_list.get(i).Editing_Rocket_List();
-            if (Soldier_enemy_list.get(i).getSoldier_Rocket().size() > 0){
-                for (int j=0;j <Soldier_enemy_list.get(i).getSoldier_Rocket().size();j++){
-                    Soldier_enemy_list.get(i).getSoldier_Rocket().get(j).Rocket_Shooting();
-                    g.drawImage(Soldier_enemy_list.get(i).getSoldier_Rocket().get(j).getRocket_image(),
-                            Soldier_enemy_list.get(i).getSoldier_Rocket().get(j).getPosition_x(),
-                            Soldier_enemy_list.get(i).getSoldier_Rocket().get(j).getPosition_y(),null);
+        if (this.soldier_enemy != null){
+            g.drawImage(this.soldier_enemy.getImage_enemy(), this.soldier_enemy.getPosition_enemy_x()
+                    , this.soldier_enemy.getPosition_enemy_y(),null);
+            this.soldier_enemy.Editing_Rocket_List();
+            for (int i=0;i <this.soldier_enemy.getSoldier_Rocket().size();i++){
+                this.soldier_enemy.getSoldier_Rocket().get(i).Rocket_Shooting();
+                    g.drawImage( this.soldier_enemy.getSoldier_Rocket().get(i).getRocket_image(),
+                            this.soldier_enemy.getSoldier_Rocket().get(i).getPosition_x(),
+                            this.soldier_enemy.getSoldier_Rocket().get(i).getPosition_y(),null);
                 }
-
-            }
         }
+
+//        for (int i=0;i< Soldier_enemy_list.size();i++){
+//            g.drawImage(Soldier_enemy_list.get(i).getImage_enemy(), Soldier_enemy_list.get(i).getPosition_enemy_x()
+//                    , Soldier_enemy_list.get(i).getPosition_enemy_y(),null);
+//
+//            Soldier_enemy_list.get(i).Editing_Rocket_List();
+//            if (Soldier_enemy_list.get(i).getSoldier_Rocket().size() > 0){
+//                for (int j=0;j <Soldier_enemy_list.get(i).getSoldier_Rocket().size();j++){
+//                    Soldier_enemy_list.get(i).getSoldier_Rocket().get(j).Rocket_Shooting();
+//                    g.drawImage(Soldier_enemy_list.get(i).getSoldier_Rocket().get(j).getRocket_image(),
+//                            Soldier_enemy_list.get(i).getSoldier_Rocket().get(j).getPosition_x(),
+//                            Soldier_enemy_list.get(i).getSoldier_Rocket().get(j).getPosition_y(),null);
+//                }
+//
+//            }
+//        }
 
         for (int i=0;i< Missile.size();i++){
             g.drawImage(Missile_img, Missile.get(i).getPosition_x() , Missile.get(i).getPosition_y(),null);
@@ -335,13 +328,11 @@ public class MyPanel extends JPanel implements KeyListener{
                 }}
         }
 
-        for (int j = 0; j< Soldier_enemy_list.size();j++){
+        if (this.soldier_enemy != null){
             for (int i = 0; i < bullet_position.size(); i++){
-                if (bulletIntersectsSoldierEnemy(bullet_position.get(i),Soldier_enemy_list.get(j))){
-                    Soldier_enemy_list.remove(Soldier_enemy_list.get(j));
-                }
-            }
-        }
+                if (bulletIntersectsSoldierEnemy(bullet_position.get(i),this.soldier_enemy)){
+                   this.soldier_enemy = null;
+                }}}
 
         if (Walls.size()>0){
             for (int i=0; i<Walls.size();i++){
