@@ -21,7 +21,7 @@ public class Tank_enemy extends Army_enemy{
                         tank_rocket.getRocket_image(),tank_rocket.getPositionFinal_x(),tank_rocket.getPositionFinal_y()));
             }
         };
-        timer.schedule(task, 0, 4000);
+        timer.schedule(task, 0, 7000);
 
     }
 

@@ -11,50 +11,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class MyPanel extends JPanel implements KeyListener{
-    private Image image;
-
-    private Image Bullet = new ImageIcon("bullet_down.png").getImage();
-    private Image Mine = new ImageIcon("mine.png").getImage();
-    private Image Player = new ImageIcon("soldier.png").getImage();
-    private Image Player_L = new ImageIcon("soldier_l.png").getImage();
-    private Image Player_D = new ImageIcon("soldier_d.png").getImage();
-    private Image Player_U = new ImageIcon("soldier_u.png").getImage();
-    private Image Player_icon = Player;
-    private Image Sniper_down = new ImageIcon("Sniper_down.png").getImage();
-    private Image Sniper_up = new ImageIcon("Sniper_up.png").getImage();
-    private Image Launcher = new ImageIcon("launcher.png").getImage();
-    private Image Missile_img = new ImageIcon("missile.png").getImage();
-    private Image thief = new ImageIcon("thief.png").getImage();
-    private Image Soldier = new ImageIcon("soldier.png").getImage();
-    private Image Tank_rocket = new ImageIcon("bullet_tank.png").getImage();
-    private Image Soldier_rocket = new ImageIcon("tank_rocket.png").getImage();
-    private Image Tank = new ImageIcon("tank.png").getImage();
-    private Image Soldier_enemy = new ImageIcon("Soldier_enemy.png").getImage();
-    private String direction_player = "left";
-    private int Bullet_y = 10;
-    private int imageY;
-    private Timer  executing_game_timer;
-    private Timer Game_Timer;
-    private int scores = 0;
-    private int Health = 100;
-
-    private int number_enemy_killed = 0;
-    private boolean display_menu_winner;
-    private int secondsElapsed;
-    private Player player;
-    private Tank_enemy tankEnemy;
-    private Soldier_enemy soldier_enemy;
-    ArrayList<Mines> Mines_list = new ArrayList<Mines>();
-    ArrayList<Laser> Laser_list = new ArrayList<Laser>();
-    ArrayList<Menu> Menu_list = new ArrayList<Menu>();
-    ArrayList<thief> thief_list = new ArrayList<thief>();
-    ArrayList<SniperBullet> SniperBullets = new ArrayList<SniperBullet>();
-    ArrayList<SniperEnemy> SniperEnemy = new ArrayList<SniperEnemy>();
-    ArrayList<Missile> Missile = new ArrayList<Missile>();
-    ArrayList<Bullet> bullet_position = new ArrayList<Bullet>();
-    ArrayList<Wall> Walls = new ArrayList<Wall>();
-    ArrayList<Player> player_list = new ArrayList<>();
-
     public MyPanel() {
         this.player = new Player(0,0,Player_icon);
         Menu_list.add(new Menu(70,40,780,250,"winner"));
@@ -68,9 +24,6 @@ public class MyPanel extends JPanel implements KeyListener{
         setFocusable(true);
         setVisible(true);
         setBackground(Color.white);
-        image = new ImageIcon("thief.png").getImage();
-        imageY = 10;
-
         executing_game_timer = new Timer(16, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -97,6 +50,43 @@ public class MyPanel extends JPanel implements KeyListener{
         this.tankEnemy.Shooting_Rocket_Tank();
 
     }
+
+    private Image Sniper_Bullet = new ImageIcon("bullet_down.png").getImage();
+    private Image Mine = new ImageIcon("mine.png").getImage();
+    private Image Player_icon = new ImageIcon("soldier.png").getImage();
+    private Image Player_L = new ImageIcon("soldier_l.png").getImage();
+    private Image Player_D = new ImageIcon("soldier_d.png").getImage();
+    private Image Player_U = new ImageIcon("soldier_u.png").getImage();
+    private Image Sniper = new ImageIcon("Sniper_down.png").getImage();
+    private Image Launcher = new ImageIcon("launcher.png").getImage();
+    private Image Missile_img = new ImageIcon("missile.png").getImage();
+    private Image thief = new ImageIcon("thief.png").getImage();
+    private Image Tank_rocket = new ImageIcon("bullet_tank.png").getImage();
+    private Image Soldier_rocket = new ImageIcon("tank_rocket.png").getImage();
+    private Image Tank = new ImageIcon("tank.png").getImage();
+    private Image Soldier_enemy = new ImageIcon("Soldier_enemy.png").getImage();
+    private String direction_player = "left";
+    private Timer  executing_game_timer;
+    private Timer Game_Timer;
+    private int scores = 0;
+    private int Health = 100;
+
+    private int number_enemy_killed = 0;
+    private boolean display_menu_winner;
+    private int secondsElapsed;
+    private Player player;
+    private Tank_enemy tankEnemy;
+    private Soldier_enemy soldier_enemy;
+    ArrayList<Mines> Mines_list = new ArrayList<Mines>();
+    ArrayList<Laser> Laser_list = new ArrayList<Laser>();
+    ArrayList<Menu> Menu_list = new ArrayList<Menu>();
+    ArrayList<thief> thief_list = new ArrayList<thief>();
+    ArrayList<SniperEnemy> SniperEnemy = new ArrayList<SniperEnemy>();
+    ArrayList<Missile> Missile = new ArrayList<Missile>();
+    ArrayList<Bullet> bullet_position = new ArrayList<Bullet>();
+    ArrayList<Wall> Walls = new ArrayList<Wall>();
+
+
     private void Shooting_Bullet_Sniper(){
         java.util.Timer timer = new java.util.Timer();
         TimerTask task = new TimerTask() {
@@ -141,23 +131,6 @@ public class MyPanel extends JPanel implements KeyListener{
         };
         executor2.scheduleAtFixedRate(function1, 0, 12, TimeUnit.MILLISECONDS);
     }
-    public boolean Missile_Intersect(Missile missile) {
-        Rectangle FinalRect = new Rectangle(missile.getPositionFinal_x(), missile.getPositionFinal_y(),
-                10, 10);
-        Rectangle MissileRect = new Rectangle(missile.getPosition_x(), missile.getPosition_y(),
-                30,30);
-
-        return FinalRect.intersects(MissileRect);
-    }
-    public boolean playerIntersectMissile(Missile missile) {
-        Rectangle playerRect = new Rectangle(this.player.getPosition_x(), this.player.getPosition_y(),
-                30, 30);
-        Rectangle missile_rect = new Rectangle(missile.getPositionFinal_x(), missile.getPositionFinal_y(),
-                20,20);
-
-        return playerRect.intersects(missile_rect);
-
-    }
     private void createBullet(Graphics2D g2d , int x , int y , int r){
         g2d.setColor(Color.BLUE);
         int radius = r;
@@ -193,7 +166,7 @@ public class MyPanel extends JPanel implements KeyListener{
         if (SniperEnemy.size()>0){
             ArrayList<SniperBullet> SniperBullet_List = SniperEnemy.get(0).return_bullet();
             for (int i=0;i< SniperBullet_List.size();i++){
-                g.drawImage(Bullet, SniperBullet_List.get(i).getPosition_x() , SniperBullet_List.get(i).getPosition_y(),null);
+                g.drawImage(Sniper_Bullet, SniperBullet_List.get(i).getPosition_x() , SniperBullet_List.get(i).getPosition_y(),null);
                 SniperBullet_List.get(i).shootingBullet();
 
             }
@@ -288,18 +261,17 @@ public class MyPanel extends JPanel implements KeyListener{
         if (this.tankEnemy != null){
 
             for (int i = 0; i < this.tankEnemy.getTank_Rocket().size(); i++){
-
+                if (playerIntersectTankRocket(this.tankEnemy.getTank_Rocket().get(i))) {
+                    this.Health -=5;
+                    int current_positionplayer_x =this.player.getPosition_x();
+                    this.player.setPosition_x(current_positionplayer_x-=40);
+                }
                 this.tankEnemy.getTank_Rocket().get(i).Rocket_Shooting();
                 g.drawImage(this.tankEnemy.getTank_Rocket().get(i).getRocket_image(),
                         this.tankEnemy.getTank_Rocket().get(i).getPosition_x(),
                         this.tankEnemy.getTank_Rocket().get(i).getPosition_y(),null);
                 this.tankEnemy.Editing_Rocket_List();
-                if (playerIntersectTankRocket(this.tankEnemy.getTank_Rocket().get(i))
-                        &&this.tankEnemy.getTank_Rocket().contains(this.tankEnemy.getTank_Rocket().get(i)) ) {
-                    this.Health -=5;
-                    int current_positionplayer_x =this.player.getPosition_x();
-                    this.player.setPosition_x(current_positionplayer_x-=40);
-                }
+
             }
             for (int i = 0; i < bullet_position.size(); i++){
                 if (bulletIntersectsTank(bullet_position.get(i),this.tankEnemy)){
@@ -456,7 +428,7 @@ public class MyPanel extends JPanel implements KeyListener{
         Laser_list.add(new Laser(5,230,710,250));
     }
     public void SniperCoordinates(){
-        SniperEnemy snipers = new SniperEnemy(Sniper_down,470,10,20,20,"Y",400,1);
+        SniperEnemy snipers = new SniperEnemy(Sniper,470,10,20,20,"Y",400,1);
         SniperEnemy.add(snipers);
     }
     public void Enemy_coordinates(){
@@ -496,14 +468,6 @@ public class MyPanel extends JPanel implements KeyListener{
                 30,30);
 
         return bulletRect.intersects(tankRect);
-    }
-    public boolean SniperBulletIntersectsPlayer(SniperBullet bullet) {
-        Rectangle playerRect = new Rectangle(this.player.getPosition_x(), this.player.getPosition_y(),
-                30, 30);
-        Rectangle SniperBullet = new Rectangle(bullet.getPosition_x(), bullet.getPosition_y(),
-                10,10);
-
-        return playerRect.intersects(SniperBullet);
     }
     public boolean bulletIntersectsSniperEnemy(Bullet bullet, SniperEnemy sniper) {
         Rectangle bulletRect = new Rectangle(bullet.getPosition_x(), bullet.getPosition_y(),
@@ -586,7 +550,7 @@ public class MyPanel extends JPanel implements KeyListener{
         } else if (keyCode == KeyEvent.VK_RIGHT) {
             this.direction_player = "right";
             this.player.player_movement(this.direction_player);
-            this.player.setPlayerIcon(this.Player);
+            this.player.setPlayerIcon(this.Player_icon);
 
         } else if (keyCode == KeyEvent.VK_UP) {
             this.direction_player = "up";
