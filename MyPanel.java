@@ -34,7 +34,7 @@ public class MyPanel extends JPanel implements KeyListener{
         Game_Timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                secondsElapsed++;
+                Seconds_Duration_Game++;
             }
         });
         Game_Timer.start();
@@ -73,7 +73,7 @@ public class MyPanel extends JPanel implements KeyListener{
 
     private int number_enemy_killed = 0;
     private boolean display_menu_winner;
-    private int secondsElapsed;
+    private int Seconds_Duration_Game;
     private Player player;
     private Tank_enemy tankEnemy;
     private Soldier_enemy soldier_enemy;
@@ -371,7 +371,7 @@ public class MyPanel extends JPanel implements KeyListener{
                 g2d.drawString("The winner is : " + result_win.getName()+
                         " with the score of " + result_win.getScore()+
                         "and the Health of " + result_win.getHealth(), 80, 210);
-                g2d.drawString(menu.get_num_enemy_time(number_enemy_killed , secondsElapsed), 80, 240);
+                g2d.drawString(menu.get_num_enemy_time(number_enemy_killed , Seconds_Duration_Game), 80, 240);
             }
             if (Health <= 0 && menu.get_menu_type() == "looser"){
                 g2d.setColor(Color.RED);
@@ -383,7 +383,7 @@ public class MyPanel extends JPanel implements KeyListener{
                 g2d.drawString("The looser is : " + result_lose.getName()+
                         " with the score of " + result_lose.getScore()+
                         " and the Health of " + result_lose.getHealth(), 100, 210);
-                g2d.drawString(menu.get_num_enemy_time((double) number_enemy_killed , (double) secondsElapsed), 100, 240);
+                g2d.drawString(menu.get_num_enemy_time((double) number_enemy_killed , (double) Seconds_Duration_Game), 100, 240);
             }
 
         }
