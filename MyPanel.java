@@ -49,18 +49,18 @@ public class MyPanel extends JPanel implements KeyListener{
 
     }
 
-    private Image Sniper_Bullet = new ImageIcon("bullet_down.png").getImage();
+    private Image Sniper_Bullet = new ImageIcon("sniper_bullet.png").getImage();
     private Image Mine = new ImageIcon("mine.png").getImage();
     private Image Player_icon = new ImageIcon("soldier.png").getImage();
     private Image Player_L = new ImageIcon("soldier_l.png").getImage();
     private Image Player_D = new ImageIcon("soldier_d.png").getImage();
     private Image Player_U = new ImageIcon("soldier_u.png").getImage();
-    private Image Sniper = new ImageIcon("Sniper_down.png").getImage();
+    private Image Sniper = new ImageIcon("Sniper.png").getImage();
     private Image Launcher = new ImageIcon("launcher.png").getImage();
     private Image Missile_img = new ImageIcon("missile.png").getImage();
     private Image thief = new ImageIcon("thief.png").getImage();
-    private Image Tank_rocket = new ImageIcon("bullet_tank.png").getImage();
-    private Image Soldier_rocket = new ImageIcon("tank_rocket.png").getImage();
+    private Image Tank_rocket = new ImageIcon("tank_rocket.png").getImage();
+    private Image Soldier_rocket = new ImageIcon("Soldier_rocket.png").getImage();
     private Image Tank = new ImageIcon("tank.png").getImage();
     private Image Soldier_enemy = new ImageIcon("Soldier_enemy.png").getImage();
     private String direction_player = "left";
@@ -405,18 +405,12 @@ public class MyPanel extends JPanel implements KeyListener{
         this.sniperEnemy.Shooting_Sniper_Bullet();
     }
     private void Enemy_coordinates(){
-        thief thief1 = new thief(thief,200,70,30,30,"Y",320);
-        thief thief2 = new thief(thief,390,165,30,30,"X",120);
-        thief thief3 = new thief(thief,350,310,30,30,"Y",120);
-        thief thief4 = new thief(thief,595,140,30,30,"X",450);
-        thief thief5 = new thief(thief,580,10,30,30,"Y",180);
-        thief thief6 = new thief(thief,665,50,30,30,"Y",210);
-        thief_list.add(thief1);
-        thief_list.add(thief2);
-        thief_list.add(thief3);
-        thief_list.add(thief4);
-        thief_list.add(thief5);
-        thief_list.add(thief6);
+        thief_list.add(new thief(thief,200,70,30,30,"Y",320));
+        thief_list.add(new thief(thief,390,165,30,30,"X",120));
+        thief_list.add(new thief(thief,350,310,30,30,"Y",120));
+        thief_list.add(new thief(thief,595,140,30,30,"X",450));
+        thief_list.add(new thief(thief,580,10,30,30,"Y",180));
+        thief_list.add(new thief(thief,665,50,30,30,"Y",210));
     }
     private boolean bulletIntersectsEnemy(Bullet bullet, Enemy enemy) {
         Rectangle bulletRect = new Rectangle(bullet.getPosition_x(), bullet.getPosition_y(),
