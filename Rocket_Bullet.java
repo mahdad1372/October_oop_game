@@ -15,9 +15,7 @@ public class Rocket_Bullet extends Bullet{
     public Image getRocket_image(){
         return  this.Rocket_image;
     }
-    public void setRocket_image(Image rocket_img){
-        this.Rocket_image = rocket_img;
-    }
+
     public int getPositionFinal_y() {
         return this.Final_position_y;
     }

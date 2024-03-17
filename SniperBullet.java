@@ -1,19 +1,22 @@
+import java.awt.*;
+
 public class SniperBullet extends Bullet{
-    public SniperBullet(int bullet_x, int bullet_y, int Sn ,int FinalPosition , String direction) {
+    public SniperBullet(int bullet_x, int bullet_y,Image Sniper_bullet_image ,int FinalPosition) {
 
         super(bullet_x, bullet_y);
-        this.Sniper_number = Sn;
         this.FinalPosition = FinalPosition;
-        this.Direction = direction;
+        this.Sniper_bullet_image = Sniper_bullet_image;
     }
-    private int Sniper_number;
     private int FinalPosition;
-    private  String Direction;
+    private Image Sniper_bullet_image;
 
-
-
+    public Image getSniper_bullet_image(){
+        return  this.Sniper_bullet_image;
+    }
+    public int getFinalPosition(){
+        return  this.FinalPosition;
+    }
     public void shootingBullet(){
-
         int bullet_position = super.getPosition_y();
         super.setPosition_y(bullet_position+=5);
     }

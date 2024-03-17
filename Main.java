@@ -1,6 +1,6 @@
 import javax.swing.*;
 public class Main{
-    public static void main(String[] args) {
+    public static void main(String[] args) { 
         JFrame obj = new JFrame();
         MyPanel board = new MyPanel();
         obj.setBounds(10, 10, 950, 400);
