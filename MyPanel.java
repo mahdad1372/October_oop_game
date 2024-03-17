@@ -77,7 +77,7 @@ public class MyPanel extends JPanel implements KeyListener{
     private Soldier_enemy soldier_enemy;
     private SniperEnemy sniperEnemy;
     private Mines mine;
-    private ArrayList<Laser> Laser_list = new ArrayList<Laser>();
+    private Laser laser;
     private ArrayList<Menu> Menu_list = new ArrayList<Menu>();
     private ArrayList<thief> thief_list = new ArrayList<thief>();
     private ArrayList<Missile> Missile = new ArrayList<Missile>();
@@ -258,10 +258,6 @@ public class MyPanel extends JPanel implements KeyListener{
         }
 
 
-
-
-
-
         if (this.soldier_enemy != null){
             for (int i = 0; i < bullet_position.size(); i++){
                 if (bulletIntersectsSoldierEnemy(bullet_position.get(i),this.soldier_enemy)){
@@ -288,15 +284,15 @@ public class MyPanel extends JPanel implements KeyListener{
                 }
             }
         }
-        if (Laser_list.size()>0){
-            for (Laser laser:Laser_list){
-                if (playerIntersectLaser(laser)){
-                    this.player.setPosition_x(laser.get_coordinate_x());
-                    this.player.setPosition_y(laser.get_coordinate_y());
-                    Health = laser.health_decrease(Health);
-                }
+
+        if (this.laser != null){
+            if (playerIntersectLaser(laser)){
+                this.player.setPosition_x(laser.get_coordinate_x());
+                this.player.setPosition_y(laser.get_coordinate_y());
+                Health = laser.health_decrease(Health);
             }
         }
+
         if (this.mine != null) {
                     if (playerIntersectMine(this.mine)) {
                         Health = this.mine.health_decrease(Health);
@@ -396,14 +392,12 @@ public class MyPanel extends JPanel implements KeyListener{
     private void LaserDrawing(Graphics g){
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.red);
-        for (int i = 0 ; i< Laser_list.size();i++){
-            g2d.fillRect(Laser_list.get(i).get_coordinate_x(),Laser_list.get(i).get_coordinate_y(),
-                    Laser_list.get(i).calculate_area()/Laser_list.get(i).get_height(),
-                    Laser_list.get(i).calculate_area()/Laser_list.get(i).get_length());
-        }
+        g2d.fillRect(laser.get_coordinate_x(),laser.get_coordinate_y(),
+                laser.calculate_area()/laser.get_height(),
+                laser.calculate_area()/laser.get_length());
     }
     private void LaserCoordinates(){
-        Laser_list.add(new Laser(5,230,710,250));
+        this.laser = new Laser(5,230,710,250);
     }
     private void SniperCoordinates(){
         SniperBullet sniperBullet = new SniperBullet(470,10,Sniper_Bullet,400);

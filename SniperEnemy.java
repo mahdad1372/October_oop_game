@@ -10,12 +10,7 @@ public class SniperEnemy extends Army_enemy {
     }
     private ImageIcon icon = new ImageIcon("bullet.png");
     private SniperBullet Sniper_bullet;
-
-
-
     private ArrayList<SniperBullet> SniperBullet_List = new ArrayList<SniperBullet>();
-
-
     public ArrayList<SniperBullet> get_Sniper_bullet(){
         return this.SniperBullet_List;
     }
@@ -29,9 +24,7 @@ public class SniperEnemy extends Army_enemy {
             }
         };
         timer.schedule(task, 0, 4000);
-
     }
-
     public void Editing_Sniper_Bullet_List(){
         for (int i=0;i< SniperBullet_List.size();i++){
             if (SniperBullet_List.get(i).getPosition_y() ==SniperBullet_List.get(i).getFinalPosition()){

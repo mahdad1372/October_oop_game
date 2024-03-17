@@ -54,13 +54,6 @@ public abstract class Enemy  {
         return enemy;
     }
 
-    public void set_Position_enemy_x(int x) {
-        this.width = x;
-        this.height=x;
-    }
-    public void set_Position_enemy_y(int y) {
-      this.enemy_y = y;
-    }
     public void enemy_movement(int curr_position,int final_position ,String direction){
         if (direction == "Y"){
             if (this.enemy_y > final_position && increase_y == true){
