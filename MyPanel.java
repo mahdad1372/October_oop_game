@@ -42,13 +42,10 @@ public class MyPanel extends JPanel implements KeyListener{
         LaserCoordinates();
         SniperCoordinates();
         Shooting_Missile();
-
         Enemy_coordinates();
-//        Shooting_Bullet_Sniper();
         Mines_coordinate();
         this.soldier_enemy.Shooting_Rocket_Soldier();
         this.tankEnemy.Shooting_Rocket_Tank();
-        this.sniperEnemy.Shooting_Sniper_Bullet();
 
     }
 
@@ -79,11 +76,10 @@ public class MyPanel extends JPanel implements KeyListener{
     private Tank_enemy tankEnemy;
     private Soldier_enemy soldier_enemy;
     private SniperEnemy sniperEnemy;
-    private ArrayList<Mines> Mines_list = new ArrayList<Mines>();
+    private Mines mine;
     private ArrayList<Laser> Laser_list = new ArrayList<Laser>();
     private ArrayList<Menu> Menu_list = new ArrayList<Menu>();
     private ArrayList<thief> thief_list = new ArrayList<thief>();
-
     private ArrayList<Missile> Missile = new ArrayList<Missile>();
     private ArrayList<Bullet> bullet_position = new ArrayList<Bullet>();
     private ArrayList<Wall> Walls = new ArrayList<Wall>();
@@ -123,16 +119,17 @@ public class MyPanel extends JPanel implements KeyListener{
     }
 
     private void Mines_coordinate(){
-        Mines_list.add(new Mines(20,410,300));
+        this.mine = new Mines(20,410,300);
     }
     private void create_Mines(Graphics g){
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.yellow);
-        for (int i=0;i< Mines_list.size();i++){
-            g2d.fillOval(Mines_list.get(i).get_coordinate_x(),Mines_list.get(i).get_coordinate_y()
-                    ,Mines_list.get(i).calculate_area(),Mines_list.get(i).calculate_area());
-            g2d.drawImage(Mine, Mines_list.get(i).get_coordinate_x()+ (Mines_list.get(i).get_radius()/2), Mines_list.get(i).get_coordinate_y(), null);
+        if (this.mine != null){
+            g2d.fillOval(this.mine.get_coordinate_x(),this.mine.get_coordinate_y()
+                    ,this.mine.calculate_area(),this.mine.calculate_area());
+            g2d.drawImage(Mine, this.mine.get_coordinate_x()+ (this.mine.get_radius()/2), this.mine.get_coordinate_y(), null);
         }
+
     }
 
     @Override
@@ -300,14 +297,10 @@ public class MyPanel extends JPanel implements KeyListener{
                 }
             }
         }
-        if (Mines_list.size()>0) {
-                for (int i = 0; i < Mines_list.size(); i++) {
-                    if (playerIntersectMine(Mines_list.get(i))) {
-                        if (Mines_list.contains(Mines_list.get(i))) {
-                            Health = Mines_list.get(i).health_decrease(Health);
-                            Mines_list.remove(Mines_list.get(i));
-                        }
-                    }
+        if (this.mine != null) {
+                    if (playerIntersectMine(this.mine)) {
+                        Health = this.mine.health_decrease(Health);
+                        this.mine = null;
                 }
 
         }
@@ -415,6 +408,7 @@ public class MyPanel extends JPanel implements KeyListener{
     private void SniperCoordinates(){
         SniperBullet sniperBullet = new SniperBullet(470,10,Sniper_Bullet,400);
         this.sniperEnemy = new SniperEnemy(Sniper,470,10,20,20,"Y",400,sniperBullet);
+        this.sniperEnemy.Shooting_Sniper_Bullet();
     }
     private void Enemy_coordinates(){
         thief thief1 = new thief(thief,200,70,30,30,"Y",320);
