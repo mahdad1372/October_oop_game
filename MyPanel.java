@@ -77,14 +77,14 @@ public class MyPanel extends JPanel implements KeyListener{
     private Player player;
     private Tank_enemy tankEnemy;
     private Soldier_enemy soldier_enemy;
-    ArrayList<Mines> Mines_list = new ArrayList<Mines>();
-    ArrayList<Laser> Laser_list = new ArrayList<Laser>();
-    ArrayList<Menu> Menu_list = new ArrayList<Menu>();
-    ArrayList<thief> thief_list = new ArrayList<thief>();
-    ArrayList<SniperEnemy> SniperEnemy = new ArrayList<SniperEnemy>();
-    ArrayList<Missile> Missile = new ArrayList<Missile>();
-    ArrayList<Bullet> bullet_position = new ArrayList<Bullet>();
-    ArrayList<Wall> Walls = new ArrayList<Wall>();
+    private ArrayList<Mines> Mines_list = new ArrayList<Mines>();
+    private ArrayList<Laser> Laser_list = new ArrayList<Laser>();
+    private ArrayList<Menu> Menu_list = new ArrayList<Menu>();
+    private ArrayList<thief> thief_list = new ArrayList<thief>();
+    private ArrayList<SniperEnemy> SniperEnemy = new ArrayList<SniperEnemy>();
+    private ArrayList<Missile> Missile = new ArrayList<Missile>();
+    private ArrayList<Bullet> bullet_position = new ArrayList<Bullet>();
+    private ArrayList<Wall> Walls = new ArrayList<Wall>();
 
 
     private void Shooting_Bullet_Sniper(){
@@ -117,7 +117,7 @@ public class MyPanel extends JPanel implements KeyListener{
     }
 
 
-    public void bullet_position(Integer index){
+    private void bullet_position(Integer index){
         ScheduledExecutorService executor2 = Executors.newScheduledThreadPool(1);
 
         Runnable function1 = new Runnable() {
@@ -236,7 +236,6 @@ public class MyPanel extends JPanel implements KeyListener{
                 }
             }
         }catch (Exception e){
-            //System.out.println("An unexpected error occurred: " + e.getMessage());
         }
 
 
@@ -389,7 +388,7 @@ public class MyPanel extends JPanel implements KeyListener{
         }
 
     }
-    public void WallDrawing(Graphics g){
+    private void WallDrawing(Graphics g){
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.blue);
         for (int i = 0 ; i< Walls.size();i++){
@@ -397,7 +396,7 @@ public class MyPanel extends JPanel implements KeyListener{
                     Walls.get(i).getWidth(),Walls.get(i).getHeight());
         }
     }
-    public void WallCoordinates(){
+    private void WallCoordinates(){
         Walls.add(new Wall(130,0,20,140));
         Walls.add(new Wall(130,200,20,140));
         Walls.add(new Wall(150,40,120,20));
@@ -415,7 +414,7 @@ public class MyPanel extends JPanel implements KeyListener{
         Walls.add(new Wall(710,270,20,100));
         Walls.add(new Wall(710,180,230,20));
     }
-    public void LaserDrawing(Graphics g){
+    private void LaserDrawing(Graphics g){
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.red);
         for (int i = 0 ; i< Laser_list.size();i++){
@@ -424,14 +423,14 @@ public class MyPanel extends JPanel implements KeyListener{
                     Laser_list.get(i).calculate_area()/Laser_list.get(i).get_length());
         }
     }
-    public void LaserCoordinates(){
+    private void LaserCoordinates(){
         Laser_list.add(new Laser(5,230,710,250));
     }
-    public void SniperCoordinates(){
+    private void SniperCoordinates(){
         SniperEnemy snipers = new SniperEnemy(Sniper,470,10,20,20,"Y",400,1);
         SniperEnemy.add(snipers);
     }
-    public void Enemy_coordinates(){
+    private void Enemy_coordinates(){
         thief thief1 = new thief(thief,200,70,30,30,"Y",320);
         thief thief2 = new thief(thief,390,165,30,30,"X",120);
         thief thief3 = new thief(thief,350,310,30,30,"Y",120);
@@ -445,7 +444,7 @@ public class MyPanel extends JPanel implements KeyListener{
         thief_list.add(thief5);
         thief_list.add(thief6);
     }
-    public boolean bulletIntersectsEnemy(Bullet bullet, Enemy enemy) {
+    private boolean bulletIntersectsEnemy(Bullet bullet, Enemy enemy) {
         Rectangle bulletRect = new Rectangle(bullet.getPosition_x(), bullet.getPosition_y(),
                 10, 10);
         Rectangle enemyRect = new Rectangle(enemy.getPosition_enemy_x(), enemy.getPosition_enemy_y(),
@@ -453,7 +452,7 @@ public class MyPanel extends JPanel implements KeyListener{
 
         return bulletRect.intersects(enemyRect);
     }
-    public boolean bulletIntersectsSoldierEnemy(Bullet bullet, Soldier_enemy soldier_enemy) {
+    private boolean bulletIntersectsSoldierEnemy(Bullet bullet, Soldier_enemy soldier_enemy) {
         Rectangle bulletRect = new Rectangle(bullet.getPosition_x(), bullet.getPosition_y(),
                 10, 10);
         Rectangle soldier_enemy_Rect = new Rectangle(soldier_enemy.getPosition_enemy_x(), soldier_enemy.getPosition_enemy_y(),
@@ -461,7 +460,7 @@ public class MyPanel extends JPanel implements KeyListener{
 
         return bulletRect.intersects(soldier_enemy_Rect);
     }
-    public boolean bulletIntersectsTank(Bullet bullet, Tank_enemy Tank) {
+    private boolean bulletIntersectsTank(Bullet bullet, Tank_enemy Tank) {
         Rectangle bulletRect = new Rectangle(bullet.getPosition_x(), bullet.getPosition_y(),
                 10, 10);
         Rectangle tankRect = new Rectangle(Tank.getPosition_enemy_x(), Tank.getPosition_enemy_y(),
@@ -469,7 +468,7 @@ public class MyPanel extends JPanel implements KeyListener{
 
         return bulletRect.intersects(tankRect);
     }
-    public boolean bulletIntersectsSniperEnemy(Bullet bullet, SniperEnemy sniper) {
+    private boolean bulletIntersectsSniperEnemy(Bullet bullet, SniperEnemy sniper) {
         Rectangle bulletRect = new Rectangle(bullet.getPosition_x(), bullet.getPosition_y(),
                 10, 10);
         Rectangle enemyRect = new Rectangle(sniper.getPosition_enemy_x(), sniper.getPosition_enemy_y(),
@@ -477,7 +476,7 @@ public class MyPanel extends JPanel implements KeyListener{
 
         return bulletRect.intersects(enemyRect);
     }
-    public boolean bulletIntersectsMaze(Bullet bullet, Wall wall) {
+    private boolean bulletIntersectsMaze(Bullet bullet, Wall wall) {
         Rectangle bulletRect = new Rectangle(bullet.getPosition_x(), bullet.getPosition_y(),
                 10, 10);
         Rectangle enemyRect = new Rectangle(wall.getPosition_Wall_x(), wall.getPosition_Wall_y(),
@@ -485,7 +484,7 @@ public class MyPanel extends JPanel implements KeyListener{
 
         return bulletRect.intersects(enemyRect);
     }
-    public boolean playerIntersectMaze(Wall wall) {
+    private boolean playerIntersectMaze(Wall wall) {
         Rectangle playerRect = new Rectangle(this.player.getPosition_x(), this.player.getPosition_y(),
                 30, 30);
         Rectangle wallRect = new Rectangle(wall.getPosition_Wall_x(), wall.getPosition_Wall_y(),
@@ -493,7 +492,7 @@ public class MyPanel extends JPanel implements KeyListener{
 
         return playerRect.intersects(wallRect);
     }
-    public boolean playerIntersectLaser(Laser laser) {
+    private boolean playerIntersectLaser(Laser laser) {
         Rectangle playerRect = new Rectangle(this.player.getPosition_x(), this.player.getPosition_y(),
                 30, 30);
         Rectangle wallRect = new Rectangle(laser.get_coordinate_x(), laser.get_coordinate_y(),
@@ -501,7 +500,7 @@ public class MyPanel extends JPanel implements KeyListener{
 
         return playerRect.intersects(wallRect);
     }
-    public boolean playerIntersectEnemy(Enemy enemy) {
+    private boolean playerIntersectEnemy(Enemy enemy) {
         Rectangle playerRect = new Rectangle(this.player.getPosition_x(), this.player.getPosition_y(),
                 30, 30);
         Rectangle enemyRect = new Rectangle(enemy.getPosition_enemy_x(), enemy.getPosition_enemy_y(),
@@ -509,7 +508,7 @@ public class MyPanel extends JPanel implements KeyListener{
 
         return playerRect.intersects(enemyRect);
     }
-    public boolean playerIntersectTankRocket(Tank_rocket tank_rocket) {
+    private boolean playerIntersectTankRocket(Tank_rocket tank_rocket) {
         Rectangle playerRect = new Rectangle(this.player.getPosition_x(), this.player.getPosition_y(),
                 30, 30);
         Rectangle enemyRect = new Rectangle(tank_rocket.getPosition_x(), tank_rocket.getPosition_y(),
@@ -517,7 +516,7 @@ public class MyPanel extends JPanel implements KeyListener{
 
         return playerRect.intersects(enemyRect);
     }
-    public boolean playerIntersectMine(Mines mine) {
+    private boolean playerIntersectMine(Mines mine) {
         Rectangle playerRect = new Rectangle(this.player.getPosition_x(), this.player.getPosition_y(),
                 30, 30);
         Rectangle mineRect = new Rectangle(mine.get_coordinate_x(), mine.get_coordinate_y(),
