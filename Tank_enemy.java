@@ -3,8 +3,8 @@ import java.util.ArrayList;
 import java.util.TimerTask;
 
 public class Tank_enemy extends Army_enemy{
-    public Tank_enemy(Image img, int x, int y, int w , int h, String direction, int final_position ,Tank_rocket tank_rocket){
-        super(img, x, y, w, h, direction, final_position);
+    public Tank_enemy(Image img, int x, int y, int w , int h ,Tank_rocket tank_rocket){
+        super(img, x, y, w, h);
         this.tank_rocket = tank_rocket;
     }
     private Tank_rocket tank_rocket;

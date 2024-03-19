@@ -16,10 +16,9 @@ public class MyPanel extends JPanel implements KeyListener{
         Menu_list.add(new Menu(70,40,780,250,"winner"));
         Menu_list.add(new Menu(70,40,780,250,"looser"));
         Tank_rocket tank_rocket = new Tank_rocket(580, 230, Tank_rocket,580,50);
-        Tank_enemy tank_enemy = new Tank_enemy(Tank,580,250,40,40,"down",80,tank_rocket);
-        this.tankEnemy = tank_enemy;
+        this.tankEnemy = new Tank_enemy(Tank,580,250,40,40,tank_rocket);
         Soldier_rocket rocket = new Soldier_rocket(660, 320, Soldier_rocket,660,50);
-        this.soldier_enemy = new Soldier_enemy(Soldier_enemy,660,320,40,40,"down",80,rocket);
+        this.soldier_enemy = new Soldier_enemy(Soldier_enemy,660,320,40,40,rocket);
         addKeyListener(this);
         setFocusable(true);
         setVisible(true);
@@ -226,9 +225,9 @@ public class MyPanel extends JPanel implements KeyListener{
         // Drawing thief enemy
         for (int i=0;i< thief_list.size();i++){
             g.drawImage(thief_list.get(i).getImage_enemy(),
-                    thief_list.get(i).getPosition_enemy_x() , thief_list.get(i).getPosition_enemy_y(),null);
-            thief_list.get(i).enemy_movement( thief_list.get(i).getCurr_position(),
-                    thief_list.get(i).getFinal_position(),thief_list.get(i).getDirection());
+                    thief_list.get(i).getPosition_enemy_x(),thief_list.get(i).getPosition_enemy_y(),null);
+            thief_list.get(i).thief_movement(thief_list.get(i).getCurr_position(),
+                    thief_list.get(i).getFinal_position(),thief_list.get(i).get_direction());
 
         }
         if (bullet_position.size() > 0){
@@ -401,7 +400,7 @@ public class MyPanel extends JPanel implements KeyListener{
     }
     private void SniperCoordinates(){
         SniperBullet sniperBullet = new SniperBullet(470,10,Sniper_Bullet,400);
-        this.sniperEnemy = new SniperEnemy(Sniper,470,10,20,20,"Y",400,sniperBullet);
+        this.sniperEnemy = new SniperEnemy(Sniper,470,10,20,20,sniperBullet);
         this.sniperEnemy.Shooting_Sniper_Bullet();
     }
     private void Enemy_coordinates(){

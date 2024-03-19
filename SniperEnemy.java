@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.TimerTask;
 
 public class SniperEnemy extends Army_enemy {
-    public SniperEnemy(Image img, int x, int y, int w, int h, String direction, int final_position ,SniperBullet Sniper_bullet) {
-        super(img, x, y, w, h, direction, final_position);
+    public SniperEnemy(Image img, int x, int y, int w, int h,SniperBullet Sniper_bullet) {
+        super(img, x, y, w, h);
         this.Sniper_bullet = Sniper_bullet;
     }
     private ImageIcon icon = new ImageIcon("bullet.png");
