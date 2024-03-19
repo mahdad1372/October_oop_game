@@ -19,6 +19,8 @@ public class MyPanel extends JPanel implements KeyListener{
         this.tankEnemy = new Tank_enemy(Tank,580,250,40,40,tank_rocket);
         Soldier_rocket rocket = new Soldier_rocket(660, 320, Soldier_rocket,660,50);
         this.soldier_enemy = new Soldier_enemy(Soldier_enemy,660,320,40,40,rocket);
+        Missile Missile = new Missile(160, 310, 270,200,Missile_img);
+        this.MissileLauncher = new Missile_launcher(Launcher, 160, 300,30,30,Missile);
         addKeyListener(this);
         setFocusable(true);
         setVisible(true);
@@ -40,11 +42,11 @@ public class MyPanel extends JPanel implements KeyListener{
         WallCoordinates();
         LaserCoordinates();
         SniperCoordinates();
-        Shooting_Missile();
         Enemy_coordinates();
         Mines_coordinate();
         this.soldier_enemy.Shooting_Rocket_Soldier();
         this.tankEnemy.Shooting_Rocket_Tank();
+        this.MissileLauncher.Adding_Missiles();
 
     }
 
@@ -77,23 +79,13 @@ public class MyPanel extends JPanel implements KeyListener{
     private SniperEnemy sniperEnemy;
     private Mines mine;
     private Laser laser;
+
+    private Missile_launcher MissileLauncher;
     private ArrayList<Menu> Menu_list = new ArrayList<Menu>();
     private ArrayList<thief> thief_list = new ArrayList<thief>();
-    private ArrayList<Missile> Missile = new ArrayList<Missile>();
     private ArrayList<Bullet> bullet_position = new ArrayList<Bullet>();
     private ArrayList<Wall> Walls = new ArrayList<Wall>();
 
-    private void Shooting_Missile(){
-        java.util.Timer timer = new java.util.Timer();
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                Missile.add(new Missile(160, 310, 270,200));
-            }
-        };
-        timer.schedule(task, 0, 3000);
-
-    }
 
 
     private void bullet_position(Integer index){
@@ -110,11 +102,10 @@ public class MyPanel extends JPanel implements KeyListener{
         };
         executor2.scheduleAtFixedRate(function1, 0, 12, TimeUnit.MILLISECONDS);
     }
-    private void createBullet(Graphics2D g2d , int x , int y , int r){
+    private void createBullet(Graphics2D g2d , int coordinate_x , int coordinate_y , int radius){
         g2d.setColor(Color.BLUE);
-        int radius = r;
-        g2d.fillOval(x, y, radius, radius);
-        g2d.drawOval(x, y, radius, radius);
+        g2d.fillOval(coordinate_x, coordinate_y, radius, radius);
+        g2d.drawOval(coordinate_x, coordinate_y, radius, radius);
     }
 
     private void Mines_coordinate(){
@@ -142,7 +133,19 @@ public class MyPanel extends JPanel implements KeyListener{
         FinalResult<String, Double,Double,String> result_lose = new FinalResult<>("Mahdad", double_health,double_score,
                 "looser");
         g.drawImage(player.getPlayerIcon(), this.player.getPosition_x(), this.player.getPosition_y(), null);
-        g.drawImage(Launcher, 160, 300, null);
+
+        if (this.MissileLauncher != null){
+            g.drawImage(this.MissileLauncher.getImage_enemy(), this.MissileLauncher.getPosition_enemy_x(),
+                    this.MissileLauncher.getPosition_enemy_y(), null);
+            for (int i=0;i <this.MissileLauncher.get_Missiles().size();i++){
+                this.MissileLauncher.get_Missiles().get(i).Missile_Shooting();
+                g.drawImage(this.MissileLauncher.get_Missiles().get(i).getMissileImage(),
+                        this.MissileLauncher.get_Missiles().get(i).getPosition_coordinate_x() ,
+                        this.MissileLauncher.get_Missiles().get(i).getPosition_coordinate_y(),null);
+            }
+            this.MissileLauncher.Editing_Missile_List();
+        }
+
 
 
         if (this.soldier_enemy != null){
@@ -159,14 +162,6 @@ public class MyPanel extends JPanel implements KeyListener{
 
 
 
-        for (int i=0;i< Missile.size();i++){
-            g.drawImage(Missile_img, Missile.get(i).getPosition_coordinate_x() , Missile.get(i).getPosition_coordinate_y(),null);
-            Missile.get(i).Missile_Shooting();
-            if (Missile.get(i).getPosition_coordinate_x() ==Missile.get(i).getPositionFinal_x() &&
-                    Missile.get(i).getPosition_coordinate_y() ==Missile.get(i).getPositionFinal_y()){
-                Missile.remove(i);
-            }
-        }
         // Drawing sniper enemy and sniper bullet
         if (this.sniperEnemy != null){
             g.drawImage(this.sniperEnemy.getImage_enemy(),

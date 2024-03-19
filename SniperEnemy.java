@@ -8,7 +8,6 @@ public class SniperEnemy extends Army_enemy {
         super(img, coordinate_x, coordinate_y, width, height);
         this.Sniper_bullet = Sniper_bullet;
     }
-    private ImageIcon icon = new ImageIcon("bullet.png");
     private SniperBullet Sniper_bullet;
     private ArrayList<SniperBullet> SniperBullet_List = new ArrayList<SniperBullet>();
     public ArrayList<SniperBullet> get_Sniper_bullet(){
