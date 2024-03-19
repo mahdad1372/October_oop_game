@@ -12,15 +12,6 @@ import java.util.concurrent.TimeUnit;
 
 public class MyPanel extends JPanel implements KeyListener{
     public MyPanel() {
-        this.player = new Player(0,0,Player_icon);
-        Menu_list.add(new Menu(70,40,780,250,"winner"));
-        Menu_list.add(new Menu(70,40,780,250,"looser"));
-        Tank_rocket tank_rocket = new Tank_rocket(580, 230, Tank_rocket,580,50);
-        this.tankEnemy = new Tank_enemy(Tank,580,250,40,40,tank_rocket);
-        Soldier_rocket rocket = new Soldier_rocket(660, 320, Soldier_rocket,660,50);
-        this.soldier_enemy = new Soldier_enemy(Soldier_enemy,660,320,40,40,rocket);
-        Missile Missile = new Missile(160, 310, 270,200,Missile_img);
-        this.MissileLauncher = new Missile_launcher(Launcher, 160, 300,30,30,Missile);
         addKeyListener(this);
         setFocusable(true);
         setVisible(true);
@@ -39,11 +30,16 @@ public class MyPanel extends JPanel implements KeyListener{
             }
         });
         Game_Timer.start();
-        WallCoordinates();
-        LaserCoordinates();
-        SniperCoordinates();
-        Enemy_coordinates();
-        Mines_coordinate();
+        creating_player();
+        creating_Menu();
+        creating_Tank();
+        creating_Soldier();
+        creating_Missile_launcher();
+        creating_wall();
+        creating_laser();
+        creating_sniper();
+        creating_enemy();
+        creating_mines();
         this.soldier_enemy.Shooting_Rocket_Soldier();
         this.tankEnemy.Shooting_Rocket_Tank();
         this.MissileLauncher.Adding_Missiles();
@@ -87,7 +83,25 @@ public class MyPanel extends JPanel implements KeyListener{
     private ArrayList<Wall> Walls = new ArrayList<Wall>();
 
 
-
+    private void creating_player(){
+        this.player = new Player(0,0,Player_icon);
+    }
+    private void creating_Menu(){
+        Menu_list.add(new Menu(70,40,780,250,"winner"));
+        Menu_list.add(new Menu(70,40,780,250,"looser"));
+    }
+    private void creating_Tank(){
+        Tank_rocket tank_rocket = new Tank_rocket(580, 230, Tank_rocket,580,50);
+        this.tankEnemy = new Tank_enemy(Tank,580,250,40,40,tank_rocket);
+    }
+    private void creating_Soldier(){
+        Soldier_rocket rocket = new Soldier_rocket(660, 320, Soldier_rocket,660,50);
+        this.soldier_enemy = new Soldier_enemy(Soldier_enemy,660,320,40,40,rocket);
+    }
+    private void creating_Missile_launcher(){
+        Missile Missile = new Missile(160, 310, 270,200,Missile_img);
+        this.MissileLauncher = new Missile_launcher(Launcher, 160, 300,30,30,Missile);
+    }
     private void bullet_position(Integer index){
         ScheduledExecutorService executor2 = Executors.newScheduledThreadPool(1);
 
@@ -108,10 +122,10 @@ public class MyPanel extends JPanel implements KeyListener{
         g2d.drawOval(coordinate_x, coordinate_y, radius, radius);
     }
 
-    private void Mines_coordinate(){
+    private void creating_mines(){
         this.mine = new Mines(20,410,300);
     }
-    private void create_Mines(Graphics g){
+    private void drawing_Mines(Graphics g){
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.yellow);
         if (this.mine != null){
@@ -328,7 +342,7 @@ public class MyPanel extends JPanel implements KeyListener{
         g.drawString(text3, 890, 230);
         WallDrawing(g);
         LaserDrawing(g);
-        create_Mines(g);
+        drawing_Mines(g);
         for (Menu menu:Menu_list){
             if (display_menu_winner == true && menu.get_menu_type() == "winner"){
                 g2d.setColor(Color.GREEN);
@@ -365,7 +379,7 @@ public class MyPanel extends JPanel implements KeyListener{
                     Walls.get(i).getWidth(),Walls.get(i).getHeight());
         }
     }
-    private void WallCoordinates(){
+    private void creating_wall(){
         Walls.add(new Wall(130,0,20,140));
         Walls.add(new Wall(130,200,20,140));
         Walls.add(new Wall(150,40,120,20));
@@ -390,15 +404,15 @@ public class MyPanel extends JPanel implements KeyListener{
                 laser.calculate_area()/laser.get_height(),
                 laser.calculate_area()/laser.get_length());
     }
-    private void LaserCoordinates(){
+    private void creating_laser(){
         this.laser = new Laser(5,230,710,250);
     }
-    private void SniperCoordinates(){
+    private void creating_sniper(){
         SniperBullet sniperBullet = new SniperBullet(470,10,Sniper_Bullet,400);
         this.sniperEnemy = new SniperEnemy(Sniper,470,10,20,20,sniperBullet);
         this.sniperEnemy.Shooting_Sniper_Bullet();
     }
-    private void Enemy_coordinates(){
+    private void creating_enemy(){
         thief_list.add(new thief(thief,200,70,30,30,"Y",320));
         thief_list.add(new thief(thief,390,165,30,30,"X",120));
         thief_list.add(new thief(thief,350,310,30,30,"Y",120));
