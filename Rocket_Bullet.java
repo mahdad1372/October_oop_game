@@ -1,8 +1,8 @@
 import java.awt.*;
 
 public class Rocket_Bullet extends Bullet{
-    public Rocket_Bullet(int bullet_x, int bullet_y , Image rocket_image, int Final_position_x, int Final_position_y) {
-        super(bullet_x, bullet_y);
+    public Rocket_Bullet(int Rocket_coordinate_x, int Rocket_coordinate_y , Image rocket_image, int Final_position_x, int Final_position_y) {
+        super(Rocket_coordinate_x, Rocket_coordinate_y);
         this.Rocket_image = rocket_image;
         this.Final_position_x = Final_position_x;
         this.Final_position_y = Final_position_y;

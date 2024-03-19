@@ -1,26 +1,26 @@
 import java.io.*;
 import java.util.*;
 public class Menu {
-    public Menu ( int x, int y,int w , int h , String menu_type){
-        this.Menu_x = x;
-        this.Menu_y = y;
-        this.width = w;
-        this.height = h;
+    public Menu ( int coordinate_x, int coordinate_y,int width , int height , String menu_type){
+        this.Menu_coordinate_x = coordinate_x;
+        this.Menu_coordinate_y = coordinate_y;
+        this.width = width;
+        this.height = height;
         this.menu_type = menu_type;
     }
-    private int Menu_x;
-    private int  Menu_y;
+    private int Menu_coordinate_x;
+    private int  Menu_coordinate_y;
     private int  width ;
     private int  height ;
     private String menu_type;
 
     public int getPosition_menu_x() {
-        return Menu_x;
+        return Menu_coordinate_x;
     }
 
 
     public int getPosition_menu_y() {
-        return Menu_y;
+        return Menu_coordinate_y;
     }
     public int getWidth() {
         return width;

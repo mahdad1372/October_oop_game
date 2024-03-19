@@ -20,7 +20,7 @@ public class Soldier_enemy extends Army_enemy{
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                Soldier_rocket_list.add(new Soldier_rocket(Soldier_Rocket.getPosition_x(),Soldier_Rocket.getPosition_y(),
+                Soldier_rocket_list.add(new Soldier_rocket(Soldier_Rocket.getPosition_coordinate_x(),Soldier_Rocket.getPosition_coordinate_y(),
                        Soldier_Rocket.getRocket_image(),Soldier_Rocket.getPositionFinal_x(),Soldier_Rocket.getPositionFinal_y()));
             }
         };
@@ -30,8 +30,8 @@ public class Soldier_enemy extends Army_enemy{
 
     public void Editing_Rocket_List(){
         for (int i=0;i< Soldier_rocket_list.size();i++){
-            if (Soldier_rocket_list.get(i).getPosition_x() ==Soldier_rocket_list.get(i).getPositionFinal_x() &&
-                    Soldier_rocket_list.get(i).getPosition_y() == Soldier_rocket_list.get(i).getPositionFinal_y()){
+            if (Soldier_rocket_list.get(i).getPosition_coordinate_x() ==Soldier_rocket_list.get(i).getPositionFinal_x() &&
+                    Soldier_rocket_list.get(i).getPosition_coordinate_y() == Soldier_rocket_list.get(i).getPositionFinal_y()){
                 Soldier_rocket_list.remove(i);
             }
         }

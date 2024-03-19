@@ -1,14 +1,14 @@
 import java.awt.*;
 
 public class Player {
-    public Player(int x , int y, Image icon){
-        this.position_x =x;
-        this.position_y = y;
-        this.Icon_player = icon;
+    public Player(int player_coordinate_x , int player_coordinate_y, Image player_image){
+        this.position_x =player_coordinate_x;
+        this.position_y = player_coordinate_y;
+        this.Image_player = player_image;
     }
     private int position_x;
     private int position_y;
-    private Image Icon_player;
+    private Image Image_player;
 
 
 
@@ -19,11 +19,11 @@ public class Player {
         return this.position_y;
     }
     public Image getPlayerIcon(){
-        return  this.Icon_player;
+        return  this.Image_player;
     }
 
     public void setPlayerIcon(Image img){
-        this.Icon_player = img;
+        this.Image_player = img;
     }
     public void setPosition_x(int x){
         this.position_x = x;

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.TimerTask;
 
 public class SniperEnemy extends Army_enemy {
-    public SniperEnemy(Image img, int x, int y, int w, int h,SniperBullet Sniper_bullet) {
-        super(img, x, y, w, h);
+    public SniperEnemy(Image img, int coordinate_x, int coordinate_y, int width, int height,SniperBullet Sniper_bullet) {
+        super(img, coordinate_x, coordinate_y, width, height);
         this.Sniper_bullet = Sniper_bullet;
     }
     private ImageIcon icon = new ImageIcon("bullet.png");
@@ -19,7 +19,7 @@ public class SniperEnemy extends Army_enemy {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                SniperBullet_List.add(new SniperBullet(Sniper_bullet.getPosition_x(),Sniper_bullet.getPosition_y(),
+                SniperBullet_List.add(new SniperBullet(Sniper_bullet.getPosition_coordinate_x(),Sniper_bullet.getPosition_coordinate_y(),
                         Sniper_bullet.getSniper_bullet_image(),Sniper_bullet.getFinalPosition()));
             }
         };
@@ -27,7 +27,7 @@ public class SniperEnemy extends Army_enemy {
     }
     public void Editing_Sniper_Bullet_List(){
         for (int i=0;i< SniperBullet_List.size();i++){
-            if (SniperBullet_List.get(i).getPosition_y() ==SniperBullet_List.get(i).getFinalPosition()){
+            if (SniperBullet_List.get(i).getPosition_coordinate_y() ==SniperBullet_List.get(i).getFinalPosition()){
                 SniperBullet_List.remove(i);
             }
         }

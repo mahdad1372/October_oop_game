@@ -1,9 +1,9 @@
 import java.awt.*;
 
 public class SniperBullet extends Bullet{
-    public SniperBullet(int bullet_x, int bullet_y,Image Sniper_bullet_image ,int FinalPosition) {
+    public SniperBullet(int SniperBullet_x, int SniperBullet_y,Image Sniper_bullet_image ,int FinalPosition) {
 
-        super(bullet_x, bullet_y);
+        super(SniperBullet_x, SniperBullet_y);
         this.FinalPosition = FinalPosition;
         this.Sniper_bullet_image = Sniper_bullet_image;
     }
