@@ -103,7 +103,7 @@ public class MyPanel extends JPanel implements KeyListener{
             @Override
             public void run() {
                 try {
-                    bullet_position.get(index).getPosition_x_on_time(direction_player);
+                    bullet_position.get(index).getPosition_coordinateBullet_on_time(direction_player);
                 } catch (Exception e){
                 }
             }
@@ -152,18 +152,18 @@ public class MyPanel extends JPanel implements KeyListener{
             for (int i=0;i <this.soldier_enemy.getSoldier_Rocket().size();i++){
                 this.soldier_enemy.getSoldier_Rocket().get(i).Rocket_Shooting();
                     g.drawImage( this.soldier_enemy.getSoldier_Rocket().get(i).getRocket_image(),
-                            this.soldier_enemy.getSoldier_Rocket().get(i).getPosition_x(),
-                            this.soldier_enemy.getSoldier_Rocket().get(i).getPosition_y(),null);
+                            this.soldier_enemy.getSoldier_Rocket().get(i).getPosition_coordinate_x(),
+                            this.soldier_enemy.getSoldier_Rocket().get(i).getPosition_coordinate_y(),null);
                 }
         }
 
 
 
         for (int i=0;i< Missile.size();i++){
-            g.drawImage(Missile_img, Missile.get(i).getPosition_x() , Missile.get(i).getPosition_y(),null);
+            g.drawImage(Missile_img, Missile.get(i).getPosition_coordinate_x() , Missile.get(i).getPosition_coordinate_y(),null);
             Missile.get(i).Missile_Shooting();
-            if (Missile.get(i).getPosition_x() ==Missile.get(i).getPositionFinal_x() &&
-                    Missile.get(i).getPosition_y() ==Missile.get(i).getPositionFinal_y()){
+            if (Missile.get(i).getPosition_coordinate_x() ==Missile.get(i).getPositionFinal_x() &&
+                    Missile.get(i).getPosition_coordinate_y() ==Missile.get(i).getPositionFinal_y()){
                 Missile.remove(i);
             }
         }
@@ -183,8 +183,8 @@ public class MyPanel extends JPanel implements KeyListener{
                 }
                 this.sniperEnemy.get_Sniper_bullet().get(i).shootingBullet();
                 g.drawImage(this.sniperEnemy.get_Sniper_bullet().get(i).getSniper_bullet_image(),
-                        this.sniperEnemy.get_Sniper_bullet().get(i).getPosition_x(),
-                        this.sniperEnemy.get_Sniper_bullet().get(i).getPosition_y(),null);
+                        this.sniperEnemy.get_Sniper_bullet().get(i).getPosition_coordinate_x(),
+                        this.sniperEnemy.get_Sniper_bullet().get(i).getPosition_coordinate_y(),null);
                 this.sniperEnemy.Editing_Sniper_Bullet_List();
 
             }
@@ -211,8 +211,8 @@ public class MyPanel extends JPanel implements KeyListener{
                 }
                 this.tankEnemy.getTank_Rocket().get(i).Rocket_Shooting();
                 g.drawImage(this.tankEnemy.getTank_Rocket().get(i).getRocket_image(),
-                        this.tankEnemy.getTank_Rocket().get(i).getPosition_x(),
-                        this.tankEnemy.getTank_Rocket().get(i).getPosition_y(),null);
+                        this.tankEnemy.getTank_Rocket().get(i).getPosition_coordinate_x(),
+                        this.tankEnemy.getTank_Rocket().get(i).getPosition_coordinate_y(),null);
                 this.tankEnemy.Editing_Rocket_List();
 
             }
@@ -232,11 +232,11 @@ public class MyPanel extends JPanel implements KeyListener{
         }
         if (bullet_position.size() > 0){
             for (int i =0; i <bullet_position.size();i++){
-                createBullet(g2d,bullet_position.get(i).getPosition_x(),bullet_position.get(i).getPosition_y(),
+                createBullet(g2d,bullet_position.get(i).getPosition_coordinate_x(),bullet_position.get(i).getPosition_coordinate_y(),
                         10);
                 boolean found = bullet_position.contains(bullet_position.get(i));
                 if (found){
-                    bullet_position(bullet_position.get(i).getPosition_x());
+                    bullet_position(bullet_position.get(i).getPosition_coordinate_x());
                     bullet_position(i);
                 }
             }
@@ -412,7 +412,7 @@ public class MyPanel extends JPanel implements KeyListener{
         thief_list.add(new thief(thief,665,50,30,30,"Y",210));
     }
     private boolean bulletIntersectsEnemy(Bullet bullet, Enemy enemy) {
-        Rectangle bulletRect = new Rectangle(bullet.getPosition_x(), bullet.getPosition_y(),
+        Rectangle bulletRect = new Rectangle(bullet.getPosition_coordinate_x(), bullet.getPosition_coordinate_y(),
                 10, 10);
         Rectangle enemyRect = new Rectangle(enemy.getPosition_enemy_x(), enemy.getPosition_enemy_y(),
                 30,30);
@@ -420,7 +420,7 @@ public class MyPanel extends JPanel implements KeyListener{
         return bulletRect.intersects(enemyRect);
     }
     private boolean bulletIntersectsSoldierEnemy(Bullet bullet, Soldier_enemy soldier_enemy) {
-        Rectangle bulletRect = new Rectangle(bullet.getPosition_x(), bullet.getPosition_y(),
+        Rectangle bulletRect = new Rectangle(bullet.getPosition_coordinate_x(), bullet.getPosition_coordinate_y(),
                 10, 10);
         Rectangle soldier_enemy_Rect = new Rectangle(soldier_enemy.getPosition_enemy_x(), soldier_enemy.getPosition_enemy_y(),
                 30,30);
@@ -428,7 +428,7 @@ public class MyPanel extends JPanel implements KeyListener{
         return bulletRect.intersects(soldier_enemy_Rect);
     }
     private boolean bulletIntersectsTank(Bullet bullet, Tank_enemy Tank) {
-        Rectangle bulletRect = new Rectangle(bullet.getPosition_x(), bullet.getPosition_y(),
+        Rectangle bulletRect = new Rectangle(bullet.getPosition_coordinate_x(), bullet.getPosition_coordinate_y(),
                 10, 10);
         Rectangle tankRect = new Rectangle(Tank.getPosition_enemy_x(), Tank.getPosition_enemy_y(),
                 30,30);
@@ -436,7 +436,7 @@ public class MyPanel extends JPanel implements KeyListener{
         return bulletRect.intersects(tankRect);
     }
     private boolean bulletIntersectsSniperEnemy(Bullet bullet, SniperEnemy sniper) {
-        Rectangle bulletRect = new Rectangle(bullet.getPosition_x(), bullet.getPosition_y(),
+        Rectangle bulletRect = new Rectangle(bullet.getPosition_coordinate_x(), bullet.getPosition_coordinate_y(),
                 10, 10);
         Rectangle enemyRect = new Rectangle(sniper.getPosition_enemy_x(), sniper.getPosition_enemy_y(),
                 30,30);
@@ -444,7 +444,7 @@ public class MyPanel extends JPanel implements KeyListener{
         return bulletRect.intersects(enemyRect);
     }
     private boolean bulletIntersectsMaze(Bullet bullet, Wall wall) {
-        Rectangle bulletRect = new Rectangle(bullet.getPosition_x(), bullet.getPosition_y(),
+        Rectangle bulletRect = new Rectangle(bullet.getPosition_coordinate_x(), bullet.getPosition_coordinate_y(),
                 10, 10);
         Rectangle enemyRect = new Rectangle(wall.getPosition_Wall_x(), wall.getPosition_Wall_y(),
                 wall.getWidth(),wall.getHeight());
@@ -478,7 +478,7 @@ public class MyPanel extends JPanel implements KeyListener{
     private boolean playerIntersectTankRocket(Tank_rocket tank_rocket) {
         Rectangle playerRect = new Rectangle(this.player.getPosition_x(), this.player.getPosition_y(),
                 30, 30);
-        Rectangle enemyRect = new Rectangle(tank_rocket.getPosition_x(), tank_rocket.getPosition_y(),
+        Rectangle enemyRect = new Rectangle(tank_rocket.getPosition_coordinate_x(), tank_rocket.getPosition_coordinate_y(),
                 10,30);
 
         return playerRect.intersects(enemyRect);
@@ -486,7 +486,7 @@ public class MyPanel extends JPanel implements KeyListener{
     private boolean playerIntersectSniperBullet(SniperBullet sniperBullet) {
         Rectangle playerRect = new Rectangle(this.player.getPosition_x(), this.player.getPosition_y(),
                 30, 30);
-        Rectangle bulletRect = new Rectangle(sniperBullet.getPosition_x(), sniperBullet.getPosition_y(),
+        Rectangle bulletRect = new Rectangle(sniperBullet.getPosition_coordinate_x(), sniperBullet.getPosition_coordinate_y(),
                 10,30);
 
         return playerRect.intersects(bulletRect);

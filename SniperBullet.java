@@ -17,8 +17,8 @@ public class SniperBullet extends Bullet{
         return  this.FinalPosition;
     }
     public void shootingBullet(){
-        int bullet_position = super.getPosition_y();
-        super.setPosition_y(bullet_position+=5);
+        int bullet_position = super.getPosition_coordinate_y();
+        super.setPosition_coordinate_y(bullet_position+=5);
     }
 
 }

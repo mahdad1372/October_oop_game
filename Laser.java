@@ -1,9 +1,9 @@
 public class Laser extends obstacles {
-  public Laser(int h , int l , int x, int y ){
-    this.length = l;
-    this.height = h;
-    this.coordinate_x = x;
-    this.coordinate_y = y;
+  public Laser(int height , int length , int coordinate_x, int coordinate_y ){
+    this.length = length;
+    this.height = height;
+    this.coordinate_x = coordinate_x;
+    this.coordinate_y = coordinate_y;
   }
   private int length;
   private int height;

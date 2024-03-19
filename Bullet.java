@@ -1,33 +1,33 @@
 public class Bullet {
-    public  Bullet(int bullet_x, int bullet_y){
-        this.Bullet_x = bullet_x;
-        this.Bullet_y = bullet_y;
+    public  Bullet(int bullet_coordinate_x, int bullet_coordinate_y){
+        this.bullet_coordinate_x = bullet_coordinate_x;
+        this.bullet_coordinate_y = bullet_coordinate_y;
     }
-    private int Bullet_x;
-    private int Bullet_y;
-    public int getPosition_x(){
-        return Bullet_x;
+    private int bullet_coordinate_x;
+    private int bullet_coordinate_y;
+    public int getPosition_coordinate_x(){
+        return bullet_coordinate_x;
     }
-    public int getPosition_y(){
-        return Bullet_y;
+    public int getPosition_coordinate_y(){
+        return bullet_coordinate_y;
     }
-    public void setPosition_x(int x){
-        this.Bullet_x = x;
+    public void setPosition_coordinate_x(int x){
+        this.bullet_coordinate_x = x;
     }
-    public void setPosition_y(int y){
-        this.Bullet_y = y;
+    public void setPosition_coordinate_y(int y){
+        this.bullet_coordinate_y = y;
     }
-    public int getPosition_x_on_time(String d) {
-        String direction = d;
+    public int getPosition_coordinateBullet_on_time(String direction_bullet) {
+        String direction = direction_bullet;
         switch (direction) {
             case "right":
-                return  Bullet_x++;
+                return  bullet_coordinate_x++;
             case "left":
-                return  Bullet_x--;
+                return  bullet_coordinate_x--;
             case "up":
-                return  Bullet_y--;
+                return  bullet_coordinate_y--;
             case "down":
-                return  Bullet_y++;
+                return  bullet_coordinate_y++;
             default:
                 throw new IllegalArgumentException("Invalid operation choice.");
         }
