@@ -24,7 +24,7 @@ public class Soldier_enemy extends Army_enemy{
                        Soldier_Rocket.getRocket_image(),Soldier_Rocket.getPositionFinal_x(),Soldier_Rocket.getPositionFinal_y()));
             }
         };
-        timer.schedule(task, 0, 4000);
+        timer.schedule(task, 0, 8000);
 
     }
 

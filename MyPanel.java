@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
-import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -40,10 +39,6 @@ public class MyPanel extends JPanel implements KeyListener{
         creating_sniper();
         creating_enemy();
         creating_mines();
-        this.soldier_enemy.Shooting_Rocket_Soldier();
-        this.tankEnemy.Shooting_Rocket_Tank();
-        this.MissileLauncher.Adding_Missiles();
-
     }
 
     private Image Sniper_Bullet = new ImageIcon("sniper_bullet.png").getImage();
@@ -77,7 +72,7 @@ public class MyPanel extends JPanel implements KeyListener{
     private Laser laser;
 
     private Missile_launcher MissileLauncher;
-    private ArrayList<Menu> Menu_list = new ArrayList<Menu>();
+    private ArrayList<Result_board> Result_boards = new ArrayList<Result_board>();
     private ArrayList<thief> thief_list = new ArrayList<thief>();
     private ArrayList<Bullet> bullet_position = new ArrayList<Bullet>();
     private ArrayList<Wall> Walls = new ArrayList<Wall>();
@@ -87,20 +82,23 @@ public class MyPanel extends JPanel implements KeyListener{
         this.player = new Player(0,0,Player_icon);
     }
     private void creating_Menu(){
-        Menu_list.add(new Menu(70,40,780,250,"winner"));
-        Menu_list.add(new Menu(70,40,780,250,"looser"));
+        Result_boards.add(new Result_board(70,40,780,250,"winner"));
+        Result_boards.add(new Result_board(70,40,780,250,"looser"));
     }
     private void creating_Tank(){
         Tank_rocket tank_rocket = new Tank_rocket(580, 230, Tank_rocket,580,50);
         this.tankEnemy = new Tank_enemy(Tank,580,250,40,40,tank_rocket);
+        this.tankEnemy.Shooting_Rocket_Tank();
     }
     private void creating_Soldier(){
         Soldier_rocket rocket = new Soldier_rocket(660, 320, Soldier_rocket,660,50);
         this.soldier_enemy = new Soldier_enemy(Soldier_enemy,660,320,40,40,rocket);
+        this.soldier_enemy.Shooting_Rocket_Soldier();
     }
     private void creating_Missile_launcher(){
         Missile Missile = new Missile(160, 310, 270,200,Missile_img);
         this.MissileLauncher = new Missile_launcher(Launcher, 160, 300,30,30,Missile);
+        this.MissileLauncher.Adding_Missiles();
     }
     private void bullet_position(Integer index){
         ScheduledExecutorService executor2 = Executors.newScheduledThreadPool(1);
@@ -125,6 +123,56 @@ public class MyPanel extends JPanel implements KeyListener{
     private void creating_mines(){
         this.mine = new Mines(20,410,300);
     }
+
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+        SoldierEnemyDrawing(g);
+        SniperEnemyDrawing(g);
+        TankEnemyDrawing(g);
+        BulletPlayerDrawing(g);
+        ThiefEnemyDrawing(g);
+        GameLablesDrawing(g);
+        PlayerDrawing(g);
+        WallDrawing(g);
+        LaserDrawing(g);
+        drawing_Mines(g);
+        ResultBoardDrawing(g);
+        MissileLauncherDrawing(g);
+
+    }
+    private void BulletPlayerDrawing(Graphics g){
+        Graphics2D g2d = (Graphics2D) g;
+        if (bullet_position.size() > 0){
+            for (int i =0; i <bullet_position.size();i++){
+                createBullet(g2d,bullet_position.get(i).getPosition_coordinate_x(),bullet_position.get(i).getPosition_coordinate_y(),
+                        10);
+                boolean found = bullet_position.contains(bullet_position.get(i));
+                if (found){
+                    bullet_position(bullet_position.get(i).getPosition_coordinate_x());
+                    bullet_position(i);
+                }
+            }
+        }
+
+        try{
+            for (Bullet bullet:bullet_position){
+                for (thief thief:thief_list){
+                    if (bulletIntersectsEnemy(bullet,thief)){
+                        thief_list.remove(thief);
+                        bullet_position.remove(bullet);
+                        scores += 10;
+                        number_enemy_killed += 1;
+                    }
+                }
+            }
+        }catch (Exception e){
+        }
+
+    }
+
     private void drawing_Mines(Graphics g){
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.yellow);
@@ -133,50 +181,44 @@ public class MyPanel extends JPanel implements KeyListener{
                     ,this.mine.calculate_area(),this.mine.calculate_area());
             g2d.drawImage(Mine, this.mine.get_coordinate_x()+ (this.mine.get_radius()/2), this.mine.get_coordinate_y(), null);
         }
+        if (this.mine != null) {
+            if (playerIntersectMine(this.mine)) {
+                Health = this.mine.health_decrease(Health);
+                this.mine = null;
+            }
+
+        }
 
     }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
-        FinalResult<String, Integer,Integer,String> result_win = new FinalResult<>("Mahdad", this.Health,this.scores,
-                "winner");
-        double double_health = this.Health;
-        double double_score = this.scores;
-        FinalResult<String, Double,Double,String> result_lose = new FinalResult<>("Mahdad", double_health,double_score,
-                "looser");
-        g.drawImage(player.getPlayerIcon(), this.player.getPosition_x(), this.player.getPosition_y(), null);
-
-        if (this.MissileLauncher != null){
-            g.drawImage(this.MissileLauncher.getImage_enemy(), this.MissileLauncher.getPosition_enemy_x(),
-                    this.MissileLauncher.getPosition_enemy_y(), null);
-            for (int i=0;i <this.MissileLauncher.get_Missiles().size();i++){
-                this.MissileLauncher.get_Missiles().get(i).Missile_Shooting();
-                g.drawImage(this.MissileLauncher.get_Missiles().get(i).getMissileImage(),
-                        this.MissileLauncher.get_Missiles().get(i).getPosition_coordinate_x() ,
-                        this.MissileLauncher.get_Missiles().get(i).getPosition_coordinate_y(),null);
-            }
-            this.MissileLauncher.Editing_Missile_List();
+    private void TankEnemyDrawing(Graphics g){
+        if (this.tankEnemy != null){
+            g.drawImage(this.tankEnemy.getImage_enemy(),
+                    this.tankEnemy.getPosition_enemy_x(),this.tankEnemy.getPosition_enemy_y(),null);
         }
+        if (this.tankEnemy != null){
 
-
-
-        if (this.soldier_enemy != null){
-            g.drawImage(this.soldier_enemy.getImage_enemy(), this.soldier_enemy.getPosition_enemy_x()
-                    , this.soldier_enemy.getPosition_enemy_y(),null);
-            this.soldier_enemy.Editing_Rocket_List();
-            for (int i=0;i <this.soldier_enemy.getSoldier_Rocket().size();i++){
-                this.soldier_enemy.getSoldier_Rocket().get(i).Rocket_Shooting();
-                    g.drawImage( this.soldier_enemy.getSoldier_Rocket().get(i).getRocket_image(),
-                            this.soldier_enemy.getSoldier_Rocket().get(i).getPosition_coordinate_x(),
-                            this.soldier_enemy.getSoldier_Rocket().get(i).getPosition_coordinate_y(),null);
+            for (int i = 0; i < this.tankEnemy.getTank_Rocket().size(); i++){
+                if (playerIntersectTankRocket(this.tankEnemy.getTank_Rocket().get(i))) {
+                    this.Health -=5;
+                    int current_positionplayer_x =this.player.getPosition_x();
+                    this.player.setPosition_x(current_positionplayer_x-=40);
                 }
+                this.tankEnemy.getTank_Rocket().get(i).Rocket_Shooting();
+                g.drawImage(this.tankEnemy.getTank_Rocket().get(i).getRocket_image(),
+                        this.tankEnemy.getTank_Rocket().get(i).getPosition_coordinate_x(),
+                        this.tankEnemy.getTank_Rocket().get(i).getPosition_coordinate_y(),null);
+                this.tankEnemy.Editing_Rocket_List();
+
+            }
+            for (int i = 0; i < bullet_position.size(); i++){
+                if (bulletIntersectsTank(bullet_position.get(i),this.tankEnemy)){
+                    this.tankEnemy = null;
+                    this.scores +=10;
+                }}
         }
+    }
 
-
-
-        // Drawing sniper enemy and sniper bullet
+    private void SniperEnemyDrawing(Graphics g){
         if (this.sniperEnemy != null){
             g.drawImage(this.sniperEnemy.getImage_enemy(),
                     this.sniperEnemy.getPosition_enemy_x(),this.sniperEnemy.getPosition_enemy_y(),null);
@@ -204,74 +246,130 @@ public class MyPanel extends JPanel implements KeyListener{
                     this.scores +=10;
                 }}
         }
+    }
 
-        // Drawing Tank enemy and Tank rockets
-        if (this.tankEnemy != null){
-            g.drawImage(this.tankEnemy.getImage_enemy(),
-                    this.tankEnemy.getPosition_enemy_x(),this.tankEnemy.getPosition_enemy_y(),null);
-        }
-        if (this.tankEnemy != null){
-
-            for (int i = 0; i < this.tankEnemy.getTank_Rocket().size(); i++){
-                if (playerIntersectTankRocket(this.tankEnemy.getTank_Rocket().get(i))) {
-                    this.Health -=5;
-                    int current_positionplayer_x =this.player.getPosition_x();
-                    this.player.setPosition_x(current_positionplayer_x-=40);
-                }
-                this.tankEnemy.getTank_Rocket().get(i).Rocket_Shooting();
-                g.drawImage(this.tankEnemy.getTank_Rocket().get(i).getRocket_image(),
-                        this.tankEnemy.getTank_Rocket().get(i).getPosition_coordinate_x(),
-                        this.tankEnemy.getTank_Rocket().get(i).getPosition_coordinate_y(),null);
-                this.tankEnemy.Editing_Rocket_List();
-
-            }
-            for (int i = 0; i < bullet_position.size(); i++){
-                if (bulletIntersectsTank(bullet_position.get(i),this.tankEnemy)){
-                    this.tankEnemy = null;
-                    this.scores +=10;
-                }}
-        }
-        // Drawing thief enemy
+    private void ThiefEnemyDrawing(Graphics g){
         for (int i=0;i< thief_list.size();i++){
             g.drawImage(thief_list.get(i).getImage_enemy(),
                     thief_list.get(i).getPosition_enemy_x(),thief_list.get(i).getPosition_enemy_y(),null);
             thief_list.get(i).thief_movement(thief_list.get(i).getCurr_position(),
                     thief_list.get(i).getFinal_position(),thief_list.get(i).get_direction());
-
         }
-        if (bullet_position.size() > 0){
-            for (int i =0; i <bullet_position.size();i++){
-                createBullet(g2d,bullet_position.get(i).getPosition_coordinate_x(),bullet_position.get(i).getPosition_coordinate_y(),
-                        10);
-                boolean found = bullet_position.contains(bullet_position.get(i));
-                if (found){
-                    bullet_position(bullet_position.get(i).getPosition_coordinate_x());
-                    bullet_position(i);
-                }
+        for (thief enemies:thief_list){
+            if (playerIntersectEnemy(enemies)){
+                int current_positionplayer_x =this.player.getPosition_x();
+                this.player.setPosition_x(current_positionplayer_x-=40);
+                Health-=10;
             }
         }
-
-        try{
-            for (Bullet bullet:bullet_position){
-                for (thief thief:thief_list){
-                    if (bulletIntersectsEnemy(bullet,thief)){
-                        thief_list.remove(thief);
-                        bullet_position.remove(bullet);
-                        scores += 10;
-                        number_enemy_killed += 1;
-                    }
-                }
+    }
+    private void SoldierEnemyDrawing(Graphics g){
+        Graphics2D g2d = (Graphics2D) g;
+        if (this.soldier_enemy != null){
+            g.drawImage(this.soldier_enemy.getImage_enemy(), this.soldier_enemy.getPosition_enemy_x()
+                    , this.soldier_enemy.getPosition_enemy_y(),null);
+            this.soldier_enemy.Editing_Rocket_List();
+            for (int i=0;i <this.soldier_enemy.getSoldier_Rocket().size();i++){
+                this.soldier_enemy.getSoldier_Rocket().get(i).Rocket_Shooting();
+                g.drawImage( this.soldier_enemy.getSoldier_Rocket().get(i).getRocket_image(),
+                        this.soldier_enemy.getSoldier_Rocket().get(i).getPosition_coordinate_x(),
+                        this.soldier_enemy.getSoldier_Rocket().get(i).getPosition_coordinate_y(),null);
             }
-        }catch (Exception e){
         }
-
-
         if (this.soldier_enemy != null){
             for (int i = 0; i < bullet_position.size(); i++){
                 if (bulletIntersectsSoldierEnemy(bullet_position.get(i),this.soldier_enemy)){
-                   this.soldier_enemy = null;
+                    this.soldier_enemy = null;
                 }}}
+    }
 
+    private void GameLablesDrawing(Graphics g){
+        Graphics2D g2d = (Graphics2D) g;
+        g.setFont(new Font("Arial", Font.PLAIN, 24));
+        g.setColor(Color.BLUE);
+        String score = "Score : "+ scores;
+        int x = 750;
+        int y = 100;
+        g.drawString(score, x, y);
+        g.setColor(Color.RED);
+        String health = "Health : " + Health +" %";
+        g.drawString(health, 750, 150);
+        g.setFont(new Font("Arial", Font.BOLD, 20));
+        g.setColor(Color.GREEN);
+        String exit = "Exit";
+        g.drawString(exit, 890, 230);
+    }
+    private void MissileLauncherDrawing(Graphics g){
+        Graphics2D g2d = (Graphics2D) g;
+        if (this.MissileLauncher != null){
+            g.drawImage(this.MissileLauncher.getImage_enemy(), this.MissileLauncher.getPosition_enemy_x(),
+                    this.MissileLauncher.getPosition_enemy_y(), null);
+            for (int i=0;i <this.MissileLauncher.get_Missiles().size();i++){
+                this.MissileLauncher.get_Missiles().get(i).Missile_Shooting();
+                g.drawImage(this.MissileLauncher.get_Missiles().get(i).getMissileImage(),
+                        this.MissileLauncher.get_Missiles().get(i).getPosition_coordinate_x() ,
+                        this.MissileLauncher.get_Missiles().get(i).getPosition_coordinate_y(),null);
+            }
+            this.MissileLauncher.Editing_Missile_List();
+        }
+    }
+    private void PlayerDrawing(Graphics g){
+        Graphics2D g2d = (Graphics2D) g;
+        g.drawImage(player.getPlayerIcon(), this.player.getPosition_x(), this.player.getPosition_y(), null);
+    }
+    private void ResultBoardDrawing(Graphics g){
+        Graphics2D g2d = (Graphics2D) g;
+        FinalResult<String, Integer,Integer,String> result_win = new FinalResult<>("Mahdad", this.Health,this.scores,
+                "winner");
+        double double_health = this.Health;
+        double double_score = this.scores;
+        FinalResult<String, Double,Double,String> result_lose = new FinalResult<>("Mahdad", double_health,double_score,
+                "looser");
+        if (this.player.getPosition_x() >= 890){
+            executing_game_timer.stop();
+            Game_Timer.stop();
+            display_menu_winner = true;
+        }
+        if (Health <= 0){
+            executing_game_timer.stop();
+            Game_Timer.stop();
+            display_menu_winner = false;
+        }
+        for (Result_board Result_board:Result_boards){
+            if (display_menu_winner == true && Result_board.get_result_board_type() == "winner"){
+                g2d.setColor(Color.GREEN);
+                g2d.fillRect(Result_board.getPosition_menu_x(),Result_board.getPosition_menu_y(),Result_board.getWidth(),Result_board.getHeight());
+                g2d.setFont(new Font("Arial", Font.BOLD, 25));
+                g2d.setColor(Color.WHITE);
+                g2d.drawString(result_win.getStatus(), 380, 110);
+                g2d.drawString("The winner is : " + result_win.getName()+
+                        " with the score of " + result_win.getScore()+
+                        "and the Health of " + result_win.getHealth(), 80, 210);
+                g2d.drawString(Result_board.get_num_enemy_time(number_enemy_killed , Seconds_Duration_Game), 80, 240);
+            }
+            if (Health <= 0 && Result_board.get_result_board_type() == "looser"){
+                g2d.setColor(Color.RED);
+                g2d.fillRect(Result_board.getPosition_menu_x(),Result_board.getPosition_menu_y(),Result_board.getWidth(),Result_board.getHeight());
+                g2d.setFont(new Font("Arial", Font.BOLD, 25));
+                g2d.setColor(Color.WHITE);
+                g2d.drawString(result_lose.getStatus(), 380, 110);
+                g2d.setFont(new Font("Arial", Font.BOLD, 20));
+                g2d.drawString("The looser is : " + result_lose.getName()+
+                        " with the score of " + result_lose.getScore()+
+                        " and the Health of " + result_lose.getHealth(), 100, 210);
+                g2d.drawString(Result_board.get_num_enemy_time((double) number_enemy_killed , (double) Seconds_Duration_Game), 100, 240);
+            }
+
+        }
+    }
+
+    private void WallDrawing(Graphics g){
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(Color.blue);
+        for (int i = 0 ; i< Walls.size();i++){
+            g2d.fillRect(Walls.get(i).getPosition_Wall_x(),Walls.get(i).getPosition_Wall_y(),
+                    Walls.get(i).getWidth(),Walls.get(i).getHeight());
+        }
         if (Walls.size()>0){
             for (int i=0; i<Walls.size();i++){
                 for (int j=0; j<bullet_position.size();j++){
@@ -291,92 +389,6 @@ public class MyPanel extends JPanel implements KeyListener{
                     this.player.setPosition_y(wall.getPosition_Wall_y());
                 }
             }
-        }
-
-        if (this.laser != null){
-            if (playerIntersectLaser(laser)){
-                this.player.setPosition_x(laser.get_coordinate_x());
-                this.player.setPosition_y(laser.get_coordinate_y());
-                Health = laser.health_decrease(Health);
-            }
-        }
-
-        if (this.mine != null) {
-                    if (playerIntersectMine(this.mine)) {
-                        Health = this.mine.health_decrease(Health);
-                        this.mine = null;
-                }
-
-        }
-
-        for (thief enemies:thief_list){
-            if (playerIntersectEnemy(enemies)){
-                int current_positionplayer_x =this.player.getPosition_x();
-                this.player.setPosition_x(current_positionplayer_x-=40);
-                Health-=10;
-            }
-        }
-
-        if (this.player.getPosition_x() >= 890){
-            executing_game_timer.stop();
-            Game_Timer.stop();
-            display_menu_winner = true;
-        }
-        if (Health <= 0){
-            executing_game_timer.stop();
-            Game_Timer.stop();
-            display_menu_winner = false;
-        }
-        g.setFont(new Font("Arial", Font.PLAIN, 24));
-        g.setColor(Color.BLUE);
-        String text = "Score : "+ scores;
-        int x = 750;
-        int y = 100;
-        g.drawString(text, x, y);
-        g.setColor(Color.RED);
-        String text2 = "Health : " + Health +" %";
-        g.drawString(text2, 750, 150);
-        g.setFont(new Font("Arial", Font.BOLD, 20));
-        g.setColor(Color.GREEN);
-        String text3 = "Exit";
-        g.drawString(text3, 890, 230);
-        WallDrawing(g);
-        LaserDrawing(g);
-        drawing_Mines(g);
-        for (Menu menu:Menu_list){
-            if (display_menu_winner == true && menu.get_menu_type() == "winner"){
-                g2d.setColor(Color.GREEN);
-                g2d.fillRect(menu.getPosition_menu_x(),menu.getPosition_menu_y(),menu.getWidth(),menu.getHeight());
-                g2d.setFont(new Font("Arial", Font.BOLD, 25));
-                g2d.setColor(Color.WHITE);
-                g2d.drawString(result_win.getStatus(), 380, 110);
-                g2d.drawString("The winner is : " + result_win.getName()+
-                        " with the score of " + result_win.getScore()+
-                        "and the Health of " + result_win.getHealth(), 80, 210);
-                g2d.drawString(menu.get_num_enemy_time(number_enemy_killed , Seconds_Duration_Game), 80, 240);
-            }
-            if (Health <= 0 && menu.get_menu_type() == "looser"){
-                g2d.setColor(Color.RED);
-                g2d.fillRect(menu.getPosition_menu_x(),menu.getPosition_menu_y(),menu.getWidth(),menu.getHeight());
-                g2d.setFont(new Font("Arial", Font.BOLD, 25));
-                g2d.setColor(Color.WHITE);
-                g2d.drawString(result_lose.getStatus(), 380, 110);
-                g2d.setFont(new Font("Arial", Font.BOLD, 20));
-                g2d.drawString("The looser is : " + result_lose.getName()+
-                        " with the score of " + result_lose.getScore()+
-                        " and the Health of " + result_lose.getHealth(), 100, 210);
-                g2d.drawString(menu.get_num_enemy_time((double) number_enemy_killed , (double) Seconds_Duration_Game), 100, 240);
-            }
-
-        }
-
-    }
-    private void WallDrawing(Graphics g){
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.blue);
-        for (int i = 0 ; i< Walls.size();i++){
-            g2d.fillRect(Walls.get(i).getPosition_Wall_x(),Walls.get(i).getPosition_Wall_y(),
-                    Walls.get(i).getWidth(),Walls.get(i).getHeight());
         }
     }
     private void creating_wall(){
@@ -403,6 +415,13 @@ public class MyPanel extends JPanel implements KeyListener{
         g2d.fillRect(laser.get_coordinate_x(),laser.get_coordinate_y(),
                 laser.calculate_area()/laser.get_height(),
                 laser.calculate_area()/laser.get_length());
+        if (this.laser != null){
+            if (playerIntersectLaser(laser)){
+                this.player.setPosition_x(laser.get_coordinate_x());
+                this.player.setPosition_y(laser.get_coordinate_y());
+                Health = laser.health_decrease(Health);
+            }
+        }
     }
     private void creating_laser(){
         this.laser = new Laser(5,230,710,250);

@@ -1,26 +1,26 @@
 import java.io.*;
 import java.util.*;
-public class Menu {
-    public Menu ( int coordinate_x, int coordinate_y,int width , int height , String menu_type){
-        this.Menu_coordinate_x = coordinate_x;
-        this.Menu_coordinate_y = coordinate_y;
+public class Result_board {
+    public Result_board ( int coordinate_x, int coordinate_y,int width , int height , String result_board_type){
+        this.result_board_position_x = coordinate_x;
+        this.result_board_position_y = coordinate_y;
         this.width = width;
         this.height = height;
-        this.menu_type = menu_type;
+        this.result_board_type = result_board_type;
     }
-    private int Menu_coordinate_x;
-    private int  Menu_coordinate_y;
+    private int result_board_position_x;
+    private int  result_board_position_y;
     private int  width ;
     private int  height ;
-    private String menu_type;
+    private String result_board_type;
 
     public int getPosition_menu_x() {
-        return Menu_coordinate_x;
+        return result_board_position_x;
     }
 
 
     public int getPosition_menu_y() {
-        return Menu_coordinate_y;
+        return result_board_position_y;
     }
     public int getWidth() {
         return width;
@@ -28,8 +28,8 @@ public class Menu {
     public int getHeight() {
         return height;
     }
-    public String get_menu_type() {
-        return menu_type;
+    public String get_result_board_type() {
+        return result_board_type;
     }
 
     public String get_num_enemy_time(int enemy_num , int time){

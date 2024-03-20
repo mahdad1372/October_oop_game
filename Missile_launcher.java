@@ -21,7 +21,7 @@ public class Missile_launcher extends Army_enemy{
                         Missile.getPositionFinal_x(),Missile.getPositionFinal_y(), Missile.getMissileImage()));
             }
         };
-        timer.schedule(task, 0, 3000);
+        timer.schedule(task, 0, 7000);
     }
     public void Editing_Missile_List(){
         for (int i=0;i< Missile_List.size();i++){
