@@ -120,15 +120,12 @@ public class MyPanel extends JPanel implements KeyListener{
         g2d.drawOval(coordinate_x, coordinate_y, radius, radius);
     }
 
-    private void creating_mines(){
-        this.mine = new Mines(20,410,300);
-    }
+
 
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
         SoldierEnemyDrawing(g);
         SniperEnemyDrawing(g);
         TankEnemyDrawing(g);
@@ -163,7 +160,7 @@ public class MyPanel extends JPanel implements KeyListener{
                     if (bulletIntersectsEnemy(bullet,thief)){
                         thief_list.remove(thief);
                         bullet_position.remove(bullet);
-                        scores += 10;
+                        scores += thief.killing_enemy_score();
                         number_enemy_killed += 1;
                     }
                 }
@@ -212,8 +209,8 @@ public class MyPanel extends JPanel implements KeyListener{
             }
             for (int i = 0; i < bullet_position.size(); i++){
                 if (bulletIntersectsTank(bullet_position.get(i),this.tankEnemy)){
+                    this.scores +=this.tankEnemy.killing_enemy_score();
                     this.tankEnemy = null;
-                    this.scores +=10;
                 }}
         }
     }
@@ -423,8 +420,13 @@ public class MyPanel extends JPanel implements KeyListener{
             }
         }
     }
+    private void creating_mines(){
+        obstacles mine = new Mines(20,410,300);
+        this.mine = (Mines) mine;
+    }
     private void creating_laser(){
-        this.laser = new Laser(5,230,710,250);
+        obstacles laser = new Laser(5,230,710,250);
+        this.laser = (Laser) laser;
     }
     private void creating_sniper(){
         SniperBullet sniperBullet = new SniperBullet(470,10,Sniper_Bullet,400);

@@ -41,5 +41,6 @@ public abstract class Enemy  {
         return enemy_image;
     }
 
+    abstract int killing_enemy_score();
 
 }

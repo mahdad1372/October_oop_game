@@ -7,9 +7,6 @@ public class Mines extends obstacles {
     private int radius;
     private int coordinate_x;
     private int coordinate_y;
-
-
-
     public int get_radius(){
         return this.radius;
     }

@@ -28,8 +28,8 @@ public class thief extends Enemy{
         return this.final_position;
     }
 
-    public void thief_movement(int curr_position,int final_position ,String direction){
 
+     public void thief_movement(int curr_position,int final_position ,String direction){
         if (direction == "Y"){
             if (super.getPosition_enemy_y() > final_position && increase_coordinate_y == true){
                 curr_position = super.getPosition_enemy_y();
@@ -77,5 +77,10 @@ public class thief extends Enemy{
 
 
         }
+    }
+
+    @Override
+    int killing_enemy_score() {
+        return 10;
     }
 }
