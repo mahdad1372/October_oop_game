@@ -5,9 +5,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.Iterator;
+
 
 public class MyPanel extends JPanel implements KeyListener{
     public MyPanel() {
@@ -100,25 +99,7 @@ public class MyPanel extends JPanel implements KeyListener{
         this.MissileLauncher = new Missile_launcher(Launcher, 160, 300,30,30,Missile);
         this.MissileLauncher.Adding_Missiles();
     }
-    private void bullet_position(Integer index){
-        ScheduledExecutorService executor2 = Executors.newScheduledThreadPool(1);
 
-        Runnable function1 = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    bullet_position.get(index).getPosition_coordinateBullet_on_time(direction_player);
-                } catch (Exception e){
-                }
-            }
-        };
-        executor2.scheduleAtFixedRate(function1, 0, 12, TimeUnit.MILLISECONDS);
-    }
-    private void createBullet(Graphics2D g2d , int coordinate_x , int coordinate_y , int radius){
-        g2d.setColor(Color.BLUE);
-        g2d.fillOval(coordinate_x, coordinate_y, radius, radius);
-        g2d.drawOval(coordinate_x, coordinate_y, radius, radius);
-    }
 
 
 
@@ -140,51 +121,78 @@ public class MyPanel extends JPanel implements KeyListener{
         MissileLauncherDrawing(g);
 
     }
-    private void BulletPlayerDrawing(Graphics g){
-        Graphics2D g2d = (Graphics2D) g;
-        if (bullet_position.size() > 0){
-            for (int i =0; i <bullet_position.size();i++){
-                createBullet(g2d,bullet_position.get(i).getPosition_coordinate_x(),bullet_position.get(i).getPosition_coordinate_y(),
-                        10);
-                boolean found = bullet_position.contains(bullet_position.get(i));
-                if (found){
-                    bullet_position(bullet_position.get(i).getPosition_coordinate_x());
-                    bullet_position(i);
-                }
-            }
-        }
+    private void BulletPlayerDrawing(Graphics g) {
 
-        try{
-            for (Bullet bullet:bullet_position){
-                for (thief thief:thief_list){
-                    if (bulletIntersectsEnemy(bullet,thief)){
-                        thief_list.remove(thief);
-                        bullet_position.remove(bullet);
-                        scores += thief.killing_enemy_score();
-                        number_enemy_killed += 1;
+        try {
+
+            Graphics2D g2d = (Graphics2D) g;
+
+            // ---- move & draw bullets ----
+            for (Bullet b : bullet_position) {
+                b.updatePosition(direction_player);
+
+                g2d.setColor(Color.BLUE);
+                g2d.fillOval(
+                        b.getPosition_coordinate_x(),
+                        b.getPosition_coordinate_y(),
+                        10, 10
+                );
+            }
+
+            // ---- remove bullets off screen ----
+            bullet_position.removeIf(b ->
+                    b.getPosition_coordinate_x() < 0 ||
+                            b.getPosition_coordinate_x() > getWidth() ||
+                            b.getPosition_coordinate_y() < 0 ||
+                            b.getPosition_coordinate_y() > getHeight()
+            );
+
+            // ---- bullet vs thief ----
+            Iterator<Bullet> bulletIt = bullet_position.iterator();
+            while (bulletIt.hasNext()) {
+                Bullet bullet = bulletIt.next();
+
+                Iterator<thief> thiefIt = thief_list.iterator();
+                while (thiefIt.hasNext()) {
+                    thief th = thiefIt.next();
+
+                    if (bulletIntersectsEnemy(bullet, th)) {
+                        thiefIt.remove();
+                        bulletIt.remove();
+                        scores += th.killing_enemy_score();
+                        number_enemy_killed++;
+                        break;
                     }
                 }
             }
-        }catch (Exception e){
-        }
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
+
 
     private void drawing_Mines(Graphics g){
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.yellow);
-        if (this.mine != null){
-            g2d.fillOval(this.mine.get_coordinate_x(),this.mine.get_coordinate_y()
-                    ,this.mine.calculate_area(),this.mine.calculate_area());
-            g2d.drawImage(Mine, this.mine.get_coordinate_x()+ (this.mine.get_radius()/2), this.mine.get_coordinate_y(), null);
-        }
-        if (this.mine != null) {
-            if (playerIntersectMine(this.mine)) {
-                Health = this.mine.health_decrease(Health);
-                this.mine = null;
+        try{
+            if (this.mine != null){
+                g2d.fillOval(this.mine.get_coordinate_x(),this.mine.get_coordinate_y()
+                        ,this.mine.calculate_area(),this.mine.calculate_area());
+                g2d.drawImage(Mine, this.mine.get_coordinate_x()+ (this.mine.get_radius()/2), this.mine.get_coordinate_y(), null);
             }
+            if (this.mine != null) {
+                if (playerIntersectMine(this.mine)) {
+                    Health = this.mine.health_decrease(Health);
+                    this.mine = null;
+                }
 
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
+
 
     }
     private void TankEnemyDrawing(Graphics g){
@@ -388,23 +396,29 @@ public class MyPanel extends JPanel implements KeyListener{
             }
         }
     }
-    private void creating_wall(){
-        Walls.add(new Wall(130,0,20,140));
-        Walls.add(new Wall(130,200,20,140));
-        Walls.add(new Wall(150,40,120,20));
-        Walls.add(new Wall(270,40,20,120));
-        Walls.add(new Wall(270,100,180,20));
-        Walls.add(new Wall(270,240,20,130));
-        Walls.add(new Wall(270,345,180,20));
-        Walls.add(new Wall(430,120,20,120));
-        Walls.add(new Wall(530,190,20,170));
-        Walls.add(new Wall(530,0,20,120));
-        Walls.add(new Wall(550,300,100,20));
-        Walls.add(new Wall(630,80,20,220));
-        Walls.add(new Wall(630,20,300,20));
-        Walls.add(new Wall(710,20,20,160));
-        Walls.add(new Wall(710,270,20,100));
-        Walls.add(new Wall(710,180,230,20));
+    private void creating_wall() {
+        int[][] w = {
+                {130,0,20,140},
+                {130,200,20,140},
+                {150,40,120,20},
+                {270,40,20,120},
+                {270,100,180,20},
+                {270,240,20,130},
+                {270,345,180,20},
+                {430,120,20,120},
+                {530,190,20,170},
+                {530,0,20,120},
+                {550,300,100,20},
+                {630,80,20,220},
+                {630,20,300,20},
+                {710,20,20,160},
+                {710,270,20,100},
+                {710,180,230,20}
+        };
+
+        for (int[] v : w) {
+            Walls.add(new Wall(v[0], v[1], v[2], v[3]));
+        }
     }
     private void LaserDrawing(Graphics g){
         Graphics2D g2d = (Graphics2D) g;
@@ -433,13 +447,28 @@ public class MyPanel extends JPanel implements KeyListener{
         this.sniperEnemy = new SniperEnemy(Sniper,470,10,20,20,sniperBullet);
         this.sniperEnemy.Shooting_Sniper_Bullet();
     }
-    private void creating_enemy(){
-        thief_list.add(new thief(thief,200,70,30,30,"Y",320));
-        thief_list.add(new thief(thief,390,165,30,30,"X",120));
-        thief_list.add(new thief(thief,350,310,30,30,"Y",120));
-        thief_list.add(new thief(thief,595,140,30,30,"X",450));
-        thief_list.add(new thief(thief,580,10,30,30,"Y",180));
-        thief_list.add(new thief(thief,665,50,30,30,"Y",210));
+    private void creating_enemy() {
+
+        Object[][] data = {
+                {200,70,30,30,"Y",320},
+                {390,165,30,30,"X",120},
+                {350,310,30,30,"Y",120},
+                {595,140,30,30,"X",450},
+                {580,10,30,30,"Y",180},
+                {665,50,30,30,"Y",210}
+        };
+
+        for (Object[] d : data) {
+            thief_list.add(new thief(
+                    thief,                  // <-- your sprite/bitmap
+                    (int) d[0],
+                    (int) d[1],
+                    (int) d[2],
+                    (int) d[3],
+                    (String) d[4],
+                    (int) d[5]
+            ));
+        }
     }
     private boolean bulletIntersectsEnemy(Bullet bullet, Enemy enemy) {
         Rectangle bulletRect = new Rectangle(bullet.getPosition_coordinate_x(), bullet.getPosition_coordinate_y(),
