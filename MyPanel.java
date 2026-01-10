@@ -178,9 +178,9 @@ public class MyPanel extends JPanel implements KeyListener{
         g2d.setColor(Color.yellow);
         try{
             if (this.mine != null){
-                g2d.fillOval(this.mine.get_coordinate_x(),this.mine.get_coordinate_y()
-                        ,this.mine.calculate_area(),this.mine.calculate_area());
-                g2d.drawImage(Mine, this.mine.get_coordinate_x()+ (this.mine.get_radius()/2), this.mine.get_coordinate_y(), null);
+                g2d.fillOval(this.mine.getCoordinate_x(),this.mine.getCoordinate_y()
+                        ,this.mine.getLength(),this.mine.getHeight());
+                g2d.drawImage(Mine, this.mine.getCoordinate_x()+this.mine.getLength()/4, this.mine.getCoordinate_y()+this.mine.getHeight()/6, null);
             }
             if (this.mine != null) {
                 if (playerIntersectMine(this.mine)) {
@@ -423,23 +423,23 @@ public class MyPanel extends JPanel implements KeyListener{
     private void LaserDrawing(Graphics g){
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.red);
-        g2d.fillRect(laser.get_coordinate_x(),laser.get_coordinate_y(),
-                laser.calculate_area()/laser.get_height(),
-                laser.calculate_area()/laser.get_length());
+        g2d.fillRect(laser.getCoordinate_x(),laser.getCoordinate_y(),
+                laser.calculate_area()/laser.getHeight(),
+                laser.calculate_area()/laser.getLength());
         if (this.laser != null){
             if (playerIntersectLaser(laser)){
-                this.player.setPosition_x(laser.get_coordinate_x());
-                this.player.setPosition_y(laser.get_coordinate_y());
+                this.player.setPosition_x(laser.getCoordinate_x());
+                this.player.setPosition_y(laser.getCoordinate_y());
                 Health = laser.health_decrease(Health);
             }
         }
     }
     private void creating_mines(){
-        obstacles mine = new Mines(20,410,300);
+        Obstacles mine = new Mines(460,300,40,40);
         this.mine = (Mines) mine;
     }
     private void creating_laser(){
-        obstacles laser = new Laser(5,230,710,250);
+        Obstacles laser = new Laser(725,250,200,10);
         this.laser = (Laser) laser;
     }
     private void creating_sniper(){
@@ -521,8 +521,8 @@ public class MyPanel extends JPanel implements KeyListener{
     private boolean playerIntersectLaser(Laser laser) {
         Rectangle playerRect = new Rectangle(this.player.getPosition_x(), this.player.getPosition_y(),
                 30, 30);
-        Rectangle wallRect = new Rectangle(laser.get_coordinate_x(), laser.get_coordinate_y(),
-                laser.get_length(),laser.get_height());
+        Rectangle wallRect = new Rectangle(laser.getCoordinate_x(), laser.getCoordinate_y(),
+                laser.getLength(),laser.getHeight());
 
         return playerRect.intersects(wallRect);
     }
@@ -553,8 +553,8 @@ public class MyPanel extends JPanel implements KeyListener{
     private boolean playerIntersectMine(Mines mine) {
         Rectangle playerRect = new Rectangle(this.player.getPosition_x(), this.player.getPosition_y(),
                 30, 30);
-        Rectangle mineRect = new Rectangle(mine.get_coordinate_x(), mine.get_coordinate_y(),
-                mine.get_radius()*2, mine.get_radius()*2);
+        Rectangle mineRect = new Rectangle(mine.getCoordinate_x(), mine.getCoordinate_y(),
+                mine.getLength(), mine.getHeight());
 
         return playerRect.intersects(mineRect);
     }

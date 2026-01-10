@@ -1,29 +1,15 @@
-public class Mines extends obstacles {
-    public Mines(int radius,int coordinate_x , int coordinate_y){
-        this.radius = radius;
-        this.coordinate_x = coordinate_x;
-        this.coordinate_y = coordinate_y;
-    }
-    private int radius;
-    private int coordinate_x;
-    private int coordinate_y;
-    public int get_radius(){
-        return this.radius;
-    }
-    public int get_coordinate_x(){
-        return this.coordinate_x;
-    }
-    public int get_coordinate_y(){
-        return this.coordinate_y;
+public class Mines extends Obstacles {
+    public Mines(int coordinate_x, int coordinate_y, int length, int height) {
+        super(coordinate_x, coordinate_y, length, height);
     }
 
     @Override
     public int calculate_area() {
-        return  radius* 2;
+        return getHeight() * getLength();
     }
 
     @Override
     public int health_decrease(int health) {
-        return health - 15;
+        return health -15;
     }
 }
