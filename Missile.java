@@ -32,4 +32,16 @@ public class Missile extends Bullet{
         }
 
     }
+
+    @Override
+    public void shootingDirection(String direction) {
+        if (getPosition_coordinate_x() != this.Final_position_missile_x){
+            int bullet_position_x = super.getPosition_coordinate_x();
+            super.setPosition_coordinate_x(bullet_position_x+=5);
+        }
+        if (getPosition_coordinate_y() != this.Final_position_missile_y){
+            int bullet_position_y = super.getPosition_coordinate_y();
+            super.setPosition_coordinate_y(bullet_position_y-=5);
+        }
+    }
 }

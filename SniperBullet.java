@@ -16,9 +16,13 @@ public class SniperBullet extends Bullet{
     public int getFinalPosition(){
         return  this.FinalPosition;
     }
-    public void shootingBullet(){
-        int bullet_position = super.getPosition_coordinate_y();
-        super.setPosition_coordinate_y(bullet_position+=5);
-    }
 
+    @Override
+    public void shootingDirection(String direction) {
+        if (direction == "down"){
+            int bullet_position = super.getPosition_coordinate_y();
+            super.setPosition_coordinate_y(bullet_position+=5);
+        }
+
+    }
 }

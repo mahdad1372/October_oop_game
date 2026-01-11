@@ -1,4 +1,4 @@
-public class Bullet {
+public abstract class Bullet implements bullet_movement{
 
     private int position_coordinate_x;
     private int position_coordinate_y;
@@ -18,14 +18,14 @@ public class Bullet {
         this.position_coordinate_y = position_coordinate_y;
     }
 
-    public void updatePosition(String direction) {
-        int speed = 20;
-
-        switch (direction) {
-            case "left":  position_coordinate_x -= speed; break;
-            case "right": position_coordinate_x += speed; break;
-            case "up":    position_coordinate_y -= speed; break;
-            case "down":  position_coordinate_y += speed; break;
-        }
-    }
+//    public void updatePosition(String direction) {
+//        int speed = 20;
+//
+//        switch (direction) {
+//            case "left":  position_coordinate_x -= speed; break;
+//            case "right": position_coordinate_x += speed; break;
+//            case "up":    position_coordinate_y -= speed; break;
+//            case "down":  position_coordinate_y += speed; break;
+//        }
+//    }
 }

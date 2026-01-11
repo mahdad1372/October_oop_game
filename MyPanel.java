@@ -129,7 +129,7 @@ public class MyPanel extends JPanel implements KeyListener{
 
             // ---- move & draw bullets ----
             for (Bullet b : bullet_position) {
-                b.updatePosition(direction_player);
+                b.shootingDirection(direction_player);
 
                 g2d.setColor(Color.BLUE);
                 g2d.fillOval(
@@ -208,7 +208,7 @@ public class MyPanel extends JPanel implements KeyListener{
                     int current_positionplayer_x =this.player.getPosition_x();
                     this.player.setPosition_x(current_positionplayer_x-=40);
                 }
-                this.tankEnemy.getTank_Rocket().get(i).Rocket_Shooting();
+                this.tankEnemy.getTank_Rocket().get(i).shootingDirection("up");
                 g.drawImage(this.tankEnemy.getTank_Rocket().get(i).getRocket_image(),
                         this.tankEnemy.getTank_Rocket().get(i).getPosition_coordinate_x(),
                         this.tankEnemy.getTank_Rocket().get(i).getPosition_coordinate_y(),null);
@@ -237,7 +237,7 @@ public class MyPanel extends JPanel implements KeyListener{
                     int current_positionplayer_x =this.player.getPosition_x();
                     this.player.setPosition_x(current_positionplayer_x-=40);
                 }
-                this.sniperEnemy.get_Sniper_bullet().get(i).shootingBullet();
+                this.sniperEnemy.get_Sniper_bullet().get(i).shootingDirection("down");
                 g.drawImage(this.sniperEnemy.get_Sniper_bullet().get(i).getSniper_bullet_image(),
                         this.sniperEnemy.get_Sniper_bullet().get(i).getPosition_coordinate_x(),
                         this.sniperEnemy.get_Sniper_bullet().get(i).getPosition_coordinate_y(),null);
@@ -275,7 +275,7 @@ public class MyPanel extends JPanel implements KeyListener{
                     , this.soldier_enemy.getPosition_enemy_y(),null);
             this.soldier_enemy.Editing_Rocket_List();
             for (int i=0;i <this.soldier_enemy.getSoldier_Rocket().size();i++){
-                this.soldier_enemy.getSoldier_Rocket().get(i).Rocket_Shooting();
+                this.soldier_enemy.getSoldier_Rocket().get(i).shootingDirection("up");
                 g.drawImage( this.soldier_enemy.getSoldier_Rocket().get(i).getRocket_image(),
                         this.soldier_enemy.getSoldier_Rocket().get(i).getPosition_coordinate_x(),
                         this.soldier_enemy.getSoldier_Rocket().get(i).getPosition_coordinate_y(),null);
@@ -573,7 +573,7 @@ public class MyPanel extends JPanel implements KeyListener{
         if (keyCode == KeyEvent.VK_SPACE){
             int bullet_position_x = this.player.getPosition_x();
             int bullet_position_y = this.player.getPosition_y();
-            Bullet bullet = new Bullet(bullet_position_x, bullet_position_y);
+            Bullet bullet = new player_bullet(bullet_position_x, bullet_position_y);
             bullet_position.add(bullet);
         }
         if (keyCode == KeyEvent.VK_LEFT) {
