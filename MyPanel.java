@@ -40,21 +40,21 @@ public class MyPanel extends JPanel implements KeyListener{
         creating_mines();
     }
 
-    private Image Sniper_Bullet = new ImageIcon("sniper_bullet.png").getImage();
-    private Image Mine = new ImageIcon("mine.png").getImage();
-    private Image Player_icon = new ImageIcon("soldier.png").getImage();
-    private Image Player_L = new ImageIcon("soldier_l.png").getImage();
-    private Image Player_D = new ImageIcon("soldier_d.png").getImage();
-    private Image Player_U = new ImageIcon("soldier_u.png").getImage();
-    private Image Sniper = new ImageIcon("Sniper.png").getImage();
-    private Image Launcher = new ImageIcon("launcher.png").getImage();
-    private Image Missile_img = new ImageIcon("missile.png").getImage();
-    private Image thief = new ImageIcon("thief.png").getImage();
-    private Image Tank_rocket = new ImageIcon("tank_rocket.png").getImage();
-    private Image Soldier_rocket = new ImageIcon("Soldier_rocket.png").getImage();
-    private Image Tank = new ImageIcon("tank.png").getImage();
-    private Image Soldier_enemy = new ImageIcon("Soldier_enemy.png").getImage();
-    private String direction_player = "left";
+    private final static Image Sniper_Bullet = new ImageIcon("sniper_bullet.png").getImage();
+    private final static Image Mine = new ImageIcon("mine.png").getImage();
+    private final static Image Player_icon = new ImageIcon("soldier.png").getImage();
+    private final static Image Player_L = new ImageIcon("soldier_l.png").getImage();
+    private final static Image Player_D = new ImageIcon("soldier_d.png").getImage();
+    private final static Image Player_U = new ImageIcon("soldier_u.png").getImage();
+    private final static Image Sniper = new ImageIcon("Sniper.png").getImage();
+    private final static Image Launcher = new ImageIcon("launcher.png").getImage();
+    private final static Image Missile_img = new ImageIcon("missile.png").getImage();
+    private final static Image thief = new ImageIcon("thief.png").getImage();
+    private final static Image Tank_rocket = new ImageIcon("tank_rocket.png").getImage();
+    private final static Image Soldier_rocket = new ImageIcon("Soldier_rocket.png").getImage();
+    private final static Image Tank = new ImageIcon("tank.png").getImage();
+    private final static Image Soldier_enemy = new ImageIcon("Soldier_enemy.png").getImage();
+    private static String direction_player = "left";
     private Timer  executing_game_timer;
     private Timer Game_Timer;
     private int scores = 0;

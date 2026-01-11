@@ -6,7 +6,7 @@ public class Army_enemy extends Enemy{
     }
 
     @Override
-    int killing_enemy_score() {
+    public int killing_enemy_score() {
         return 5;
     }
 }

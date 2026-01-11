@@ -1,6 +1,6 @@
 import java.awt.*;
 
-public abstract class Enemy  {
+public abstract class Enemy implements enemy_details  {
     public Enemy (Image enemy_image, int coordinate_x, int coordinate_y,int width , int height){
         this.enemy_coordinate_x = coordinate_x;
         this.enemy_coordinate_y = coordinate_y;
@@ -41,6 +41,5 @@ public abstract class Enemy  {
         return enemy_image;
     }
 
-    abstract int killing_enemy_score();
 
 }
