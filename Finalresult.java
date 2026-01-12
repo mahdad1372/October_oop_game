@@ -5,10 +5,10 @@ class FinalResult<name, health,score,status> {
         this.score = score;
         this.status = status;
     }
-    private name name;
-    private health health;
-    private score score;
-    private status status;
+    private final name name;
+    private final health health;
+    private final score score;
+    private final status status;
 
 
     public name getName() {

@@ -310,7 +310,7 @@ public class MyPanel extends JPanel implements KeyListener{
             g.drawImage(this.MissileLauncher.getImage_enemy(), this.MissileLauncher.getPosition_enemy_x(),
                     this.MissileLauncher.getPosition_enemy_y(), null);
             for (int i=0;i <this.MissileLauncher.get_Missiles().size();i++){
-                this.MissileLauncher.get_Missiles().get(i).Missile_Shooting();
+                this.MissileLauncher.get_Missiles().get(i).shootingDirection("up");
                 g.drawImage(this.MissileLauncher.get_Missiles().get(i).getMissileImage(),
                         this.MissileLauncher.get_Missiles().get(i).getPosition_coordinate_x() ,
                         this.MissileLauncher.get_Missiles().get(i).getPosition_coordinate_y(),null);
