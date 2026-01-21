@@ -119,18 +119,14 @@ public class MyPanel extends JPanel implements KeyListener{
         drawing_Mines(g);
         ResultBoardDrawing(g);
         MissileLauncherDrawing(g);
-
     }
+
     private void BulletPlayerDrawing(Graphics g) {
-
         try {
-
             Graphics2D g2d = (Graphics2D) g;
-
             // ---- move & draw bullets ----
             for (Bullet b : bullet_position) {
                 b.shootingDirection(direction_player);
-
                 g2d.setColor(Color.BLUE);
                 g2d.fillOval(
                         b.getPosition_coordinate_x(),
@@ -138,7 +134,6 @@ public class MyPanel extends JPanel implements KeyListener{
                         10, 10
                 );
             }
-
             // ---- remove bullets off screen ----
             bullet_position.removeIf(b ->
                     b.getPosition_coordinate_x() < 0 ||

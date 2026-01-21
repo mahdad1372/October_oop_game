@@ -1,5 +1,3 @@
-import java.io.*;
-import java.util.*;
 public class Result_board {
     public Result_board ( int coordinate_x, int coordinate_y,int width , int height , String result_board_type){
         this.result_board_position_x = coordinate_x;
@@ -8,10 +6,10 @@ public class Result_board {
         this.height = height;
         this.result_board_type = result_board_type;
     }
-    private int result_board_position_x;
-    private int  result_board_position_y;
-    private int  width ;
-    private int  height ;
+    private static int result_board_position_x;
+    private static int  result_board_position_y;
+    private static int  width ;
+    private static int  height ;
     private String result_board_type;
 
     public int getPosition_menu_x() {

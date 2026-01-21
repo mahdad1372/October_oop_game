@@ -7,7 +7,6 @@ public abstract class Enemy implements enemy_details  {
         this.enemy_image = enemy_image;
         this.width = width;
         this.height = height;
-
     }
     private int enemy_coordinate_x;
     private int  enemy_coordinate_y;
@@ -27,10 +26,8 @@ public abstract class Enemy implements enemy_details  {
     }
 
     public void setPosition_enemy_y(int coordinate_y) {
-
         this.enemy_coordinate_y = coordinate_y;
     }
-
     public int getWidth() {
         return width;
     }
@@ -40,6 +37,4 @@ public abstract class Enemy implements enemy_details  {
     public Image getImage_enemy() {
         return enemy_image;
     }
-
-
 }

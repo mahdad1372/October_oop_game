@@ -12,6 +12,32 @@ public class SniperEnemy extends Army_enemy {
     public ArrayList<SniperBullet> get_Sniper_bullet(){
         return this.SniperBullet_List;
     }
+
+    @Override
+    public void setPosition_enemy_y(int coordinate_y) {
+        super.setPosition_enemy_y(coordinate_y);
+    }
+
+    @Override
+    public void setPosition_enemy_x(int coordinate_x) {
+        super.setPosition_enemy_x(coordinate_x);
+    }
+
+    @Override
+    public int getPosition_enemy_x() {
+        return super.getPosition_enemy_x();
+    }
+
+    @Override
+    public int getPosition_enemy_y() {
+        return super.getPosition_enemy_y();
+    }
+
+    @Override
+    public Image getImage_enemy() {
+        return super.getImage_enemy();
+    }
+
     public void Shooting_Sniper_Bullet(){
         java.util.Timer timer = new java.util.Timer();
         TimerTask task = new TimerTask() {
