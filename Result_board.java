@@ -6,10 +6,10 @@ public class Result_board {
         this.height = height;
         this.result_board_type = result_board_type;
     }
-    private static int result_board_position_x;
-    private static int  result_board_position_y;
-    private static int  width ;
-    private static int  height ;
+    private int result_board_position_x;
+    private int  result_board_position_y;
+    private int  width ;
+    private int  height ;
     private String result_board_type;
 
     public int getPosition_menu_x() {

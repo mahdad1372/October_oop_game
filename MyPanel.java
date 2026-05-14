@@ -55,26 +55,26 @@ public class MyPanel extends JPanel implements KeyListener{
     private final static Image Tank = new ImageIcon("tank.png").getImage();
     private final static Image Soldier_enemy = new ImageIcon("Soldier_enemy.png").getImage();
     private static String direction_player = "left";
-    private Timer  executing_game_timer;
+    private static Timer  executing_game_timer;
     private Timer Game_Timer;
-    private int scores = 0;
-    private int Health = 100;
+    private static int scores = 0;
+    private static int Health = 100;
 
     private int number_enemy_killed = 0;
-    private boolean display_menu_winner;
+    private static boolean display_menu_winner;
     private int Seconds_Duration_Game;
-    private Player player;
-    private Tank_enemy tankEnemy;
-    private Soldier_enemy soldier_enemy;
-    private SniperEnemy sniperEnemy;
-    private Mines mine;
-    private Laser laser;
+    private static Player player;
+    private static Tank_enemy tankEnemy;
+    private static Soldier_enemy soldier_enemy;
+    private static SniperEnemy sniperEnemy;
+    private static Mines mine;
+    private static Laser laser;
 
-    private Missile_launcher MissileLauncher;
-    private ArrayList<Result_board> Result_boards = new ArrayList<Result_board>();
-    private ArrayList<thief> thief_list = new ArrayList<thief>();
-    private ArrayList<Bullet> bullet_position = new ArrayList<Bullet>();
-    private ArrayList<Wall> Walls = new ArrayList<Wall>();
+    private static Missile_launcher MissileLauncher;
+    private static ArrayList<Result_board> Result_boards = new ArrayList<Result_board>();
+    private static ArrayList<thief> thief_list = new ArrayList<thief>();
+    private static ArrayList<Bullet> bullet_position = new ArrayList<Bullet>();
+    private static ArrayList<Wall> Walls = new ArrayList<Wall>();
 
 
     private void creating_player(){
@@ -224,8 +224,6 @@ public class MyPanel extends JPanel implements KeyListener{
                     this.sniperEnemy.getPosition_enemy_x(),this.sniperEnemy.getPosition_enemy_y(),null);
         }
         if (this.sniperEnemy != null){
-
-
             for (int i = 0; i <this.sniperEnemy.get_Sniper_bullet().size(); i++){
                 if (playerIntersectSniperBullet(this.sniperEnemy.get_Sniper_bullet().get(i))) {
                     this.Health -=5;
@@ -419,8 +417,8 @@ public class MyPanel extends JPanel implements KeyListener{
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.red);
         g2d.fillRect(laser.getCoordinate_x(),laser.getCoordinate_y(),
-                laser.calculate_area()/laser.getHeight(),
-                laser.calculate_area()/laser.getLength());
+                laser.getLength(),
+                laser.getHeight());
         if (this.laser != null){
             if (playerIntersectLaser(laser)){
                 this.player.setPosition_x(laser.getCoordinate_x());

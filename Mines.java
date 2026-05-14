@@ -4,11 +4,6 @@ public class Mines extends Obstacles {
     }
 
     @Override
-    public int calculate_area() {
-        return getHeight() * getLength();
-    }
-
-    @Override
     public int health_decrease(int health) {
         return health -15;
     }
