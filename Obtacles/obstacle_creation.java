@@ -2,13 +2,13 @@ package Obtacles;
 
 import Bullet.Bullet;
 import Player.Player;
-import Utils.intersects;
+import Utils.CollisionUtils;
 import Panel.MyPanel;
 import java.awt.*;
 import java.util.ArrayList;
 
-public interface obstacle_creation {
-    static void creating_obstacles(ArrayList<Obstacles> obstacles , int[][] coordinates, int damage) {
+public final class obstacle_creation {
+    public static void creating_obstacles(ArrayList<Obstacles> obstacles , int[][] coordinates, int damage) {
         for (int[] coordinate : coordinates) {
             obstacles.add(new Obstacles(coordinate[0], coordinate[1], coordinate[2], coordinate[3]) {
                 @Override
@@ -19,7 +19,7 @@ public interface obstacle_creation {
         }
     }
 
-    static void Obstacle_drawing(ArrayList<Obstacles> obstacles, ArrayList<Bullet> bullets , Graphics g, Color color , Image image, Player player) {
+    public static void Obstacle_drawing(ArrayList<Obstacles> obstacles, ArrayList<Bullet> bullets , Graphics g, Color color , Image image, Player player) {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(color);
         try{
@@ -30,7 +30,7 @@ public interface obstacle_creation {
                 }
                 if (obstacles.size()>0){
                     for (Obstacles obstacle:obstacles){
-                        if (intersects.playerIntersectObstacle(player,obstacle)){
+                        if (CollisionUtils.playerIntersectObstacle(player,obstacle)){
                             player.setPosition_x(obstacle.getCoordinate_x() - (obstacle.getLength()+30));
                             player.setPosition_y(obstacle.getCoordinate_y());
                             MyPanel.Health = obstacle.health_decrease(MyPanel.Health);
@@ -40,7 +40,7 @@ public interface obstacle_creation {
                 if (obstacles.size()>0){
                     for (int i=0; i<obstacles.size();i++){
                         for (int j=0; j<bullets.size();j++){
-                            if (intersects.bulletIntersectsObstacle(bullets.get(j),obstacles.get(i))){
+                            if (CollisionUtils.bulletIntersectsObstacle(bullets.get(j),obstacles.get(i))){
                                 boolean found = bullets.contains(bullets.get(j));
                                 if (found){
                                     bullets.remove(bullets.get(j));
@@ -56,7 +56,7 @@ public interface obstacle_creation {
                             ,obstacles.get(i).getLength(),obstacles.get(i).getHeight());
                     g2d.drawImage(image, obstacles.get(i).getCoordinate_x()+obstacles.get(i).getLength()/4,
                             obstacles.get(i).getCoordinate_y()+obstacles.get(i).getHeight()/6, null);
-                    if (intersects.playerIntersectObstacle(player, obstacles.get(i))){
+                    if (CollisionUtils.playerIntersectObstacle(player, obstacles.get(i))){
                         MyPanel.Health = obstacles.get(i).health_decrease(MyPanel.Health);
                         obstacles.remove(obstacles.get(i));
                     }
