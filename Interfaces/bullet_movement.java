@@ -1,4 +1,4 @@
-package Bullet;
+package Interfaces;
 
 public interface bullet_movement {
 

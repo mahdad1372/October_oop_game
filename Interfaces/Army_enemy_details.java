@@ -1,4 +1,4 @@
-package Enemy;
+package Interfaces;
 
 import java.util.ArrayList;
 import Bullet.Bullet;

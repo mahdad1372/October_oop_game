@@ -1,8 +1,10 @@
 package Bullet;
 
+import Interfaces.bullet_movement;
+
 import java.awt.*;
 
-public abstract class Bullet implements bullet_movement{
+public abstract class Bullet implements bullet_movement {
 
     private int position_coordinate_x;
     private int position_coordinate_y;

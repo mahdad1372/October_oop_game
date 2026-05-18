@@ -1,6 +1,7 @@
 package Enemy;
 
 import Bullet.Bullet;
+import Interfaces.Army_enemy_details;
 
 import java.awt.*;
 import java.util.ArrayList;

@@ -1,5 +1,7 @@
 package Obtacles;
 
+import Interfaces.obstecles_measurement;
+
 public abstract class Obstacles implements obstecles_measurement {
     public Obstacles(int coordinate_x,int coordinate_y,int length,int height){
         this.coordinate_x = coordinate_x;

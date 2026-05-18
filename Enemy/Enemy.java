@@ -1,5 +1,7 @@
 package Enemy;
 
+import Interfaces.enemy_details;
+
 import java.awt.*;
 
 public abstract class Enemy implements enemy_details {
