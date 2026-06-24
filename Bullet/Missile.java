@@ -1,5 +1,6 @@
 package Bullet;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class Missile extends Bullet {
@@ -17,6 +18,11 @@ public class Missile extends Bullet {
     }
     public int getPositionFinal_x() {
         return this.Final_position_missile_x;
+    }
+    private static final Image Missile_img = new ImageIcon("Assets/missile.png").getImage();
+
+    public static Image getMissile_img() {
+        return Missile_img;
     }
 
     @Override

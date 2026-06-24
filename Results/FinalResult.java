@@ -1,5 +1,7 @@
 package Results;
 
+import java.util.ArrayList;
+
 public class FinalResult<name, health,score,status> {
     public FinalResult(name name, health health,score score,status status) {
         this.name = name;
@@ -11,7 +13,6 @@ public class FinalResult<name, health,score,status> {
     private final health health;
     private final score score;
     private final status status;
-
 
     public name getName() {
         return name;

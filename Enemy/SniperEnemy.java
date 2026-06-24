@@ -2,6 +2,7 @@ package Enemy;
 
 import Bullet.SniperBullet;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.TimerTask;
@@ -13,7 +14,19 @@ public class SniperEnemy extends Army_enemy {
     }
     private SniperBullet Sniper_bullet;
     private ArrayList<SniperBullet> SniperBullet_List = new ArrayList<SniperBullet>();
+    private static Army_enemy sniperEnemy;
+    private static final Image Sniper = new ImageIcon("Assets/Sniper.png").getImage();
 
+    public static Army_enemy getSniperEnemy() {
+        return sniperEnemy;
+    }
+
+    public static void setSniperEnemy(Army_enemy sniperEnemy) {
+        SniperEnemy.sniperEnemy = sniperEnemy;
+    }
+    public static Image getSniperImage(){
+        return Sniper;
+    }
     @Override
     public ArrayList<SniperBullet> getRocket() {
         return this.SniperBullet_List;
@@ -40,7 +53,4 @@ public class SniperEnemy extends Army_enemy {
         };
         timer.schedule(task, 0, 4000);
     }
-
-
-
 }

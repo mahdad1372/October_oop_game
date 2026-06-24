@@ -2,6 +2,7 @@ package Enemy;
 
 import Bullet.Tank_rocket;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.TimerTask;
@@ -12,7 +13,21 @@ public class Tank_enemy extends Army_enemy {
         this.tank_rocket = tank_rocket;
     }
     private Tank_rocket tank_rocket;
-    ArrayList<Tank_rocket> Tank_rocket_list = new ArrayList<>();
+    private ArrayList<Tank_rocket> Tank_rocket_list = new ArrayList<>();
+    private static Army_enemy tankEnemy;
+    private static final Image Tank = new ImageIcon("Assets/tank.png").getImage();
+    public static Army_enemy getTankEnemy() {
+        return tankEnemy;
+    }
+
+    public static Image getTank() {
+        return Tank;
+    }
+
+    public static void setTankEnemy(Army_enemy tankEnemy) {
+        Tank_enemy.tankEnemy = tankEnemy;
+    }
+
     @Override
     public ArrayList<Tank_rocket> getRocket() {
         return this.Tank_rocket_list;

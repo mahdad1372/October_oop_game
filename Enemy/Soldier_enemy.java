@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.TimerTask;
 import Bullet.Soldier_rocket;
 
+import javax.swing.*;
+
 public class Soldier_enemy extends Army_enemy {
     public Soldier_enemy(Image img, int position_x, int position_y, int w , int h,
                           Soldier_rocket rocket){
@@ -12,7 +14,17 @@ public class Soldier_enemy extends Army_enemy {
         this.Soldier_Rocket = rocket;
     }
     private Soldier_rocket Soldier_Rocket;
-    ArrayList<Soldier_rocket> Soldier_rocket_list = new ArrayList<>();
+
+
+    private ArrayList<Soldier_rocket> Soldier_rocket_list = new ArrayList<>();
+    private static Army_enemy soldier_enemy;
+    public static Army_enemy getSoldier_enemy() {
+        return soldier_enemy;
+    }
+
+    public static void setSoldier_enemy(Army_enemy soldier_enemy) {
+        Soldier_enemy.soldier_enemy = soldier_enemy;
+    }
 
     @Override
     public void Shooting_Rocket() {

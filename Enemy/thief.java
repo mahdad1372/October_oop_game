@@ -1,6 +1,8 @@
 package Enemy;
 
+import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class thief extends Enemy {
     public thief(Image img, int coordinate_x, int coordinate_y, int width, int height, String direction, int final_position) {
@@ -19,6 +21,22 @@ public class thief extends Enemy {
 
     private boolean increase_coordinate_x = true;
     private boolean increase_coordinate_y = true;
+    private static ArrayList<thief> thief_list = new ArrayList<thief>();
+    private static final Image thief_icon = new ImageIcon("Assets/thief.png").getImage();
+    private static final Object[][] thief_enemy_coordinates = {
+            {200,70,30,30,"Y",320},
+            {390,165,30,30,"X",120},
+            {350,310,30,30,"Y",120},
+            {595,140,30,30,"X",450},
+            {580,10,30,30,"Y",180},
+            {665,50,30,30,"Y",210}
+    };
+    public static Object[][] getThief_enemy_coordinates(){
+        return thief_enemy_coordinates;
+    }
+    public static Image getThief_icon() {
+        return thief_icon;
+    }
 
     public String get_direction(){
         return this.Direction;
@@ -30,8 +48,15 @@ public class thief extends Enemy {
         return this.final_position;
     }
 
+    public static ArrayList<thief> getThief_list() {
+        return thief_list;
+    }
 
-     public void thief_movement(int curr_position,int final_position ,String direction){
+    public static void setThief_list(ArrayList<thief> thief_list) {
+        thief.thief_list = thief_list;
+    }
+
+    public void thief_movement(int curr_position, int final_position , String direction){
         if (direction == "Y"){
             if (super.getPosition_enemy_y() > final_position && increase_coordinate_y == true){
                 curr_position = super.getPosition_enemy_y();

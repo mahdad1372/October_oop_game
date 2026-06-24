@@ -1,16 +1,22 @@
 package Bullet;
 
+import javax.swing.*;
 import java.awt.*;
 
-public class SniperBullet extends Rocket_Bullet{
+public class SniperBullet extends Bullet{
     public SniperBullet(int SniperBullet_x, int SniperBullet_y,Image Sniper_bullet_image ,int FinalPosition) {
 
-        super(SniperBullet_x, SniperBullet_y,Sniper_bullet_image,FinalPosition,FinalPosition);
+        super(SniperBullet_x, SniperBullet_y,Sniper_bullet_image);
         this.FinalPosition = FinalPosition;
         this.Sniper_bullet_image = Sniper_bullet_image;
     }
     private int FinalPosition;
     private Image Sniper_bullet_image;
+    private final static Image Sniper_Bullet = new ImageIcon("Assets/sniper_bullet.png").getImage();
+
+    public static Image getSniper_Bullet() {
+        return Sniper_Bullet;
+    }
 
     public Image getSniper_bullet_image(){
         return  this.Sniper_bullet_image;

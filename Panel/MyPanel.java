@@ -1,11 +1,9 @@
 package Panel;
-import Assets.Assets;
 import Bullet.Bullet;
+import Obtacles.*;
 import Player.Player;
 import Enemy.*;
 import Player.*;
-import Obtacles.Obstacles;
-import Obtacles.obstacle_creation;
 import Results.CreateResult;
 import Results.Result_board;
 import javax.swing.*;
@@ -14,29 +12,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
 
 
 public class MyPanel extends JPanel implements KeyListener{
-    public static String direction_player = "left";
-    public static Timer  executing_game_timer;
-    public static Timer Game_Timer;
-    public static int scores = 0;
-    public static int Health = 100;
-    public static int number_enemy_killed = 0;
-    public static boolean display_menu_winner;
-    public static int Seconds_Duration_Game;
-    public static Player player;
-    private static Army_enemy tankEnemy;
-    private static Army_enemy soldier_enemy;
-    private static Army_enemy sniperEnemy;
-    private static Army_enemy MissileLauncher;
-    public static ArrayList<Result_board> Result_boards = new ArrayList<Result_board>();
-    private static ArrayList<thief> thief_list = new ArrayList<thief>();
-    public static ArrayList<Bullet> bullet_position = new ArrayList<>();
-    private static ArrayList<Obstacles> Walls = new ArrayList<Obstacles>();
-    private static ArrayList<Obstacles> Mines = new ArrayList<Obstacles>();
-    private static ArrayList<Obstacles> Laser = new ArrayList<Obstacles>();
+
     public MyPanel() {
         addKeyListener(this);
         setFocusable(true);
@@ -52,35 +31,40 @@ public class MyPanel extends JPanel implements KeyListener{
         Game_Timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Seconds_Duration_Game++;
+                Results.Result_board.setSeconds_Duration_Game(Result_board.getSeconds_Duration_Game() +1);
             }
         });
         Game_Timer.start();
-        this.player = Playercreation.creating_player();
-        this.Result_boards = CreateResult.creating_result_board();
-        this.tankEnemy = Enemycreation.creating_Tank();
-        this.soldier_enemy = Enemycreation.creating_Soldier();
-        this.MissileLauncher = Enemycreation.creating_Missile_launcher();
-        this.sniperEnemy = Enemycreation.creating_sniper();
-        this.thief_list = Enemycreation.creating_enemy_thief();
-        obstacle_creation.creating_obstacles(Walls, Assets.wall,0);
-        obstacle_creation.creating_obstacles(Mines, Assets.mines,15);
-        obstacle_creation.creating_obstacles(Laser, Assets.laser,10);
+        Player.setPlayer(Playercreation.creating_player());
+        Result_board.setResult_boards(CreateResult.creating_result_board());
+        Tank_enemy.setTankEnemy(Enemycreation.creating_Tank());
+        Soldier_enemy.setSoldier_enemy(Enemycreation.creating_Soldier());
+        Missile_launcher.setMissileLauncher(Enemycreation.creating_Missile_launcher());
+        SniperEnemy.setSniperEnemy(Enemycreation.creating_sniper());
+        thief.setThief_list(Enemycreation.creating_enemy_thief());
+        Army_enemy.setArmy_enemy(Enemycreation.creating_army_enemy());
+        obstacle_creation.creating_wall(Wall.getWalls(), Wall.getWall(),0);
+        obstacle_creation.creating_Mine(Mines.getMine(), Mines.getMines_coordinates(),15);
+        obstacle_creation.creating_Laser(Laser.getLaser(), Laser.getlaser_coordinates(),10);
     }
+    public static Timer  executing_game_timer;
+    public static Timer Game_Timer;
+
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        this.soldier_enemy = Enemycreation.armyenemey_drawing(g,this.soldier_enemy,this.player,bullet_position,this.Health,"up");
-        this.tankEnemy = Enemycreation.armyenemey_drawing(g,this.tankEnemy,this.player,bullet_position,this.Health,"up");
-        this.MissileLauncher = Enemycreation.armyenemey_drawing(g,this.MissileLauncher,this.player,bullet_position,this.Health,"up");
-        this.sniperEnemy = Enemycreation.armyenemey_drawing(g,this.sniperEnemy,this.player,bullet_position,this.Health,"down");
-        this.bullet_position = Playercreation.BulletPlayerDrawing(g,bullet_position,this.direction_player,this.thief_list);
-        this.thief_list = Enemycreation.ThiefEnemyDrawing(g,this.thief_list,player);
-        this.player = Playercreation.PlayerDrawing(g,this.player);
-        obstacle_creation.Obstacle_drawing(Walls,bullet_position,g, Color.BLUE,null,this.player);
-        obstacle_creation.Obstacle_drawing(Laser,bullet_position,g, Color.RED,null,this.player);
-        obstacle_creation.Obstacle_drawing(Mines,bullet_position,g, Color.YELLOW, Assets.Mine,this.player);
+        Playercreation.PlayerDrawing(g,Player.getPlayer());
+        Soldier_enemy.setSoldier_enemy(Enemycreation.armyenemey_drawing(g,Soldier_enemy.getSoldier_enemy(),Player.getPlayer(),Bullet.getBullet_position(),Result_board.getHealth(),"up"));
+        Tank_enemy.setTankEnemy(Enemycreation.armyenemey_drawing(g,Tank_enemy.getTankEnemy(),Player.getPlayer(),Bullet.getBullet_position(),Result_board.getHealth(),"up"));
+        Missile_launcher.setMissileLauncher(Enemycreation.armyenemey_drawing(g,Missile_launcher.getMissileLauncher(),Player.getPlayer(),Bullet.getBullet_position(),Result_board.getHealth(),"up"));
+        SniperEnemy.setSniperEnemy(Enemycreation.armyenemey_drawing(g,SniperEnemy.getSniperEnemy(),Player.getPlayer(),Bullet.getBullet_position(),Result_board.getHealth(),"down"));
+        Bullet.setBullet_position(Playercreation.BulletPlayerDrawing(g,Bullet.getBullet_position(),Player.getDirection_player(),thief.getThief_list()));
+        thief.setThief_list(Enemycreation.ThiefEnemyDrawing(g,thief.getThief_list(),Player.getPlayer()));
+        Army_enemy.setArmy_enemy(Enemycreation.armyenemey_drawing(g,Army_enemy.getArmy_enemy(),Player.getPlayer(),Bullet.getBullet_position(),Result_board.getHealth(),"down"));
+        obstacle_creation.Obstacle_drawing(Wall.getWalls(),Bullet.getBullet_position(),g, Color.BLUE,null,Player.getPlayer());
+        obstacle_creation.Obstacle_drawing(Laser.getLaser(),Bullet.getBullet_position(),g, Color.RED,null,Player.getPlayer());
+        obstacle_creation.Obstacle_drawing(Mines.getMine(),Bullet.getBullet_position(),g, Color.YELLOW, Mines.getMine_icon(),Player.getPlayer());
         CreateResult.GameLablesDrawing(g);
         CreateResult.ResultBoardDrawing(g);
     }

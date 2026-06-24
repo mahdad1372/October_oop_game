@@ -1,5 +1,6 @@
 package Player;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class Player {
@@ -8,11 +9,47 @@ public class Player {
         this.position_y = player_coordinate_y;
         this.Image_player = player_image;
     }
+    private static Player player;
+    private static String direction_player = "left";
     private int position_x;
     private int position_y;
     private Image Image_player;
+    private static final Image Player_icon = new ImageIcon("Assets/soldier.png").getImage();
+    private static final Image Player_L = new ImageIcon("Assets/soldier_l.png").getImage();
+    private static final Image Player_D = new ImageIcon("Assets/soldier_d.png").getImage();
+    private static final Image Player_U = new ImageIcon("Assets/soldier_u.png").getImage();
 
+    public static Image getPlayer_D() {
+        return Player_D;
+    }
 
+    public static Image getPlayer_L() {
+        return Player_L;
+    }
+
+    public static Image getPlayer_icon() {
+        return Player_icon;
+    }
+
+    public static Image getPlayer_U() {
+        return Player_U;
+    }
+
+    public static String getDirection_player() {
+        return direction_player;
+    }
+
+    public static void setDirection_player(String direction_player) {
+        Player.direction_player = direction_player;
+    }
+
+    public static Player getPlayer() {
+        return player;
+    }
+
+    public static void setPlayer(Player player) {
+        Player.player = player;
+    }
 
     public int getPosition_x(){
         return this.position_x;

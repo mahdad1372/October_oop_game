@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.TimerTask;
 import Bullet.Missile;
 
+import javax.swing.*;
+
 public class Missile_launcher extends Army_enemy {
     public Missile_launcher(Image img, int coordinate_x, int coordinate_y, int width, int height, Missile Missile){
         super(img, coordinate_x, coordinate_y, width, height,Missile);
@@ -12,12 +14,24 @@ public class Missile_launcher extends Army_enemy {
     }
     private Missile Missile;
     private ArrayList<Missile> Missile_List = new ArrayList<Missile>();
-
+    private static Army_enemy MissileLauncher;
+    private static final Image Launcher = new ImageIcon("Assets/launcher.png").getImage();
     @Override
     public ArrayList<Missile> getRocket() {
         return this.Missile_List;
     }
 
+    public static Army_enemy getMissileLauncher() {
+        return MissileLauncher;
+    }
+
+    public static void setMissileLauncher(Army_enemy missileLauncher) {
+        MissileLauncher = missileLauncher;
+    }
+
+    public static Image getLauncherImage(){
+        return Launcher;
+    }
     @Override
     public void Shooting_Rocket() {
         java.util.Timer timer = new java.util.Timer();

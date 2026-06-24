@@ -1,10 +1,9 @@
 package Player;
-import Assets.Assets;
 import Bullet.*;
 import Enemy.thief;
-import Player.Player;
+import Results.Result_board;
 import Utils.CollisionUtils;
-import Panel.MyPanel;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -12,7 +11,7 @@ import java.util.Iterator;
 
 public final class Playercreation {
     public static Player creating_player(){
-        Player player = new Player(0,0, Assets.Player_icon);
+        Player player = new Player(0,0, Player.getPlayer_icon());
         return player;
     }
     public static Player PlayerDrawing(Graphics g,Player player){
@@ -21,28 +20,28 @@ public final class Playercreation {
     }
     public static void player_movement(int keyCode){
         if (keyCode == KeyEvent.VK_SPACE){
-            int bullet_position_x = MyPanel.player.getPosition_x();
-            int bullet_position_y = MyPanel.player.getPosition_y();
-            Bullet bullet = new player_bullet(bullet_position_x, bullet_position_y, Assets.Sniper_Bullet);
-            MyPanel.bullet_position.add(bullet);
+            int bullet_position_x = Player.getPlayer().getPosition_x();
+            int bullet_position_y = Player.getPlayer().getPosition_y();
+            Bullet bullet = new player_bullet(bullet_position_x, bullet_position_y,SniperBullet.getSniper_Bullet());
+            Bullet.getBullet_position().add(bullet);
         }
         if (keyCode == KeyEvent.VK_LEFT) {
-            MyPanel.direction_player = "left";
-            MyPanel.player.player_move_left();
-            MyPanel.player.setPlayerIcon(Assets.Player_L);
+            Player.setDirection_player("left");
+            Player.getPlayer().player_move_left();
+            Player.getPlayer().setPlayerIcon(Player.getPlayer_L());
         } else if (keyCode == KeyEvent.VK_RIGHT) {
-            MyPanel.direction_player = "right";
-            MyPanel.player.player_move_right();
-            MyPanel.player.setPlayerIcon(Assets.Player_icon);
+            Player.setDirection_player("right");
+            Player.getPlayer().player_move_right();
+            Player.getPlayer().setPlayerIcon(Player.getPlayer_icon());
 
         } else if (keyCode == KeyEvent.VK_UP) {
-            MyPanel.direction_player = "up";
-            MyPanel.player.player_move_up();
-            MyPanel.player.setPlayerIcon(Assets.Player_U);
+            Player.setDirection_player("up");
+            Player.getPlayer().player_move_up();
+            Player.getPlayer().setPlayerIcon(Player.getPlayer_U());
         } else if (keyCode == KeyEvent.VK_DOWN) {
-            MyPanel.direction_player = "down";
-            MyPanel.player.player_move_down();
-            MyPanel.player.setPlayerIcon(Assets.Player_D);
+            Player.setDirection_player("down");
+            Player.getPlayer().player_move_down();
+            Player.getPlayer().setPlayerIcon(Player.getPlayer_D());
         }
     }
     public static ArrayList<Bullet> BulletPlayerDrawing(Graphics g , ArrayList<Bullet> bullet_position ,String direction_player ,ArrayList<thief> thief_list ) {
@@ -72,8 +71,9 @@ public final class Playercreation {
                     if (CollisionUtils.intersects(bullet, th)) {
                         thiefIt.remove();
                         bulletIt.remove();
-                        MyPanel.scores += th.killing_enemy_score();
-                        MyPanel.number_enemy_killed++;
+                        Result_board.setScores(Result_board.getScores() + th.killing_enemy_score());
+                        Result_board.setNumber_enemy_killed(Result_board.getNumber_enemy_killed() + 1);
+
                         break;
                     }
                 }

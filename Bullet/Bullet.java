@@ -3,12 +3,14 @@ package Bullet;
 import Interfaces.bullet_movement;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public abstract class Bullet implements bullet_movement {
 
     private int position_coordinate_x;
     private int position_coordinate_y;
     private Image bulletimg;
+    private static ArrayList<Bullet> bullet_position = new ArrayList<>();
     public Bullet(int x, int y, Image bullet_img) {
         this.position_coordinate_x = x;
         this.position_coordinate_y = y;
@@ -17,6 +19,14 @@ public abstract class Bullet implements bullet_movement {
 
     public int getPosition_coordinate_x() { return position_coordinate_x; }
     public int getPosition_coordinate_y() { return position_coordinate_y; }
+
+    public static ArrayList<Bullet> getBullet_position() {
+        return bullet_position;
+    }
+
+    public static void setBullet_position(ArrayList<Bullet> bullet_position) {
+        Bullet.bullet_position = bullet_position;
+    }
 
     public Image getBulletimg() {
         return bulletimg;
